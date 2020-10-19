@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS for final-->
+    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <!-- Bootstrap CSS for dev-->
+    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <title>药房信息中心</title>
+
+    <script src="./View/libs/jquery/jquery.js"></script>
+    <script src="./View/libs/js/popper.js" ></script>
+    <script src="./View/libs/js/bootstrap.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.js"></script>
+    <script src="../../static/libs/js/popper.js" ></script>
+    <script src="../../static/libs/js/bootstrap.js"></script>
+
+    <!--边栏样式-->
+    <style>
+        body {
+            font-size: .875rem;
+        }
+
+        .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+        }
+
+        /*
+         * Sidebar
+         */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        @supports ((position: -webkit-sticky) or (position: sticky)) {
+            .sidebar-sticky {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #999;
+        }
+
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+
+        /*
+         * Content
+         */
+
+        [role="main"] {
+            padding-top: 133px; /* Space for fixed navbar */
+        }
+
+        @media (min-width: 768px) {
+            [role="main"] {
+                padding-top: 48px; /* Space for fixed navbar */
+            }
+        }
+
+        /*
+         * Navbar
+         */
+
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+
+        .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+        }
+
+        .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+        }
+    </style>
+
+</head>
+
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">药房中心</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Pharmacy">
+                            <span data-feather="home"></span>
+                            药品总表 <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Pharmacy&ac=add">
+                            <span data-feather="file"></span>
+                            添加药品
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <span data-feather="shopping-cart"></span>
+                            查询药品
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>交付药品</span>
+                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="?">
+                            <span data-feather="file-text"></span>
+                            查询账单
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">查询结果</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        打印
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm" id="table" style="text-align: center" >
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">编号</th>
+                        <th scope="col">药品名称</th>
+                        <th scope="col">药品类型</th>
+                        <th scope="col">单价</th>
+                        <th scope="col">库存量</th>
+                        <th scope="col">操作项</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($arrs as $arr){?>
+                    <tr>
+                        <th scope="row"><?php echo $arr['medicine_id'] ?></th>
+                        <td><?php echo $arr['medicine_name'] ?></td>
+                        <td><?php echo $arr['medicine_type'] ?></td>
+                        <td><?php echo $arr['cost'] ?></td>
+                        <td><?php echo $arr['rest']?></td>
+                        <td>
+                            <a href="?con=Pharmacy&ac=edit&id=<?=$arr['medicine_id']?>">修改</a>
+                        </td>
+                    </tr>
+                    <?php }?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+
+</body>
+</html>

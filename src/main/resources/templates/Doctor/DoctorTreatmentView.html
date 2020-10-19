@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>医生-诊断页</title>
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="./View/libs/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <!--popwindow-->
+    <link rel="stylesheet" href="./View/libs/css/animate.min.css" />
+    <link rel="stylesheet" href="./View/libs/css/syalert.min.css" />
+
+    <!-- For dep-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../static/libs/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/libs/css/animate.min.css" />
+    <link rel="stylesheet" href="../../static/libs/css/syalert.min.css" />
+
+    <style type="text/css">
+        *{ margin:0px; padding:0px; box-sizing:border-box; }
+        *:focus{ outline:none;}
+        .tsm{ background:#333; font-size:13px; color:#fff; margin:20px; margin-top:0px; padding:12px; line-height:25px;}
+        .tsm .p2{ margin-top:12px;}
+        .btns{ padding:20px;}
+        .btns div{ display:block; text-align:center; cursor:pointer; padding:10px; border-radius:5px; background:#0CC; color:#fff; margin-bottom:12px; width:100%;}
+    </style>
+
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./View/libs/js/jquery.dataTables.js"></script>
+    <script src="./View/libs/js/dataTables.bootstrap4.js"></script>
+    <script src="./View/libs/js/adminlte.min.js"></script>
+    <script src="./View/libs/js/syalert.min.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/libs/js/jquery.dataTables.js"></script>
+    <script src="../../static/libs/js/dataTables.bootstrap4.js"></script>
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+    <script src="../../static/libs/js/syalert.min.js"></script>
+
+
+</head>
+<body class="sidebar-mini" style="height: auto;">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="?con=Doctor" class="nav-link">首页</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="?con=Login&ac=showuserinfo" class="nav-link">Login Info</a>
+            </li>
+        </ul>
+
+        <!-- SEARCH FORM -->
+        <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="查询病人" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Messages Dropdown Menu -->
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge"><?=$register_num?></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">共<?=$register_num?>个病人挂号</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="?con=Doctor&ac=callOnePatient" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 叫号
+                        <span class="float-right text-muted text-sm">叫最早挂号的病人</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 查看队列
+                        <span class="float-right text-muted text-sm">现在的队列</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                        class="fas fa-th-large"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
+            <span class="brand-text font-weight-light">Hospital Center</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <i class="fa fa-user-md fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
+                </div>
+                <div class="info">
+                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                快捷列表
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="?con=Doctor&ac=showPatientList" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>就诊病人列表</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>完成就诊列表</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Simple Link
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">就诊病号为<font color="red"><?=$arr['patient_id']?></font> 号病人</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="?con=Patient">Home</a></li>
+                            <li class="breadcrumb-item active">就诊页</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-primary card-tabs">
+                            <div class="card-header p-0 pt-1">
+                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">病人信息</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">病情</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">诊断</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">处方</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <form action="?con=Doctor&ac=postTreatmentInfo" method="post">
+                                <div class="card-body">
+
+                                        <div class="tab-content" id="custom-tabs-one-tabContent">
+                                        <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>姓名:</label><br><?=$arr['patient_name']?>
+                                                        <input type="hidden" id="staff_id" name="doctor_id" value="<?=$arr['doctor_id']?>">
+                                                        <input type="hidden" name="patient_id" id="patient_id" value="<?=$arr['patient_id']?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>电话:</label><br><?=$arr['patient_tel']?>
+                                                    </div>
+                                                </div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>年龄:</label><br><?=$arr['patient_age']?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label >性别:</label><br><?=$arr['patient_gender']?>
+                                                    </div>
+                                                </div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="allergy">过敏信息:</label>
+                                                        <input type="text" class="form-control" id="allergy" name="allergy" value="<?=$arr['allergy']?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>挂号时间:</label><br><?=$arr['register_time']?>
+                                                    </div>
+                                                </div>
+                                            </div><hr>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="allergy">病史信息</label><br>
+                                                        <div class="btn btn-warning" onClick="syalert.syopen('alert2')">查看</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label>就诊时间时间:</label><br><?=date("Y-m-d H:i:s",$arr['add_time'])?>
+                                                        <input type="hidden" name="add_time" value="<?=$arr['add_time']?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="temperature">体温:</label>
+                                                        <input type="text" class="form-control" id="temperature" name="temperature">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="bloodpressure">血压:</label>
+                                                        <input type="text" class="form-control" id="bloodpressure" name="bloodpressure">
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="heartrate">心率:</label>
+                                                        <input type="text" class="form-control" id="heartrate" name="heartrate">
+                                                    </div>
+                                                </div>
+                                            </div><hr>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="symptoms">主述:</label>
+                                                    <input type="text" class="form-control" id="symptoms" name="symptoms">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="present_illness">现病史:</label>
+                                                    <input type="text" class="form-control" id="present_illness" name="present_illness">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="past_illness">既往史:</label>
+                                                    <input type="text" class="form-control" id="past_illness" name="past_illness">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                                            <input type="text" class="form-control" id="diagnose" name="diagnose">
+                                        </div>
+                                        <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                            <input type="hidden"  name="isprescription" value="false">
+                                            <div class="col-12">
+                                                <div class="icheck-primary d-inline">
+                                                    <input type="checkbox" id="checkboxPrimary2" name="isprescription" value="true">
+                                                    <label for="checkboxPrimary2">开处方
+                                                    </label>
+                                                </div>
+                                                <hr>
+                                                    <table id="example1" class="table table-bordered table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>药物编号</th>
+                                                        <th>药物名称</th>
+                                                        <th>药物种类</th>
+                                                        <th>价格</th>
+                                                        <th>操作项</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <?php foreach($arrs as $arr1){ ?>
+                                                    <tr>
+                                                        <th scope="row"><?php echo $arr1['medicine_id'] ?></th>
+                                                        <td><?php echo $arr1['medicine_name'] ?></td>
+                                                        <td><?php echo $arr1['medicine_type'] ?></td>
+                                                        <td><?php echo $arr1['cost'] ?></td>
+                                                        <td>
+                                                            <input id="btn ichecked" type="button" value="选择" onclick="add(<?php echo $arr1['medicine_id']?>,'<?php echo $arr1['medicine_name'] ?>',<?php echo $arr1['cost'] ?>)">
+                                                        </td>
+                                                    </tr>
+                                                    <?php } ?>
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <th>药物编号</th>
+                                                        <th>药物名称</th>
+                                                        <th>药物种类</th>
+                                                        <th>价格</th>
+                                                        <th>操作项</th>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+
+                                            </div><br><hr>
+                                            <div class="col-12">
+                                                <h3>处方签</h3>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped jambo_table bulk_action" id="todolist">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>药品编号</th>
+                                                                <th>药品名称</th>
+                                                                <th>开药数量</th>
+                                                                <th>药品价格</th>
+                                                                <th>删除</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <input type="submit" name="action" value="提交" class="btn btn-success">
+                                    <input type="submit" name="action" value="保存" class="btn btn-warning">
+                                    <button type="reset" class="btn btn-danger float-right" id="delete">退出</button>
+                                </div><!-- /.card-footer -->
+                            </form>
+                        </div>
+                    </div>
+                        <!-- /.card -->
+                </div>
+                    <!-- /.col-lg-12 -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Designed for Hospital and Coded by Tao Sun in <strong><a href="http://nuaa.edu.cn">Nanjing University of Aeronautics & Astronautics</a>.</strong>
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+</div>
+
+<!-- 病史信息弹窗 -->
+<div class="sy-alert sy-alert-alert animated" sy-enter="zoomIn" sy-leave="zoomOut" sy-type="alert" sy-mask="true" id="alert2" style="width: 800px">
+    <div class="sy-title">病史信息</div>
+    <div class="sy-content">
+        <table id="example2" class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th width="200px">就诊日期</th>
+                <th>诊断</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($arrs2 as $arr2){ ?>
+            <tr>
+                <th scope="row" width="150px"><?php echo date('Y-m-d',$arr2['add_time']) ?></th>
+                <td><?php echo $arr2['diagnose'] ?></td>
+                <td width="50px"><a id="check" onclick="return confirm();" href="?con=Doctor&ac=showPatientTreament&patient_id=<?=$arr['patient_id']?>&add_time=<?=$arr2['add_time']?>">查看</a> </td>
+            </tr>
+            <?php } ?>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>就诊日期</th>
+                <th>诊断</th>
+                <th>操作</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="sy-btn">
+        <button onClick="ok('alert2')">确定</button>
+    </div>
+</div>
+
+<script type="text/javascript" >
+    var checkbtn=document.getElementById('check');
+    checkbtn.onclick=function () {
+        //询问是否要删除
+        return  window.confirm('填写的内容将清除，请确定是否保存！');
+    }
+    //datatables
+    $(function () {
+        $("#example1").DataTable();
+        $("#example2").DataTable({"lengthChange": false,"info": false,"ordering": false,});
+    });
+    //弹出窗口
+    function ok(id){
+        syalert.syhide(id);
+    }
+
+//药物的选择添加
+    function add(medicine_id,name,cost){
+
+        var trHTML = '<tr>'+
+            '<td>'+medicine_id+'<input type="hidden" name="prescription[]" value=\"'+medicine_id+'\">' +'</td>'+
+            '<td>'+name+'<input type="hidden" name=medicinename[]" value=\"'+name+'\">'+'</td>'+
+            '<td>'+'<input type="text" name="medicinenum[]" value="1">'+'</td>'+
+            '<td>'+cost+'<input type="hidden" name="consume[]" value=\"'+cost+'\">' +'</td>'+
+            '<td>'+'<button class="btn btn-warning btn-xs" id="check">删除</button>'+'</td>'+
+            '</tr>';
+
+        $("#todolist").append(trHTML);//在table最后面添加一行
+
+    }
+
+    //监听是否选中某行，该监听是持续的
+
+    $('#todolist tbody').on( 'click', '#check', function () {
+
+        //获取行
+        var row = $("table#todolist tr").index($(this).closest("tr"));
+        //获取某列（从0列开始计数）的值
+        var id = $("table#todolist").find("tr").eq(row).find("td").eq(0).text();
+
+        $(this).parent().parent().remove();
+
+        var updateId=id;
+
+    } );
+    //禁止f5刷新
+    document.onkeydown = function (e) {
+        var ev = window.event || e;
+        var code = ev.keyCode || ev.which;
+        if (code == 116) {
+            ev.keyCode ? ev.keyCode = 0 : ev.which = 0;
+            cancelBubble = true;
+            return false;
+        }
+    }
+    document.oncontextmenu=function(){return false};//禁止右键刷新
+
+</script>
+</body>
+</html>
+
+

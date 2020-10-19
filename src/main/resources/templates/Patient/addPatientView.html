@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS for final-->
+    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <!-- Bootstrap CSS for dev-->
+    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <title>登记病人信息</title>
+
+    <script src="./View/libs/jquery/jquery.js"></script>
+    <script src="./View/libs/js/popper.js" ></script>
+    <script src="./View/libs/js/bootstrap.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.js"></script>
+    <script src="../../static/libs/js/popper.js" ></script>
+    <script src="../../static/libs/js/bootstrap.js"></script>
+    <!--边栏样式-->
+    <style>
+        body {
+            font-size: .875rem;
+        }
+
+        .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+        }
+
+        /*
+         * Sidebar
+         */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        @supports ((position: -webkit-sticky) or (position: sticky)) {
+            .sidebar-sticky {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #999;
+        }
+
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+
+        /*
+         * Content
+         */
+
+        [role="main"] {
+            padding-top: 133px; /* Space for fixed navbar */
+        }
+
+        @media (min-width: 768px) {
+            [role="main"] {
+                padding-top: 48px; /* Space for fixed navbar */
+            }
+        }
+
+        /*
+         * Navbar
+         */
+
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+
+        .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+        }
+
+        .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">病人信息管理中心</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="?con=Patient"></span>
+                            病人总表 <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <span data-feather="file"></span>
+                            病人登记
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=seek">
+                            <span data-feather="shopping-cart"></span>
+                            查询病人
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=dailyadd">
+                            <span data-feather="users"></span>
+                            查看当日登记病人
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>挂号处理</span>
+                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=seek">
+                            <span data-feather="file-text"></span>
+                            挂号
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
+                            <span data-feather="file-text"></span>
+                            查看挂号信息
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <form class="needs-validation" name="myform" action="?con=Patient&ac=insert" method="post">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">病人登记</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <input type="reset" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                    </input>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <div class="col-lg-10" >
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="patientName">姓名</label>
+                            <input type="text" class="form-control" id="patientName" name="patient_name" placeholder="" value="" required>
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="hidden" class="form-control" id="lastName" placeholder="" value="" required>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <div class="mb-3">
+                        <label for="identity">身份证号</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">ID</span>
+                            </div>
+                            <input type="text" class="form-control" id="identity" name="patient_identity" placeholder="请输入18位身份证号" required>
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Your ID is required.
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <div class="mb-3">
+                        <label for="phone">手机号 </label>
+                        <input type="tel" class="form-control" name="patient_tel" id="phone" placeholder="请输入11位手机号">
+                        <div class="invalid-feedback">
+                            Please enter a valid phone number for updates.
+                        </div>
+                    </div>
+                        <hr class="mb-4">
+                        <label>性别</label>
+                        <div class="d-block my-3">
+                            <div class="custom-control custom-radio">
+                                <input id="malepatient" name="patient_gender" type="radio" value="男" class="custom-control-input" checked required>
+                                <label class="custom-control-label" for="malepatient">男</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input id="fmalepatient" name="patient_gender" type="radio" value="女" class="custom-control-input" required>
+                                <label class="custom-control-label" for="fmalepatient">女</label>
+                            </div>
+                        </div>
+                    <hr class="mb-4">
+                    <div class="mb-3">
+                        <label for="address">过敏信息</label>
+                        <input type="text" class="form-control" name="allergy" id="address" placeholder="过敏信息如：青霉素等" required>
+                        <div class="invalid-feedback">
+                            Please enter your allergy info.
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="return check_input()">提交</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<script>
+    function check_input() {
+        var phone = document.getElementById('phone').value;
+        var identity = document.getElementById('identity').value;
+        if(!(/^1[345689]\d{9}$/.test(phone))){
+            alert("手机号输入有误！");
+            myform.patient_tel.focus();
+            return false;
+        }
+
+        if(!(/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test(identity))){
+            alert("身份证输入有误！");
+            myform.patient_identity.focus();
+            return false;
+        }
+
+        if(myform.patient_name.value.length==0)
+        {
+            alert("输入姓名不能为空！"); myform.patient_name.focus(); return false;
+        }
+    }
+</script>
+
+</body>
+</html>

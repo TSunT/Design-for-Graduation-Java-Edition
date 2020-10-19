@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>诊室叫号页</title>
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <!-- For dep-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./View/libs/js/adminlte.min.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+</head>
+<body class="hold-transition sidebar-collapse layout-top-nav">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+        <div class="container">
+            <a href="../../index3.html" class="navbar-brand">
+                <span class="brand-text font-weight-light">排队公告</span>
+            </a>
+            <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">控制</a>
+                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                            <li><a href="#" class="dropdown-item">刷新 </a></li>
+                            <li><a href="?con=Login&ac=showuserinfo" class="dropdown-item">账户信息</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="../../index3.html" class="brand-link">
+            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>
+
+
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark"> 等候厅 <small><?=$dep_name?></small></h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                            <li class="breadcrumb-item active">Top Navigation</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card card-danger">
+                            <div class="card-header">
+                                <h5 class="card-title">叫号通知</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>病号</th>
+                                        <th>姓名</th>
+                                        <th>就诊地点</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($arrs1 as $arr){ ?>
+                                    <tr>
+                                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
+                                        <td><?php echo $arr['patient_name'] ?></td>
+                                        <td><?php echo $arr['staff_office'] ?></td>
+                                    </tr>
+                                    <?php }?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div><!-- /.card -->
+                    </div>
+                    <!-- /.col-md-6 -->
+                    <div class="col-lg-6">
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h5 class="card-title">队列情况</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>病号</th>
+                                        <th>姓名</th>
+                                        <th>挂号时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($arrs2 as $arr){ ?>
+                                    <tr>
+                                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
+                                        <td><?php echo $arr['patient_name'] ?></td>
+                                        <td><?php echo date('Y-m-d H:i:s',$arr['register_time']) ?></td>
+                                    </tr>
+                                    <?php }?>
+                                    </tbody>
+                                </table>
+                                <p>仅显示前10位病人</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.col-md-6 -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+</body>
+</html>

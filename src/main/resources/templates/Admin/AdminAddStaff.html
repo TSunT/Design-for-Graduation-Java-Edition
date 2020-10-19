@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>管理员-添加员工</title>
+    <!-- For final-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <!-- For dep-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./View/libs/js/bs-custom-file-input.min.js"></script>
+    <script src="./View/libs/js/adminlte.min.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/libs/js/bs-custom-file-input.min.js"></script>
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+</head>
+<body class="sidebar-mini" style="height: auto;">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="?con=Admin" class="nav-link">首页</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
+        </ul>
+
+        <!-- SEARCH FORM -->
+        <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Messages Dropdown Menu -->
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                        class="fas fa-th-large"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
+            <span class="brand-text font-weight-light">Hospital Center</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <i class="fa fa-user-o fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
+                </div>
+                <div class="info">
+                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item has-treeview menu-open">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                管理员首页
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="?con=Admin&ac=addstaff" class="nav-link active">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>添加员工</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>注册用户</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Simple Link
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">注册用户</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="?con=Admin">Home</a></li>
+                            <li class="breadcrumb-item active">管理员首页</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card card-success">
+                            <div class="card-header">
+                                <h3 class="card-title">添加员工</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="form" name="myform" action="?con=Admin&ac=insertstaff" method="post">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="staff_id">工号</label>
+                                                <input type="text" class="form-control" id="staff_id" name="staff_id" placeholder="输入工号">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="staffname">姓名</label>
+                                                <input type="text" class="form-control" id="staffname" name="staff_name"  placeholder="输入用户姓名">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="mb-4">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>职称</label>
+                                                <select class="form-control" name="staff_title">
+                                                    <option value="其它" selected>其它</option>
+                                                    <option value="医士" >医士</option>
+                                                    <option value="医师" >医师</option>
+                                                    <option value="主治医师" >主治医师</option>
+                                                    <option value="副主任医师" >副主任医师</option>
+                                                    <option value="主任医师" >主任医师</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>薪水(每月)</label>
+                                                <input type="text" class="form-control" id="salary" name="staff_salary" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="mb-4">
+                                    <div class="row">
+                                        <!--左侧-->
+                                        <div class="col-sm-4">
+                                            <div class="form-check">
+                                                <label>任职于</label>
+                                                <select class="form-control" name="staff_dep">
+                                                            <option value="15" selected>其它</option>
+                                                            <option value="1">心内科</option>
+                                                            <option value="2">呼吸科</option>
+                                                            <option value="3">血液科</option>
+                                                            <option value="4">消化科</option>
+                                                            <option value="5">内分泌科</option>
+                                                            <option value="6">免疫科</option>
+                                                            <option value="7">眼科</option>
+                                                            <option value="8">耳鼻喉科</option>
+                                                            <option value="9">口腔科</option>
+                                                            <option value="10">皮肤科</option>
+                                                            <option value="11">外科</option>
+                                                            <option value="12">收费处</option>
+                                                            <option value="13">药物处</option>
+                                                            <option value="14">信息化处</option>
+                                                            <option value="15">排队公告牌</option>
+                                                        </select>
+                                            </div>
+                                        </div>
+                                        <!--中间侧-->
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>办公室</label>
+                                                <input type="text" class="form-control" name="staff_office" value="">
+                                            </div>
+                                        </div>
+                                        <!--右侧-->
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label>电话/手机</label>
+                                                <input type="text" class="form-control" name="staff_tel" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="mb-4">
+                                    <label>员工性别</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="staff_gender" value="男"  >
+                                                <label class="form-check-label" for="exampleCheck1">男</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="staff_gender" value="女"  >
+                                                <label class="form-check-label" for="exampleCheck2">女</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success" id="btn_sub" onclick="return check_input()">添加</button>
+                                    <button type="reset" class="btn btn-warning float-right">重填</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                    <div class="col-lg-4">
+                        <div class="card card-warning">
+                            <div class="card-header">
+                                <h3 class="card-title">注意事项</h3>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-text">1、员工信息只有加入员工表才可以注册用户</h6>
+                                <h6 class="card-text">2、录入员工信息时要注意工号是否正确，提交成功后无法修改</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+
+    <script type="text/javascript">
+        function check_input() {
+            if(myform.staff_id.value.length==0)
+            {
+                alert("输入工号不能为空！"); myform.staff_id.focus(); return false;
+            }
+            if(myform.staff_name.value.length==0)
+            {
+                alert("输入姓名不能为空！"); myform.staff_name.focus(); return false;
+            }
+            if(myform.staff_salary.value.length==0)
+            {
+                alert("输入薪水不能为空！"); myform.staff_salary.focus(); return false;
+            }
+            alert("确认输入工号是否正确,一旦提交则工号不可修改");
+        }
+    </script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>医生首页</title>
+    <!-- For final-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/libs/css/dataTables.bootstrap4.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" th:href="@{/libs/css/SourceSansPro.css}" >
+
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/libs/js/jquery.dataTables.js}"></script>
+    <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
+    <script th:src="@{/libs/js/adminlte.min.js}"></script>
+</head>
+<body class="sidebar-mini" style="height: auto;">
+<div class="wrapper">
+    <!-- Navbar -->
+    <div th:replace="~{/Doctor/common::topbar}"></div>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <div th:replace="~{/Doctor/common::asidebar}"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">医生首页</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="?con=Doctor">Home</a></li>
+                            <li class="breadcrumb-item active">就诊模块</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="mb-2 mt-4">汇总信息</h5>
+                        <div class="row">
+                            <div class="col-lg-3 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3><?=$processing_num?></h3>
+
+                                        <p>进行中</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-spinner"></i>
+                                    </div>
+                                    <a href="?con=Doctor&ac=showPatientList" class="small-box-footer">
+                                        详细信息 <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3><?=$completed_num?></h3>
+
+                                        <p>结束就诊</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-check"></i>
+                                    </div>
+                                    <a href="?con=Doctor&ac=showCompletedList" class="small-box-footer">
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3><?=$register_num?></h3>
+
+                                        <p>待诊</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small card -->
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3><sup style="font-size: 20px">%</sup></h3>
+
+                                        <p>检查结果</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </div>
+                                    <a href="#" class="small-box-footer">
+                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                        <!-- /.row -->
+
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <form>
+                            <div class="card-header">
+                                <h3 class="card-title">叫号</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                当前叫号：<?=$patient_id?><br>
+                                姓名：<?=$patient_name?>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+
+                            </div>
+                            <!-- /.card-footer -->
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Designed for Hospital and Coded by Tao Sun in <strong><a href="http://nuaa.edu.cn">Nanjing University of Aeronautics & Astronautics</a>.</strong>
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>管理员-员工管理</title>
+    <!-- For final-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <!-- For dep-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./View/libs/js/bs-custom-file-input.min.js"></script>
+    <script src="./View/libs/js/adminlte.min.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/libs/js/bs-custom-file-input.min.js"></script>
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+
+</head>
+<body class="sidebar-mini" style="height: auto;">
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="?con=Admin" class="nav-link">首页</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">病人管理中心</a>
+            </li>
+        </ul>
+
+        <!-- SEARCH FORM -->
+        <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <!-- Messages Dropdown Menu -->
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                        class="fas fa-th-large"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
+            <span class="brand-text font-weight-light">Hospital Center</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <i class="fa fa-user-o fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
+                </div>
+                <div class="info">
+                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                添加操作
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="?con=Admin&ac=addstaff" class="nav-link active">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>添加员工</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="?con=Admin&ac=adduser" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>添加用户</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                查询操作
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="?con=Admin&ac=seekstaff" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>查询员工</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="?con=Admin&ac=seekuser" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>查询用户</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Simple Link
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">详细员工信息</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="?con=Admin">Home</a></li>
+                            <li class="breadcrumb-item ">管理员首表</li>
+                            <li class="breadcrumb-item active">详细员工信息</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content-header -->
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">工号：<?php echo $arr['staff_id']?></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="form" action="?con=Admin&ac=updatestaff" method="post">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="staffname">姓名</label>
+                                        <input type="text" class="form-control" id="staffname" name="staff_name" value="<?=$arr['staff_name']?>">
+                                        <input type="hidden" id="staff_id" name="staff_id" value="<?=$arr['staff_id']?>">
+                                    </div>
+                                    <hr class="mb-4">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>职称</label>
+                                                    <select class="form-control" name="staff_title">
+                                                        <option value="其它" <?php if($arr['staff_title']=='其它') echo 'selected' ?>>其它</option>
+                                                        <option value="医士" <?php if($arr['staff_title']=='医士') echo 'selected' ?>>医士</option>
+                                                        <option value="医师" <?php if($arr['staff_title']=='医师') echo 'selected' ?>>医师</option>
+                                                        <option value="主治医师" <?php if($arr['staff_title']=='主治医师') echo 'selected' ?>>主治医师</option>
+                                                        <option value="副主任医师" <?php if($arr['staff_title']=='副主任医师') echo 'selected' ?>>副主任医师</option>
+                                                        <option value="主任医师" <?php if($arr['staff_title']=='主任医师') echo 'selected' ?>>主任医师</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>薪水(每月)</label>
+                                                <input type="text" class="form-control" id="salary" name="staff_salary" value="<?=$arr['staff_salary']?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="mb-4">
+                                    <div class="form-group">
+                                        <label>职务部门</label>
+                                        <div class="row">
+                                            <!--左侧--!>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="14" <?php if($arr['staff_dep']==14) echo 'checked' ?>>
+                                                        <label class="form-check-label">管理员</label>
+                                                    </div>
+
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="12" <?php if($arr['staff_dep']==12) echo 'checked' ?>>
+                                                        <label class="form-check-label">收费处</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="2" <?php if($arr['staff_dep']==2) echo 'checked' ?>>
+                                                        <label class="form-check-label">呼吸科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="4" <?php if($arr['staff_dep']==4) echo 'checked' ?>>
+                                                        <label class="form-check-label">消化科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="6" <?php if($arr['staff_dep']==6) echo 'checked' ?>>
+                                                        <label class="form-check-label">免疫科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="8" <?php if($arr['staff_dep']==8) echo 'checked' ?>>
+                                                        <label class="form-check-label">耳鼻喉科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="10" <?php if($arr['staff_dep']==10) echo 'checked' ?>>
+                                                        <label class="form-check-label">皮肤科</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--右侧--!>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="13" <?php if($arr['staff_dep']==13) echo 'checked' ?>>
+                                                        <label class="form-check-label">药品管理处</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="1" <?php if($arr['staff_dep']==1) echo 'checked' ?>>
+                                                        <label class="form-check-label">心内科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="3" <?php if($arr['staff_dep']==3) echo 'checked' ?>>
+                                                        <label class="form-check-label">血液科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="5" <?php if($arr['staff_dep']==5) echo 'checked' ?>>
+                                                        <label class="form-check-label">内分泌科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="7" <?php if($arr['staff_dep']==7) echo 'checked' ?>>
+                                                        <label class="form-check-label">眼科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="9" <?php if($arr['staff_dep']==9) echo 'checked' ?>>
+                                                        <label class="form-check-label">口腔科医生</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio"  name="staff_dep" value="11" <?php if($arr['staff_dep']==11) echo 'checked' ?>>
+                                                        <label class="form-check-label">外科医生</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>办公室</label>
+                                                    <input type="text" class="form-control" name="staff_office" value="<?=$arr['staff_office']?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>电话/手机</label>
+                                                    <input type="text" class="form-control" name="staff_tel" value="<?=$arr['staff_tel']?>">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr class="mb-4">
+                                    <label>员工性别</label>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="staff_gender" value="男" <?php if($arr['staff_gender']=='男') echo 'checked' ?> >
+                                                <label class="form-check-label" for="exampleCheck1">男</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="staff_gender" value="女" <?php if($arr['staff_gender']=='女') echo 'checked' ?> >
+                                                <label class="form-check-label" for="exampleCheck2">女</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">修改</button>
+                                    <button type="button" class="btn btn-danger float-right" id="delete">删除该账户</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- /.col-lg-8 -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript" >
+    var delbtn=document.getElementById('delete');
+    var id=document.getElementById('staff_id')
+    delbtn.onclick=function () {
+        //询问是否要删除
+        if(window.confirm('您真的要删除'+id.value+'号员工吗？'))
+        {
+            //跳转地址
+            //找控制器？表示当前文件（病人控制器）
+            //ac(action)表示要操作的动作
+            location.href="?con=Admin&ac=delete&id="+id.value;
+        }
+    }
+</script>
+</body>
+</html>

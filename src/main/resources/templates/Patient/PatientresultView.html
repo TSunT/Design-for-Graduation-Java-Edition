@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询结果页</title>
+    <style type="text/css">
+        .title{
+            width: 1800px;
+            margin-left: 100px;
+            padding: 0px;
+            align-content: center;
+        }
+        .table_div{
+            width: 1800px;
+            margin-top: 40px;/*外框离顶的距离*/
+            margin-left: 200px;/*外框离左的距离*/
+        }
+        .table th{
+            background-color: #3560C4;
+            width: 200px;
+            height: 20px;
+            border:0px;
+            text-align: center;
+            font-size: 20px;
+            color: aliceblue;/*字体颜色*/
+        }
+        .table td{
+            width: 200px;
+            height: 10px;
+            border-right:0px;
+            border-left: 0px;
+            border-top: 0px;
+            border-bottom: 1px solid #908888;
+            font-size: 15px;
+            text-align: center;
+        }
+        .table{
+            border-collapse:collapse;
+            border:1px solid #0F0;
+            height: 30px;
+        }
+        .heightlight{
+            background-color:#56BBE3;
+        }
+        .pagelist a{
+            padding: 3px 8px;
+            text-decoration: none;
+            margin: 0px 3px;
+            border: 1px solid #908888;
+        }
+        .pagelist a:hover {
+            color: red;
+            background-color: #56BBE3;
+        }
+        .pagelist span{
+            padding: 3px 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="title"><h2 align="center">病人信息查询结果</h2><br>
+        操作选项：<a href="?con=Patient&ac=add">病人登记</a>|
+        <a href="?con=Patient&ac=seek">查询病人</a>|
+        <a href="?con=Patient&ac=dailyadd">查看当日登记病人</a>|
+        <a href="?con=Patient&ac=index">返回病人管理中心</a>|
+        <hr>
+    </div>
+    <div class="table_div" id="tb">
+        <table width="1400" border="1" cellpadding="30px" cellspacing="0px" class="table" >
+            <tbody>
+            <tr>
+                <th>病号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>手机</th>
+                <th>过敏信息</th>
+                <th>操作项</th>
+            </tr>
+            <?php
+                foreach ($arrs as $arr){
+            ?>
+            <tr>
+                <td><?php echo $arr['patient_id'] ?></td>
+                <td><?php echo $arr['patient_name'] ?></td>
+                <td><?php echo $arr['patient_birthyear'] ?></td>
+                <td><?php echo $arr['patient_gender'] ?></td>
+                <td><?php echo $arr['patient_tel'] ?></td>
+                <td><?php echo $arr['allergy'] ?></td>
+                <td>
+                    <a href="?con=Patient&ac=edit&id=<?=$arr['patient_id']?>">修改</a>|
+                    <a href="#" onclick="confrimDel(<?=$arr['patient_id']?>)">删除</a>
+                </td>
+            </tr>
+            <?php }?>
+            </tbody>
+        </table>
+    </div>
+        <script>
+            //1、获取tbody中的所有行
+            var trs=document.querySelector('tbody').querySelectorAll('tr');
+            //2、利用循环注册事件
+            for(var i=0;i<trs.length;i++){
+                //绑定鼠标经过事件
+                trs[i].onmouseover=function(){
+                    //用css类classname来修改背景色
+                    this.className='heightlight';
+                }
+                //绑定鼠标移开事件
+                trs[i].onmouseout=function(){
+                    this.className='';
+                }
+            }
+            function confrimDel(id) {
+                //询问是否要删除
+                if(window.confirm('您真的要删除'+id+'号病人吗？'))
+                {
+                    //跳转地址
+                    //找控制器？表示当前文件（病人控制器）
+                    //ac(action)表示要操作的动作
+                    location.href="?con=Patient&ac=del&id="+id;
+                }
+            }
+        </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>输入挂号信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS for final-->
+    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <!-- Bootstrap CSS for dev-->
+    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+
+    <script src="./View/libs/jquery/jquery.js"></script>
+    <script src="./View/libs/js/popper.js" ></script>
+    <script src="./View/libs/js/bootstrap.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.js"></script>
+    <script src="../../static/libs/js/popper.js" ></script>
+    <script src="../../static/libs/js/bootstrap.js"></script>
+    <!--边栏样式-->
+    <style>
+        body {
+            font-size: .875rem;
+        }
+
+        .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+        }
+
+        /*
+         * Sidebar
+         */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        @supports ((position: -webkit-sticky) or (position: sticky)) {
+            .sidebar-sticky {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #999;
+        }
+
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+
+        /*
+         * Content
+         */
+
+        [role="main"] {
+            padding-top: 133px; /* Space for fixed navbar */
+        }
+
+        @media (min-width: 768px) {
+            [role="main"] {
+                padding-top: 48px; /* Space for fixed navbar */
+            }
+        }
+
+        /*
+         * Navbar
+         */
+
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+
+        .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+        }
+
+        .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+        }
+    </style>
+</head>
+<body>
+<div class="title">
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">病人信息管理中心</a>
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span data-feather="home"></span>
+                                病人总表 <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?con=Patient&ac=add">
+                                <span data-feather="file"></span>
+                                病人登记
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?con=Patient&ac=seek">
+                                <span data-feather="shopping-cart"></span>
+                                查询病人
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?con=Patient&ac=dailyadd">
+                                <span data-feather="users"></span>
+                                查看当日登记病人
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="bar-chart-2"></span>
+                                Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="layers"></span>
+                                Integrations
+                            </a>
+                        </li>
+                    </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>挂号处理</span>
+                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="?con=Patient&ac=register">
+                                <span data-feather="file-text"></span>
+                                挂号
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
+                                <span data-feather="file-text"></span>
+                                查看挂号信息
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Social engagement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file-text"></span>
+                                Year-end sale
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">病号信息</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <span data-feather="calendar"></span>
+                            打印
+                        </button>
+                    </div>
+                </div>
+                <form name="register" class="from_query" action="?con=Patient&ac=insertregister" method="post">
+                <div class="query1">
+                        <p>
+                            病人病号：<input class="text" type="text" name="patient_id" value="<?=$_GET['id']?>" size="40" readonly>
+                        </p>
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">填写科室</h1>
+                    </div>
+                    <div class="query2">
+                            <p>
+                                <label>选择科室</label>
+                                <select name="dep_id">
+                                    <option value="1">心内科</option>
+                                    <option value="2">呼吸科</option>
+                                    <option value="3">血液科</option>
+                                    <option value="4">消化科</option>
+                                    <option value="5">内分泌科</option>
+                                    <option value="6">免疫科</option>
+                                    <option value="7">眼科</option>
+                                    <option value="8">耳鼻喉科</option>
+                                    <option value="9">口腔科</option>
+                                    <option value="10">皮肤科</option>
+                                    <option value="11">外科</option>
+                                </select>
+                                <br>
+                            </p>
+                            <p>价格：<font color="red">10</font>元</p><br><br>
+                        <input type="submit" class="btn btn-success float-right" value="缴费成功"><br>
+                    </div>
+                </div>
+                </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</body>
+</html>

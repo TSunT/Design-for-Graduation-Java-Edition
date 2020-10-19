@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8">
+    <title>查看支付信息</title>
+    <!-- Bootstrap CSS for final-->
+    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <!-- Bootstrap CSS for dev-->
+    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">病人信息中心</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="?con=Patient">首页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template"><br><br><br>
+
+        <h1><?=$arrs2['patient_id']?>号病人详细药品收费</h1>
+
+            <div class="row">
+                <div class="col-md-10 order-md-2 mb-4">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted">处方单</span>
+                    </h4>
+                    <form action="?con=Patient&ac=completePayment" method="post">
+                        <ul class="list-group mb-3">
+                            <?php foreach ($arrs1 as $arr){?>
+                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                    <div>
+                                        <h6 class="my-0"><?=$arr['medicine_name']?></h6>
+                                        <small class="text-muted">X<?=$arr['number']?></small>
+                                    </div>
+                                    <span class="text-muted"><?=$arr['number']*$arr['cost']?>¥</span>
+                                </li>
+                            <?php }?>
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <div class="text-success">
+                                    <h6 class="my-0">就诊时间</h6>
+                                </div>
+                                <span class="text-success"><?=date('Y-m-d H:i:s',$arrs2['time'])?></span>
+                                <input type="hidden" name="patient_id" value="<?=$arrs2['patient_id']?>">
+                                <input type="hidden" name="creat_time" value="<?=$arrs2['time']?>">
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>总价</span>
+                                <strong><?=$arrs2['total_cost']?>¥</strong>
+                            </li>
+                        </ul>
+                            <input type="submit" class="btn btn-success float-right" value="缴费成功">
+                    </form>
+
+                </div>
+            </div>
+    </div>
+
+</main>
+
+
+</body>
+</html>

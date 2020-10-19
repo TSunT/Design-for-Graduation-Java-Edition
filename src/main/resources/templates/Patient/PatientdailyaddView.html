@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS for final-->
+    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <!-- Bootstrap CSS for dev-->
+    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <title>搜索病人结果</title>
+
+    <script src="./View/libs/jquery/jquery.js"></script>
+    <script src="./View/libs/js/popper.js" ></script>
+    <script src="./View/libs/js/bootstrap.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.js"></script>
+    <script src="../../static/libs/js/popper.js" ></script>
+    <script src="../../static/libs/js/bootstrap.js"></script>
+    <!--边栏样式-->
+    <style>
+        body {
+            font-size: .875rem;
+        }
+
+        .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+        }
+
+        /*
+         * Sidebar
+         */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100; /* Behind the navbar */
+            padding: 48px 0 0; /* Height of navbar */
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        }
+
+        @supports ((position: -webkit-sticky) or (position: sticky)) {
+            .sidebar-sticky {
+                position: -webkit-sticky;
+                position: sticky;
+            }
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #999;
+        }
+
+        .sidebar .nav-link.active {
+            color: #007bff;
+        }
+
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+
+        .sidebar-heading {
+            font-size: .75rem;
+            text-transform: uppercase;
+        }
+
+        /*
+         * Content
+         */
+
+        [role="main"] {
+            padding-top: 133px; /* Space for fixed navbar */
+        }
+
+        @media (min-width: 768px) {
+            [role="main"] {
+                padding-top: 48px; /* Space for fixed navbar */
+            }
+        }
+
+        /*
+         * Navbar
+         */
+
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+
+        .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+        }
+
+        .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">病人信息管理中心</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="#">Sign out</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient">
+                            <span data-feather="home"></span>
+                            病人总表 <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=add">
+                            <span data-feather="file"></span>
+                            病人登记
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=seek">
+                            <span data-feather="shopping-cart"></span>
+                            查询病人
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?con=Patient&ac=dailyadd">
+                            <span data-feather="users"></span>
+                            查看当日登记病人
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            Integrations
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Saved reports</span>
+                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Current month
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Last quarter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Social engagement
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Year-end sale
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">今日登记</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <span data-feather="calendar"></span>
+                        打印
+                    </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm" id="table" style="text-align: center" >
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">病号</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">操作项</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($arrs as $arr){?>
+                    <tr>
+                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
+                        <td><?php echo $arr['patient_name'] ?></td>
+                        <td>
+                            <a href="?con=Patient&ac=edit&id=<?=$arr['patient_id']?>">修改</a>|
+                            <a href="#" onclick="confrimDel(<?=$arr['patient_id']?>)">删除</a>
+                        </td>
+                    </tr>
+                    <?php }?>
+                    <tr>
+                        <td class="pagelist" colspan="7">
+                            <br>共有<font id="rec" color="red"></font>个病人
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+    //显示行数
+    var reds=document.getElementById("table");
+    var put=document.getElementById("rec");
+    put.innerText=reds.rows.length-2;
+
+    function confrimDel(id) {
+        //询问是否要删除
+        if(window.confirm('您真的要删除'+id+'号病人吗？'))
+        {
+            //跳转地址
+            //找控制器？表示当前文件（病人控制器）
+            //ac(action)表示要操作的动作
+            location.href="?con=Patient&ac=delete&id="+id;
+        }
+    }
+</script>
+</div>
+
+</body>
+</html>

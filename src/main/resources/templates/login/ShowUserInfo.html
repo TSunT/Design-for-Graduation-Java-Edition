@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache,no-store, must-revalidate">
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 420px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-label-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-label-group > input,
+        .form-label-group > label {
+            height: 3.125rem;
+            padding: .75rem;
+        }
+
+        .form-label-group > label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            margin-bottom: 0; /* Override default `<label>` margin */
+            line-height: 1.5;
+            color: #495057;
+            pointer-events: none;
+            cursor: text; /* Match the input under the label */
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            transition: all .1s ease-in-out;
+        }
+
+        .form-label-group input::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input:-ms-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::-ms-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::-moz-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input:not(:placeholder-shown) {
+            padding-top: 1.25rem;
+            padding-bottom: .25rem;
+        }
+
+        .form-label-group input:not(:placeholder-shown) ~ label {
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+
+    <title>个人信息</title>
+    <meta name="theme-color" content="#563d7c">
+</head>
+<body>
+<div class="form-signin">
+    <div class="text-center mb-4">
+        <i class="fa fa-hospital-o fa-5x" aria-hidden="true" style="color: #a71d2a; padding-bottom: 10px"></i>
+        <h1 class="h3 mb-3 font-weight-normal">员工登陆信息</h1>
+        <a onclick="window.location.href='?con=Login&ac=goback'" style="color: #00b44e">返回</a>
+    </div><br><br>
+    <div class="form-group">
+        <label style="font-size: x-large">工号：<code style="color: #00b44e"><span th:text="${session.user.getId()}"></span></code></label>
+    </div><br>
+    <div class="form-group">
+        <label style="font-size: x-large">姓名：<code style="color: #268fff"><span sec:authentication="principal.username"></span></code></label>
+    </div><br>
+    <div class="form-group">
+        <label style="font-size: x-large">职务：<code style="color: #268fff"><span sec:authentication="principal.authorities"></span></code></label>
+    </div>
+    <br><br>
+    <div class="form-group">
+        <button class="btn btn-primary float-right" type="button" onclick="window.location.href='?con=Login&ac=changepwd'">修改密码</button>
+        <a class="btn badge-danger float-left" th:href="@{/logout}" >退出账号</a>
+    </div><br><br>
+    <div class="form-group">
+        <p class="mt-6 mb-4 text-muted text-center" style="margin-top: 30px">Designed for Hospital and Coded by SunTao in Nanjing University of Aeronautics & Astronautics.</p>
+    </div>
+
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="../../static/libs/jquery/jquery.js"></script>
+<script src="../../static/libs/js/popper.js" ></script>
+<script src="../../static/libs/js/bootstrap.js"></script>
+
+</body>
+</html>

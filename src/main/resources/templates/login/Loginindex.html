@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache,no-store, must-revalidate">
+    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="expires" CONTENT="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 420px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-label-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-label-group > input,
+        .form-label-group > label {
+            height: 3.125rem;
+            padding: .75rem;
+        }
+
+        .form-label-group > label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            margin-bottom: 0; /* Override default `<label>` margin */
+            line-height: 1.5;
+            color: #495057;
+            pointer-events: none;
+            cursor: text; /* Match the input under the label */
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            transition: all .1s ease-in-out;
+        }
+
+        .form-label-group input::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input:-ms-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::-ms-input-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::-moz-placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input::placeholder {
+            color: transparent;
+        }
+
+        .form-label-group input:not(:placeholder-shown) {
+            padding-top: 1.25rem;
+            padding-bottom: .25rem;
+        }
+
+        .form-label-group input:not(:placeholder-shown) ~ label {
+            padding-top: .25rem;
+            padding-bottom: .25rem;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+
+    <title>Hello, world!</title>
+    <meta name="theme-color" content="#563d7c">
+</head>
+<body>
+<form class="form-signin" method="post">
+    <div class="text-center mb-4">
+        <i class="fa fa-hospital-o fa-5x" aria-hidden="true" style="color: #a71d2a; padding-bottom: 10px"></i>
+        <h1 class="h3 mb-3 font-weight-normal">门诊信息管理系统</h1>
+        <p><code>Hospital Information System</code></p>
+    </div>
+
+    <div class="form-label-group">
+        <input type="text" id="inputstaffid" class="form-control" name="username" placeholder="工号" required autofocus>
+        <label for="inputstaffid">工号</label>
+    </div>
+
+    <div class="form-label-group">
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
+        <label for="inputPassword">密码</label>
+    </div>
+
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" name="remember" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
+    <p class="mt-5 mb-3 text-muted text-center">Designed for Hospital and Coded by SunTao in Nanjing University of Aeronautics & Astronautics.</p>
+
+</form>
+<div style="position: center;" sec:authorize="isAuthenticated()">
+    <a class="item">
+        <i class="address card icon"></i>
+        用户名：<span sec:authentication="principal.username"></span>
+        角色：<span sec:authentication="principal.authorities"></span>
+    </a>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="../../static/libs/jquery/jquery.js"></script>
+<script src="../../static/libs/js/popper.js" ></script>
+<script src="../../static/libs/js/bootstrap.js"></script>
+
+
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

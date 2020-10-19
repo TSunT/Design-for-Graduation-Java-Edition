@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="./View/libs/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <!-- For dep-->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../static/libs/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="./View/libs/js/jquery.dataTables.js"></script>
+    <script src="./View/libs/js/dataTables.bootstrap4.js"></script>
+    <script src="./View/libs/js/adminlte.min.js"></script>
+
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <script src="../../static/libs/js/jquery.dataTables.js"></script>
+    <script src="../../static/libs/js/dataTables.bootstrap4.js"></script>
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+</head>
+<body>
+<div class="table-responsive">
+    <table class="table table-striped jambo_table bulk_action" id="todolist">
+        <thead>
+
+        </thead>
+
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<input id="msg" type="text" style="width: 80%"> <input id="btn" type="button" value="留言" onclick="add()">
+
+<script type="text/javascript">
+
+    function add(){
+
+        var Msg = document.getElementById("msg").value;
+
+        var trHTML = '<tr>'+'<th width="5%">'+
+            '<td>'+Msg+
+            '</td>'+'/<th>'+
+            '<th  width="90%">'+
+            '<td>'+'<button class="btn btn-warning btn-xs" id="check">X</button>'+
+            '</td>'+'/<th>'
+
+        '</tr>'
+
+        $("#todolist").append(trHTML);//在table最后面添加一行
+
+    }
+
+    //监听是否选中某行，该监听是持续的
+
+    $('#todolist tbody').on( 'click', '#check', function () {
+
+        //获取行
+        var row = $("table#todolist tr").index($(this).closest("tr"));
+        //获取某列（从0列开始计数）的值
+        var id = $("table#todolist").find("tr").eq(row).find("td").eq(0).text();
+
+
+        $(this).parent().parent().remove();
+
+        var updateId=id;
+
+
+    } );
+
+
+</script>
+
+</body>
+</html>

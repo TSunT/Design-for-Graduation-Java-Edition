@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>修改密码页</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="./View/libs/css/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="../../static/libs/css/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+
+    <!-- jQuery -->
+    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="./View/libs/js/adminlte.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="../../static/libs/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../../static/libs/js/adminlte.min.js"></script>
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <b>修改</b>密码
+    </div>
+
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">工号为：<?=$_SESSION['staff_id']?></p>
+
+            <form action="?con=Login&ac=updatepwd" name="myform" method="post">
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" name="oldpwd" placeholder="Old Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" name="newpwd" placeholder="New Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" name="retypenewpwd" placeholder="Retype new password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <p>请记牢密码哦！</p>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block" onclick="check()">提交</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+            <a href="javascript:window.history.back()" class="text-center float-left">放弃修改</a>
+        </div>
+        <!-- /.form-box -->
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+<script type="text/javascript">
+    function check() {
+        if(myform.newpwd.value!=myform.retypenewpwd.value){
+            alert("两次新密码输入不一致！");myform.newpwd.focus(); return false;
+        }
+    }
+</script>
+
+</body>
+</html>
