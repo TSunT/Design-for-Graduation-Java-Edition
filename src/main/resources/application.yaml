@@ -32,6 +32,12 @@ spring:
 mybatis:
   type-aliases-package: cn.edu.nuaa.myclinic.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 
 server:
   servlet:
