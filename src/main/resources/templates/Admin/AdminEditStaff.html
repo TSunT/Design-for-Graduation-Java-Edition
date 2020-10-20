@@ -1,193 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>管理员-员工管理</title>
-    <!-- For final-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="./View/libs/css/all.min.css">
-    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/libs/css/dataTables.bootstrap4.css}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
     <!-- Google Font: Source Sans Pro -->
-    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/libs/css/SourceSansPro.css}">
 
-    <!-- For dep-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
-    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
-
-    <script src="./View/libs/jquery/jquery.min.js"></script>
-    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="./View/libs/js/bs-custom-file-input.min.js"></script>
-    <script src="./View/libs/js/adminlte.min.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.min.js"></script>
-    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/libs/js/bs-custom-file-input.min.js"></script>
-    <script src="../../static/libs/js/adminlte.min.js"></script>
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/libs/js/jquery.dataTables.js}"></script>
+    <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
+    <script th:src="@{/libs/js/adminlte.min.js}"></script>
 
 </head>
 <body class="sidebar-mini" style="height: auto;">
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="?con=Admin" class="nav-link">首页</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">病人管理中心</a>
-            </li>
-        </ul>
-
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                        class="fas fa-th-large"></i></a>
-            </li>
-        </ul>
-    </nav>
+    <div th:insert="~{/Admin/common::topbar}"></div>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="#" class="brand-link">
-            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
-            <span class="brand-text font-weight-light">Hospital Center</span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <i class="fa fa-user-o fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
-                </div>
-                <div class="info">
-                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
-                </div>
-            </div>
-
-            <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                添加操作
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=addstaff" class="nav-link active">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>添加员工</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=adduser" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>添加用户</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                查询操作
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=seekstaff" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>查询员工</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=seekuser" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>查询用户</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
-        </div>
-        <!-- /.sidebar -->
-    </aside>
+    <div th:insert="~{/Admin/common::asidebar}"></div>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -216,36 +58,36 @@
                     <div class="col-10">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">工号：<?php echo $arr['staff_id']?></h3>
+                                <h3 class="card-title">工号：<span th:text="${staffInfo.getStaffid()}"></span></h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" action="?con=Admin&ac=updatestaff" method="post">
+                            <form role="form" th:action="@{/toAdmin/updateStaff}" method="post">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="staffname">姓名</label>
-                                        <input type="text" class="form-control" id="staffname" name="staff_name" value="<?=$arr['staff_name']?>">
-                                        <input type="hidden" id="staff_id" name="staff_id" value="<?=$arr['staff_id']?>">
+                                        <input type="text" class="form-control" id="staffname" name="staff_name" th:value="${staffInfo.getStaffname()}">
+                                        <input type="hidden" id="staff_id" name="staffid" th:value="${staffInfo.getStaffid()}">
                                     </div>
                                     <hr class="mb-4">
                                     <div class="row">
                                         <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>职称</label>
-                                                    <select class="form-control" name="staff_title">
-                                                        <option value="其它" <?php if($arr['staff_title']=='其它') echo 'selected' ?>>其它</option>
-                                                        <option value="医士" <?php if($arr['staff_title']=='医士') echo 'selected' ?>>医士</option>
-                                                        <option value="医师" <?php if($arr['staff_title']=='医师') echo 'selected' ?>>医师</option>
-                                                        <option value="主治医师" <?php if($arr['staff_title']=='主治医师') echo 'selected' ?>>主治医师</option>
-                                                        <option value="副主任医师" <?php if($arr['staff_title']=='副主任医师') echo 'selected' ?>>副主任医师</option>
-                                                        <option value="主任医师" <?php if($arr['staff_title']=='主任医师') echo 'selected' ?>>主任医师</option>
+                                                    <select class="form-control" name="title">
+                                                        <option value="其它" th:selected="${staffInfo.getTitle()=='其它'}">其它</option>
+                                                        <option value="医士" th:selected="${staffInfo.getTitle()=='医士'}">医士</option>
+                                                        <option value="医师" th:selected="${staffInfo.getTitle()=='医师'}">医师</option>
+                                                        <option value="主治医师" th:selected="${staffInfo.getTitle()=='主治医师'}">主治医师</option>
+                                                        <option value="副主任医师" th:selected="${staffInfo.getTitle()=='副主治医师'}">副主任医师</option>
+                                                        <option value="主任医师" th:selected="${staffInfo.getTitle()=='主任医师'}">主任医师</option>
                                                     </select>
                                                 </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>薪水(每月)</label>
-                                                <input type="text" class="form-control" id="salary" name="staff_salary" value="<?=$arr['staff_salary']?>">
+                                                <input type="text" class="form-control" id="salary" name="salary" th:value="${staffInfo.getSalary()}">
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +95,6 @@
                                     <div class="form-group">
                                         <label>职务部门</label>
                                         <div class="row">
-                                            <!--左侧--!>
                                             <div class="col-sm-3">
                                                 <div class="form-group">
 
@@ -288,7 +129,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--右侧--!>
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <div class="form-check">

@@ -115,19 +115,8 @@
                                         <th>操作项</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php foreach ($arrs as $arr){ ?>
-                                            <tr>
-                                                <th scope="row"><?php echo $arr['staff_id'] ?></th>
-                                                <td><?php echo $arr['staff_name'] ?></td>
-                                                <td><?php echo $arr['staff_title'] ?></td>
-                                                <td><?php echo $arr['staff_gender'] ?></td>
-                                                <td><?php echo $arr['staff_tel'] ?></td>
-                                                <td>
-                                                    <a href="?con=Admin&ac=editstaff&id=<?=$arr['staff_id']?>">修改</a>
-                                                </td>
-                                            </tr>
-                                        <?php }?>
+                                    <tbody id="staffListbody">
+
                                     </tbody>
                                     <tfoot>
                                     <tr>
@@ -140,6 +129,11 @@
                                     </tr>
                                     </tfoot>
                                 </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                <ul id="navigatebarstaff" class="pagination pagination-sm m-0 float-right">
+
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -175,6 +169,7 @@
 <script type="text/javascript">
     $(function () {
         loadUserList(1,4);
+        loadStaffList(1,4);
     });
     function loadUserList(page,size){
         $.get("showUserList",{page:page,size:size},function (result){
@@ -223,6 +218,55 @@
             }
             lis +=li;//添加向后一页
             $("#navigatebar").html(lis);
+
+        },"json");
+    }
+    function loadStaffList(page,size){
+        $.get("showStaffList",{page:page,size:size},function (result){
+            //显示列表
+            var s_list = "";
+            var contextPath=$("#contextPath").val();
+            contextPath+='/toAdmin/toUpdateStaff?id=';
+            for (var i = 0;i<result.pageInfo.size;i++){
+                var staff = result.pageInfo.list[i];
+                if(staff.staffgender){
+                    var staffgender='女';
+                }else{
+                    var staffgender='男';
+                }
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+staff.staffid+'</th>\n' +
+                    '                                    <td>'+staff.staffname+'</td>\n' +
+                    '                                    <td>'+staff.title+'</td>\n' +
+                    '                                    <td>'+staffgender+'</td>\n' +
+                    '                                    <td>'+staff.stafftel+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <a href="'+contextPath+staff.staffid+'">修改</a>\n' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                s_list += tr;
+            }
+            $("#staffListbody").html(s_list);
+            //显示导航栏
+            var lis ='';
+            if (result.pageInfo.hasPreviousPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">«</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadStaffList('+result.pageInfo.prePage+','+size+')">«</a></li>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.pageInfo.navigateLastPage;i++){
+                var num = result.pageInfo.navigatepageNums[i];
+                var li = '<li class="page-item"><a class="page-link" href="javascript:loadStaffList('+num+','+size+')">'+num+'</a></li>';
+                lis +=li;
+            }
+            if (result.pageInfo.hasNextPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">»</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadStaffList('+result.pageInfo.nextPage+','+size+')">»</a></li>'
+            }
+            lis +=li;//添加向后一页
+            $("#navigatebarstaff").html(lis);
 
         },"json");
     }

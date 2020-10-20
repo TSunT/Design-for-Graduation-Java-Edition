@@ -2,6 +2,7 @@ package cn.edu.nuaa.myclinic.mapper;
 
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
+import cn.edu.nuaa.myclinic.pojo.Staff;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -36,4 +37,31 @@ public interface AdminMapper {
      * @return
      */
     public UserNormal findUserById(Integer id);
+
+    /**
+     * 查询所有员工
+     * @return
+     */
+    public List<Staff> findAllStaff();
+
+    /**
+     * 修改员工
+     * @param staff
+     * @return
+     */
+    public Integer updateStaff(Staff staff);
+
+    /**
+     * 添加员工
+     * @param staff
+     * @return
+     */
+    public Integer insertStaff(Staff staff);
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    public Staff findStaffById(int id);
 }

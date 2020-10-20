@@ -13,4 +13,10 @@
     <select id="findUserById" parameterType="int" resultType="UserNormal">
         select * from user where id = #{id};
     </select>
+    <select id="findAllStaff" resultType="Staff">
+        select * from staff
+    </select>
+    <select id="findStaffById" parameterType="int" resultType="Staff">
+        select * from staff where staffid = #{id}
+    </select>
 </mapper>

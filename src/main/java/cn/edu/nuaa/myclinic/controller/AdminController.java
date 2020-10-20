@@ -1,5 +1,6 @@
 package cn.edu.nuaa.myclinic.controller;
 
+import cn.edu.nuaa.myclinic.pojo.Staff;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import cn.edu.nuaa.myclinic.service.AdminService;
@@ -49,6 +50,29 @@ public class AdminController {
     @ResponseBody
     public String updateUser(UserNormal userNormal){
         System.out.println(userNormal);
-        return userNormal.toString();
+        return userNormal.toString();               //待完善
+    }
+    @ResponseBody
+    @RequestMapping(value = "/showStaffList",produces = { "application/json;charset=UTF-8"})
+    public Map<String,Object> showStaffList(@RequestParam(name = "page",defaultValue = "1") int page,
+                                            @RequestParam(name="size",defaultValue = "5") int size){
+        Map<String ,Object> resultStaffListMap = new HashMap<>();
+        resultStaffListMap.put("pageInfo",adminService.findAllStaff(page,size));
+        return resultStaffListMap;
+    }
+    @RequestMapping("/toUpdateStaff")
+    public String toUpdateStaff(@RequestParam(name="id",required = true) int id,Model model){
+        Staff staff = adminService.findStaffById(id);
+        if (staff!=null){
+            model.addAttribute("staffInfo", staff);
+            return "Admin/AdminEditStaff";
+        }else {
+            return "Admin/Adminindex";
+        }
+    }
+    @RequestMapping("/updateStaff")
+    @ResponseBody
+    public String updateStaff(Staff staff){
+        return staff.toString();                //待完善
     }
 }
