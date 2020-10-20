@@ -1,193 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>管理员-修改用户</title>
-    <!-- For final-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="./View/libs/css/all.min.css">
-    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/libs/css/dataTables.bootstrap4.css}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
     <!-- Google Font: Source Sans Pro -->
-    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/libs/css/SourceSansPro.css}">
 
-    <!-- For dep-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
-    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
-
-    <script src="./View/libs/jquery/jquery.min.js"></script>
-    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="./View/libs/js/bs-custom-file-input.min.js"></script>
-    <script src="./View/libs/js/adminlte.min.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.min.js"></script>
-    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/libs/js/bs-custom-file-input.min.js"></script>
-    <script src="../../static/libs/js/adminlte.min.js"></script>
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/libs/js/jquery.dataTables.js}"></script>
+    <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
+    <script th:src="@{/libs/js/adminlte.min.js}"></script>
 
 </head>
 <body class="sidebar-mini" style="height: auto;">
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="?con=Admin" class="nav-link">首页</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">病人管理中心</a>
-            </li>
-        </ul>
-
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">15 Notifications</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                        class="fas fa-th-large"></i></a>
-            </li>
-        </ul>
-    </nav>
+    <div th:insert="~{/Admin/common::topbar}"></div>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="#" class="brand-link">
-            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
-            <span class="brand-text font-weight-light">Hospital Center</span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <i class="fa fa-user-o fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
-                </div>
-                <div class="info">
-                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
-                </div>
-            </div>
-
-            <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview menu-open">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                添加操作
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=addstaff" class="nav-link active">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>添加员工</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=adduser" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>添加用户</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                查询操作
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=seekstaff" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>查询员工</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="?con=Admin&ac=seekuser" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>查询用户</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
-        </div>
-        <!-- /.sidebar -->
-    </aside>
+    <div th:insert="~{/Admin/common::asidebar}"></div>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -215,94 +57,22 @@
                     <div class="col-8">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">工号：<?php echo $arr['staff_id']?></h3>
+                                <h3 class="card-title">工号：<span th:text="${userInfo.id}"></span> </h3>
                             </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
-                            <form role="form" action="?con=Admin&ac=updateuser" method="post">
+                            <form role="form" th:action="@{/toAdmin/updateUser}" method="post">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="username">姓名</label>
-                                            <input type="text" class="form-control" id="username" name="username" value="<?=$arr['username']?>"  placeholder="Name">
-                                            <input type="hidden" id="staff_id" name="staff_id" value="<?=$arr['staff_id']?>">
+                                            <input type="text" class="form-control" id="username" name="username" th:value="${userInfo.username}"  placeholder="Name">
+                                            <input type="hidden" id="user_id" name="id" th:value="${userInfo.id}">
                                         </div>
                                         <hr class="mb-4">
                                         <div class="form-group">
                                             <label>职务</label>
                                             <div class="row">
-                                                <!--左侧--!>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="14" <?php if($arr['role']==14) echo 'checked' ?>>
-                                                            <label class="form-check-label">管理员</label>
-                                                        </div>
 
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="12" <?php if($arr['role']==12) echo 'checked' ?>>
-                                                            <label class="form-check-label">收费处</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="2" <?php if($arr['role']==2) echo 'checked' ?>>
-                                                            <label class="form-check-label">呼吸科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="4" <?php if($arr['role']==4) echo 'checked' ?>>
-                                                            <label class="form-check-label">消化科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="6" <?php if($arr['role']==6) echo 'checked' ?>>
-                                                            <label class="form-check-label">免疫科医生</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--中间侧--!>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="13" <?php if($arr['role']==13) echo 'checked' ?>>
-                                                            <label class="form-check-label">药品管理处</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="1" <?php if($arr['role']==1) echo 'checked' ?>>
-                                                            <label class="form-check-label">心内科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="3" <?php if($arr['role']==3) echo 'checked' ?>>
-                                                            <label class="form-check-label">血液科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="5" <?php if($arr['role']==5) echo 'checked' ?>>
-                                                            <label class="form-check-label">内分泌科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="11" <?php if($arr['role']==11) echo 'checked' ?>>
-                                                            <label class="form-check-label">外科医生</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--右侧--!>
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="8" <?php if($arr['role']==8) echo 'checked' ?>>
-                                                            <label class="form-check-label">耳鼻喉科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="10" <?php if($arr['role']==10) echo 'checked' ?>>
-                                                            <label class="form-check-label">皮肤科</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="7" <?php if($arr['role']==7) echo 'checked' ?>>
-                                                            <label class="form-check-label">眼科医生</label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input type="radio"  name="role" value="9" <?php if($arr['role']==9) echo 'checked' ?>>
-                                                            <label class="form-check-label">口腔科医生</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
                                             </div>
 
                                         </div>
@@ -310,17 +80,20 @@
                                         <label>账号可用性</label>
                                         <div class="form-group">
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="feasible" value="1" <?php if($arr['feasible']) echo 'checked' ?> >
+                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="enable" value="1" th:checked="${userInfo.getEnable()==true}"  >
                                                 <label class="form-check-label" for="exampleCheck1">账号可用</label>
                                             </div>
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="feasible" value="0" <?php if(!$arr['feasible']) echo 'checked' ?> >
+                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="enable" value="0" th:checked="${userInfo.getEnable()==false}" >
                                                 <label class="form-check-label" for="exampleCheck2">账号不可用</label>
                                             </div>
                                         </div>
 
                                         <hr class="mb-4">
-                                        <label>登陆次数：<?=$arr['login_times']?></label>
+                                        <label>登陆次数：<span th:text="${userInfo.logintimes}"></span></label>
+                                        <input type="hidden" name="logintime" th:value="${userInfo.logintimes}">
+                                        <label>最后登录IP：<span th:text="${userInfo.lastloginaddr}"></span></label>
+                                        <input type="hidden" name="lastloginaddr" th:value="${userInfo.lastloginaddr}">
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">

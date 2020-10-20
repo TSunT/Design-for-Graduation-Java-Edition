@@ -19,7 +19,7 @@ public class RouterController {
     public String toLogin(){
         return "login/loginindex";
     }
-//    @RequestMapping("/toAdmin")
+    @RequestMapping("/toAdmintest")
     public String toAdmin(){
         return "Admin/Adminindex";
     }
@@ -45,8 +45,8 @@ public class RouterController {
                 String role = objects[0].toString();
                 System.out.println(role);
                 switch (role){
-                    case "admin" : return "forward:/toAdmin/index";
-                    case "doctor" : return "forward:/toDoctor";
+                    case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
+                    case "ROLE_DOCTOR" : return "forward:/toDoctor";
                     case "patient" : return "forward:/toPatient";
                 }
             }

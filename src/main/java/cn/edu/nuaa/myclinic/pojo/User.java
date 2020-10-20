@@ -1,5 +1,7 @@
 package cn.edu.nuaa.myclinic.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,19 +17,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails , Serializable {
-    private Integer id;
-    private String username;
-    private String password;
-    private Boolean enable;
-    private Boolean locked;
+public class User extends UserNormal implements UserDetails {
+
     private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRname()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRname()));
         }
         return authorities;
     }
@@ -39,7 +37,7 @@ public class User implements UserDetails , Serializable {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return !this.getLocked();
     }
 
     @Override
@@ -49,6 +47,6 @@ public class User implements UserDetails , Serializable {
 
     @Override
     public boolean isEnabled() {
-        return enable;
+        return this.getEnable();
     }
 }

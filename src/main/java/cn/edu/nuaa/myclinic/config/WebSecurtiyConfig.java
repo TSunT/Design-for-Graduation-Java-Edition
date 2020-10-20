@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.config;
 
 import cn.edu.nuaa.myclinic.pojo.User;
+import cn.edu.nuaa.myclinic.service.AdminService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,8 @@ import java.io.IOException;
 public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserSecurityService userSecurityService;
+    @Autowired
+    AdminService adminService;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userSecurityService).passwordEncoder(new BCryptPasswordEncoder());
@@ -34,12 +37,12 @@ public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/toAdmin/**").hasRole("admin")
-                .antMatchers("/toDoctor/**").hasRole("doctor")
+                .antMatchers("/toAdmin/**").hasRole("ADMIN")
+                .antMatchers("/toDoctor/**").hasRole("DOCTOR")
                 .antMatchers("/toPatient/**").hasRole("patient");
         http.formLogin().loginPage("/toLogin").successHandler(new customAuthenticationSuccessHandle());
         http.rememberMe().rememberMeParameter("remember");
-        http.logout().logoutSuccessUrl("/toLogin").clearAuthentication(true);
+        http.logout().logoutSuccessUrl("/toLogin");
         http.csrf().disable();
     }
 
@@ -56,10 +59,16 @@ public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+            String addr = httpServletRequest.getRemoteAddr();
             HttpSession session = httpServletRequest.getSession();
             User user = (User) authentication.getPrincipal();
+            Integer logintimes = user.getLogintimes();
+            logintimes++;
+            user.setLastloginaddr(addr);
+            user.setLogintimes(logintimes);
+            //修改登录信息
+            adminService.updateUser(user);
             session.setAttribute("user",user);
-            System.out.println("set session completed2");
             httpServletRequest.getRequestDispatcher("/routedistribute").forward(httpServletRequest,httpServletResponse);
         }
 

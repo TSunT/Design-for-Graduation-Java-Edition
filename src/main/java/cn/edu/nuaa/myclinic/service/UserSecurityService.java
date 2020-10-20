@@ -20,6 +20,8 @@ public class UserSecurityService implements UserDetailsService {
         user.setRoles(userRoleMapper.getUserRolesByUserId(user.getId()));
         return user;
     }
+
+
     public void test(){
         User user1 = userRoleMapper.loadUserByUsername("user1");
         System.out.println(user1.getUsername());

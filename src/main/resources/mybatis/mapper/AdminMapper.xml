@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.AdminMapper">
+    <select id="findAllUser" resultType="UserNormal">
+        select * from user
+    </select>
+    <update id="updateUser" parameterType="UserNormal">
+        update user set username = #{username} ,enable = #{enable} , locked = #{locked} ,
+        lastloginaddr = #{lastloginaddr} , logintimes = #{logintimes} where id = #{id}
+    </update>
+    <select id="findUserById" parameterType="int" resultType="UserNormal">
+        select * from user where id = #{id};
+    </select>
+</mapper>

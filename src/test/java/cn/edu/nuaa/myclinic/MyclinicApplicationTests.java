@@ -23,7 +23,7 @@ class MyclinicApplicationTests {
     }
     @Test
     void testPage(){
-        List<User> userList = adminService.findAllUser(1, 1);
+        List<User> userList = adminService.findAllUser(6, 1);
         PageInfo pageInfo = new PageInfo(userList);
         System.out.println(userList);
         System.out.println(pageInfo);

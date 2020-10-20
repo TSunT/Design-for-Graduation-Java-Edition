@@ -61,10 +61,50 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <h3 class="card-title">用户信息表</h3>
+                            </div>
+                            <div class="card-body">
+                                <table id="userlist" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>最后登陆ip</th>
+                                        <th>账号可用性</th>
+                                        <th>登陆次数</th>
+                                        <th>操作项</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="userListbody">
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>工号</th>
+                                        <th>姓名</th>
+                                        <th>最后登陆ip</th>
+                                        <th>账号可用性</th>
+                                        <th>登陆次数</th>
+                                        <th>操作项</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                <ul id="navigatebar" class="pagination pagination-sm m-0 float-right">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
                                 <h3 class="card-title">员工信息表</h3>
                             </div>
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-hover">
+                                <span id="testAjax"></span>
+                                <table id="staffList" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
                                         <th>工号</th>
@@ -103,54 +143,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.col-lg-12 -->
-                    <div class="col-12">
-                        <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">用户信息表</h3>
-                        </div>
-                        <div class="card-body">
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>最后登陆ip</th>
-                                    <th>账号可用性</th>
-                                    <th>登陆次数</th>
-                                    <th>操作项</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php foreach ($userarrs as $arr){ ?>
-                                <tr>
-                                    <th scope="row"><?php echo $arr['staff_id'] ?></th>
-                                    <td><?php echo $arr['username'] ?></td>
-                                    <td><?php echo $arr['last_login_ip'] ?></td>
-                                    <td><?php echo $arr['feasible'] ?></td>
-                                    <td><?php echo $arr['login_times'] ?></td>
-                                    <td>
-                                        <a href="?con=Admin&ac=edituser&id=<?=$arr['staff_id']?>">修改</a>
-                                    </td>
-                                </tr>
-                                <?php }?>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>工号</th>
-                                    <th>姓名</th>
-                                    <th>最后登陆ip</th>
-                                    <th>账号可用性</th>
-                                    <th>登陆次数</th>
-                                    <th>操作项</th>
-                                </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    </div>
+
                 </div>
-                <!-- /.row -->
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content -->
@@ -177,19 +171,61 @@
         <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
     </footer>
 </div>
-<script>
+<input type="hidden" id="contextPath" th:value="${#servletContext.contextPath}">
+<script type="text/javascript">
     $(function () {
-        $("#example1").DataTable();
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-        });
+        loadUserList(1,4);
     });
+    function loadUserList(page,size){
+        $.get("showUserList",{page:page,size:size},function (result){
+            //显示列表
+            var u_list = "";
+            var contextPath=$("#contextPath").val();
+            contextPath+='/toAdmin/toUpdateUser?id=';
+            console.log(contextPath);
+            for (var i = 0;i<result.pageInfo.size;i++){
+                var user = result.pageInfo.list[i];
+                if(user.enable){
+                    var showenabled='可用';
+                }else{
+                    var showenabled='不可用';
+                }
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+user.id+'</th>\n' +
+                    '                                    <td>'+user.username+'</td>\n' +
+                    '                                    <td>'+user.lastloginaddr+'</td>\n' +
+                    '                                    <td>'+showenabled+'</td>\n' +
+                    '                                    <td>'+user.logintimes+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <a href="'+contextPath+user.id+'">修改</a>\n' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                u_list=u_list+tr;
+            }
+            $("#userListbody").html(u_list);
+            //显示导航栏
+            var lis ='';
+            if (result.pageInfo.hasPreviousPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">«</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadUserList('+result.pageInfo.prePage+','+size+')">«</a></li>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.pageInfo.navigateLastPage;i++){
+                var num = result.pageInfo.navigatepageNums[i];
+                var li = '<li class="page-item"><a class="page-link" href="javascript:loadUserList('+num+','+size+')">'+num+'</a></li>';
+                lis +=li;
+            }
+            if (result.pageInfo.hasNextPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">»</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadUserList('+result.pageInfo.nextPage+','+size+')">»</a></li>'
+            }
+            lis +=li;//添加向后一页
+            $("#navigatebar").html(lis);
 
+        },"json");
+    }
 </script>
 </body>
 </html>
