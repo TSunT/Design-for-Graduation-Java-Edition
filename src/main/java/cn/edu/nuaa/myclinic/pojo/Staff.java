@@ -13,7 +13,7 @@ public class Staff implements Serializable {
     private String staffname;
     private String title;
     private Integer salary;
-    private Boolean staffgender;
+    private Integer staffgender;
     private String stafftel;
     private Integer dep;
     private String office;

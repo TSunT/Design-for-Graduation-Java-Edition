@@ -34,4 +34,7 @@ public class AdminService {
     public Staff findStaffById(Integer id){
         return adminMapper.findStaffById(id);
     }
+    public boolean updateStaff(Staff staff){
+        return adminMapper.updateStaff(staff)==1;
+    }
 }

@@ -6,14 +6,13 @@ import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +46,16 @@ public class AdminController {
         }
     }
     @RequestMapping("/updateUser")
-    @ResponseBody
-    public String updateUser(UserNormal userNormal){
-        System.out.println(userNormal);
-        return userNormal.toString();               //待完善
+    public String updateUser(UserNormal userNormal, HttpServletRequest request, Model model){
+        boolean b = adminService.updateUser(userNormal);
+        if (b){
+            model.addAttribute("msg","用户修改成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toAdmin/index'");
+            return "tips/success";
+        }else {
+            return "Admin/Adminindex"; //待完善
+        }
     }
     @ResponseBody
     @RequestMapping(value = "/showStaffList",produces = { "application/json;charset=UTF-8"})
@@ -61,7 +66,7 @@ public class AdminController {
         return resultStaffListMap;
     }
     @RequestMapping("/toUpdateStaff")
-    public String toUpdateStaff(@RequestParam(name="id",required = true) int id,Model model){
+    public String toUpdateStaff(@RequestParam(name="id",required = true) int id, Model model){
         Staff staff = adminService.findStaffById(id);
         if (staff!=null){
             model.addAttribute("staffInfo", staff);
@@ -72,7 +77,13 @@ public class AdminController {
     }
     @RequestMapping("/updateStaff")
     @ResponseBody
-    public String updateStaff(Staff staff){
-        return staff.toString();                //待完善
+    public String updateStaff(Staff staff,Model model){
+        boolean b = adminService.updateStaff(staff);
+        if (b){
+            model.addAttribute("msg","员工修改成功");
+            return "tips/success";
+        }else {
+            return "Admin/Adminindex"; //待完善
+        }
     }
 }

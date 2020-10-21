@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" th:content="${refreshInfo}">
     <title>成功</title>
     <style>
         body {
@@ -84,6 +85,6 @@
     <polyline fill="none" stroke="#68E534" stroke-width="24" points="88,214 173,284 304,138" stroke-linecap="round" stroke-linejoin="round" class="tick" />
 </svg>
 
-<h2><?=$msg?></h2>
+<h2><span th:text="${msg}"></span></h2>
 </body>
 </html>

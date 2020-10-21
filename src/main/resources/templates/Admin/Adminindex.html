@@ -229,7 +229,7 @@
             contextPath+='/toAdmin/toUpdateStaff?id=';
             for (var i = 0;i<result.pageInfo.size;i++){
                 var staff = result.pageInfo.list[i];
-                if(staff.staffgender){
+                if(staff.staffgender==1){
                     var staffgender='女';
                 }else{
                     var staffgender='男';

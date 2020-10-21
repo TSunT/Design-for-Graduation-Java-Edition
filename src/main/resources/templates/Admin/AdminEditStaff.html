@@ -62,27 +62,27 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" th:action="@{/toAdmin/updateStaff}" method="post">
+                            <form th:action="@{/toAdmin/updateStaff}" method="post">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="staffname">姓名</label>
-                                        <input type="text" class="form-control" id="staffname" name="staff_name" th:value="${staffInfo.getStaffname()}">
+                                        <input type="text" class="form-control" id="staffname" name="staffname" th:value="${staffInfo.getStaffname()}">
                                         <input type="hidden" id="staff_id" name="staffid" th:value="${staffInfo.getStaffid()}">
                                     </div>
                                     <hr class="mb-4">
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>职称</label>
-                                                    <select class="form-control" name="title">
-                                                        <option value="其它" th:selected="${staffInfo.getTitle()=='其它'}">其它</option>
-                                                        <option value="医士" th:selected="${staffInfo.getTitle()=='医士'}">医士</option>
-                                                        <option value="医师" th:selected="${staffInfo.getTitle()=='医师'}">医师</option>
-                                                        <option value="主治医师" th:selected="${staffInfo.getTitle()=='主治医师'}">主治医师</option>
-                                                        <option value="副主任医师" th:selected="${staffInfo.getTitle()=='副主治医师'}">副主任医师</option>
-                                                        <option value="主任医师" th:selected="${staffInfo.getTitle()=='主任医师'}">主任医师</option>
-                                                    </select>
-                                                </div>
+                                        <div class="col-6">
+                                            <div class="form-check">
+                                                <label>职称</label>
+                                                <select class="form-control" name="title">
+                                                    <option value="其它" th:selected="${staffInfo.getTitle()=='其它'}">其它</option>
+                                                    <option value="医士" th:selected="${staffInfo.getTitle()=='医士'}">医士</option>
+                                                    <option value="医师" th:selected="${staffInfo.getTitle()=='医师'}">医师</option>
+                                                    <option value="主治医师" th:selected="${staffInfo.getTitle()=='主治医师'}">主治医师</option>
+                                                    <option value="副主任医师" th:selected="${staffInfo.getTitle()=='副主治医师'}">副主任医师</option>
+                                                    <option value="主任医师" th:selected="${staffInfo.getTitle()=='主任医师'}">主任医师</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
@@ -93,99 +93,68 @@
                                     </div>
                                     <hr class="mb-4">
                                     <div class="form-group">
-                                        <label>职务部门</label>
                                         <div class="row">
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="14" <?php if($arr['staff_dep']==14) echo 'checked' ?>>
-                                                        <label class="form-check-label">管理员</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="12" <?php if($arr['staff_dep']==12) echo 'checked' ?>>
-                                                        <label class="form-check-label">收费处</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="2" <?php if($arr['staff_dep']==2) echo 'checked' ?>>
-                                                        <label class="form-check-label">呼吸科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="4" <?php if($arr['staff_dep']==4) echo 'checked' ?>>
-                                                        <label class="form-check-label">消化科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="6" <?php if($arr['staff_dep']==6) echo 'checked' ?>>
-                                                        <label class="form-check-label">免疫科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="8" <?php if($arr['staff_dep']==8) echo 'checked' ?>>
-                                                        <label class="form-check-label">耳鼻喉科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="10" <?php if($arr['staff_dep']==10) echo 'checked' ?>>
-                                                        <label class="form-check-label">皮肤科</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <div class="form-group">
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="13" <?php if($arr['staff_dep']==13) echo 'checked' ?>>
-                                                        <label class="form-check-label">药品管理处</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="1" <?php if($arr['staff_dep']==1) echo 'checked' ?>>
-                                                        <label class="form-check-label">心内科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="3" <?php if($arr['staff_dep']==3) echo 'checked' ?>>
-                                                        <label class="form-check-label">血液科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="5" <?php if($arr['staff_dep']==5) echo 'checked' ?>>
-                                                        <label class="form-check-label">内分泌科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="7" <?php if($arr['staff_dep']==7) echo 'checked' ?>>
-                                                        <label class="form-check-label">眼科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="9" <?php if($arr['staff_dep']==9) echo 'checked' ?>>
-                                                        <label class="form-check-label">口腔科医生</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input type="radio"  name="staff_dep" value="11" <?php if($arr['staff_dep']==11) echo 'checked' ?>>
-                                                        <label class="form-check-label">外科医生</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>办公室</label>
-                                                    <input type="text" class="form-control" name="staff_office" value="<?=$arr['staff_office']?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>电话/手机</label>
-                                                    <input type="text" class="form-control" name="staff_tel" value="<?=$arr['staff_tel']?>">
+                                            <div class="form-check">
+                                                <label>职务部门</label>
+                                                <div clss="col-sm-6">
+                                                    <select class="form-control" name="dep">
+                                                        <option value="1" th:selected="${staffInfo.getDep()==1}">心内科
+                                                        </option>
+                                                        <option value="2" th:selected="${staffInfo.getDep()==2}">呼吸科
+                                                        </option>
+                                                        <option value="3" th:selected="${staffInfo.getDep()==3}">血液科
+                                                        </option>
+                                                        <option value="4" th:selected="${staffInfo.getDep()==4}">消化科
+                                                        </option>
+                                                        <option value="5" th:selected="${staffInfo.getDep()==5}">内分泌科
+                                                        </option>
+                                                        <option value="6" th:selected="${staffInfo.getDep()==6}">免疫科
+                                                        </option>
+                                                        <option value="7" th:selected="${staffInfo.getDep()==7}">眼科
+                                                        </option>
+                                                        <option value="8" th:selected="${staffInfo.getDep()==8}">耳鼻喉科
+                                                        </option>
+                                                        <option value="9" th:selected="${staffInfo.getDep()==9}">口腔科
+                                                        </option>
+                                                        <option value="10" th:selected="${staffInfo.getDep()==10}">皮肤科
+                                                        </option>
+                                                        <option value="11" th:selected="${staffInfo.getDep()==11}">外科
+                                                        </option>
+                                                        <option value="12" th:selected="${staffInfo.getDep()==12}">收费处
+                                                        </option>
+                                                        <option value="13" th:selected="${staffInfo.getDep()==13}">
+                                                            药物管理
+                                                        </option>
+                                                        <option value="14" th:selected="${staffInfo.getDep()==14}">
+                                                            信息化处
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>办公室</label>
+                                                <input type="text" class="form-control" name="office" th:value="${staffInfo.getOffice()}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>电话/手机</label>
+                                                <input type="text" class="form-control" name="stafftel" th:value="${staffInfo.getStafftel()}">
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr class="mb-4">
                                     <label>员工性别</label>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="staff_gender" value="男" <?php if($arr['staff_gender']=='男') echo 'checked' ?> >
+                                                <input type="radio" class="form-check-input" id="exampleCheck1" name="staffgender" value="0" th:checked="${staffInfo.getStaffgender()==0}" >
                                                 <label class="form-check-label" for="exampleCheck1">男</label>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-check">
-                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="staff_gender" value="女" <?php if($arr['staff_gender']=='女') echo 'checked' ?> >
+                                                <input type="radio" class="form-check-input" id="exampleCheck2" name="staffgender" value="1" th:checked="${staffInfo.getStaffgender()==1}" >
                                                 <label class="form-check-label" for="exampleCheck2">女</label>
                                             </div>
                                         </div>
