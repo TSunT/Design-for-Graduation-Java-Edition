@@ -1,9 +1,11 @@
 package cn.edu.nuaa.myclinic.mapper;
 
+import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import cn.edu.nuaa.myclinic.pojo.Staff;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,7 +31,15 @@ public interface AdminMapper {
      * @param user
      * @return
      */
-    public Integer insertUser(UserNormal user);
+    public void insertUser(User user);
+
+    /**
+     * 添加角色
+     * @param userid 用户id
+     * @param rid 角色id
+     * @return
+     */
+    public Integer insterRole(@Param("uid") int userid,@Param("rid") int rid);
 
     /**
      * 根据id查询用户

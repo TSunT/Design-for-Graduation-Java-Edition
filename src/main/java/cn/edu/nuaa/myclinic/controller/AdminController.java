@@ -77,10 +77,32 @@ public class AdminController {
     }
     @RequestMapping("/updateStaff")
     @ResponseBody
-    public String updateStaff(Staff staff,Model model){
+    public String updateStaff(Staff staff,HttpServletRequest request,Model model){
         boolean b = adminService.updateStaff(staff);
         if (b){
-            model.addAttribute("msg","员工修改成功");
+            model.addAttribute("msg","用户修改成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toAdmin/index'");
+            return "tips/success";
+        }else {
+            return "Admin/Adminindex"; //待完善
+        }
+    }
+    @RequestMapping("/toaddUser")
+    public String toaddUser(){
+        return "Admin/AdminAddUser";
+    }
+    @RequestMapping("/toaddStaff")
+    public String toaddStaff(){
+        return "Admin/AdminAddStaff";
+    }
+    @RequestMapping("/insertUser")
+    public String insertUser(User user,HttpServletRequest request,Model model){
+        boolean b = adminService.insertUser(user);
+        if (b){
+            model.addAttribute("msg","用户成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toAdmin/index'");
             return "tips/success";
         }else {
             return "Admin/Adminindex"; //待完善

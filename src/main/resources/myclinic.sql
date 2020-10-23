@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 21/10/2020 17:51:54
+ Date: 23/10/2020 18:31:14
 */
 
 SET NAMES utf8mb4;
@@ -62,6 +62,7 @@ CREATE TABLE `role`  (
 INSERT INTO `role` VALUES (1, 'ADMIN');
 INSERT INTO `role` VALUES (2, 'DOCTOR');
 INSERT INTO `role` VALUES (3, 'PATIENT');
+INSERT INTO `role` VALUES (4, 'PHARMACY');
 
 -- ----------------------------
 -- Table structure for staff
@@ -110,9 +111,10 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 36, 1);
+INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 39, 1);
 INSERT INTO `user` VALUES (2, 'user2', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '::0', 0, 2);
 INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 0, NULL, '::0', NULL, 3);
+INSERT INTO `user` VALUES (15, 'user4', '$2a$10$6SCtX1k1TUp3lHkeRnqVjODWMHQ1hQu9E0Oj8mXbjTHOhdawYcPhe', 1, 0, '0:0:0:0:0:0:0:1', 1, NULL);
 
 -- ----------------------------
 -- Table structure for user_role
@@ -133,5 +135,6 @@ CREATE TABLE `user_role`  (
 INSERT INTO `user_role` VALUES (1, 1);
 INSERT INTO `user_role` VALUES (2, 2);
 INSERT INTO `user_role` VALUES (3, 3);
+INSERT INTO `user_role` VALUES (15, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;

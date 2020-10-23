@@ -11,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserNormal implements Serializable {
     private Integer id;
+    private Integer sid;
     private String username;
     private String password;
     private Boolean enable;

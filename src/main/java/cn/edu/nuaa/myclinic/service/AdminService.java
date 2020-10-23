@@ -7,6 +7,7 @@ import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +37,16 @@ public class AdminService {
     }
     public boolean updateStaff(Staff staff){
         return adminMapper.updateStaff(staff)==1;
+    }
+    public boolean insertUser(User user){
+        String s = user.getSid().toString();
+        user.setPassword( new BCryptPasswordEncoder().encode(s));
+        user.setLogintimes(0);
+        adminMapper.insertUser(user);
+        Integer uid = user.getId();
+        System.out.println(uid);
+        Integer rid = user.getRoles().get(0).getRid();
+        adminMapper.insterRole(uid, rid);
+        return true;
     }
 }
