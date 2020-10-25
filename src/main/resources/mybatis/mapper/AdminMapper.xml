@@ -3,8 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.AdminMapper">
-    <select id="findAllUser" resultType="UserNormal">
-        select * from user
+    <select id="findAllUser" resultType="UserNormal" parameterType="String">
+        select * from user where 1=1
+        <if test="condition != null">
+            and username like CONCAT('%',#{condition},'%')
+        </if>
     </select>
     <update id="updateUser" parameterType="UserNormal">
         update user set username = #{username} ,enable = #{enable} , locked = #{locked} ,
@@ -29,5 +32,8 @@
     </insert>
     <insert id="insterRole">
         insert into user_role (uid,rid) values (#{uid},#{rid})
+    </insert>
+    <insert id="insertStaff" parameterType="Staff">
+        insert into staff(staffid,staffname,title,salary,staffgender,stafftel,dep,office) values (#{staffid},#{staffname},#{title},#{salary},#{staffgender},#{stafftel},#{dep},#{office})
     </insert>
 </mapper>

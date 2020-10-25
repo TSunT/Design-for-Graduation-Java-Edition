@@ -16,9 +16,13 @@ import java.util.List;
 public class AdminService {
     @Autowired
     AdminMapper adminMapper;
-    public List<User> findAllUser(int currentpage , int size){
+    public List<User> findAllUser(int currentpage , int size,String condition){
         PageHelper.startPage(currentpage,size);
-        List<User> userList = adminMapper.findAllUser();
+        if (condition.length()==0){
+            System.out.println("condition is null");
+            condition=null;
+        }
+        List<User> userList = adminMapper.findAllUser(condition);
         return userList;
     }
     public boolean updateUser(UserNormal user){
@@ -40,13 +44,17 @@ public class AdminService {
     }
     public boolean insertUser(User user){
         String s = user.getSid().toString();
-        user.setPassword( new BCryptPasswordEncoder().encode(s));
+        user.setPassword( new BCryptPasswordEncoder().encode(s));//默认密码为工号sid
         user.setLogintimes(0);
         adminMapper.insertUser(user);
         Integer uid = user.getId();
-        System.out.println(uid);
         Integer rid = user.getRoles().get(0).getRid();
-        adminMapper.insterRole(uid, rid);
-        return true;
+        Integer res = 0;
+       if(uid!=null && rid!=null) res = adminMapper.insterRole(uid, rid);
+        return res==1;
+    }
+    public boolean insertStaff(Staff staff){
+        Integer integer = adminMapper.insertStaff(staff);
+        return integer==1;
     }
 }

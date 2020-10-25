@@ -46,8 +46,8 @@ public class RouterController {
                 System.out.println(role);
                 switch (role){
                     case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
-                    case "ROLE_DOCTOR" : return "forward:/toDoctor";
-                    case "patient" : return "forward:/toPatient";
+                    case "ROLE_DOCTOR" : return "redirect:/toDoctor";
+                    case "ROLE_PATIENT" : return "redirect:/toPatient";
                 }
             }
         }

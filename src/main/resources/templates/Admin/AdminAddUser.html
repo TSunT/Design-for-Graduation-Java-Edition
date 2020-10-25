@@ -66,7 +66,7 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <label for="staff_id">工号</label>
+                                                <label for="staff_id">工号  <span id="resinfo"></span></label>
                                                 <input type="text" class="form-control" id="staff_id" name="sid" placeholder="输入工号">
                                             </div>
                                         </div>
@@ -113,7 +113,6 @@
                                                         <option value="true">上锁</option>
                                                     </select>
                                                 </div>
-
                                             </div>
                                         </div>
 
@@ -126,7 +125,7 @@
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-success" id="btn_sub" onclick="return check_input()">注册</button>
+                                    <button type="submit" class="btn btn-success" id="btn_sub" disabled onclick="return check_input()">注册</button>
                                     <button type="reset" class="btn btn-warning float-right">重填</button>
                                 </div>
                             </form>
@@ -185,6 +184,31 @@
                 }
                 alert("确认输入工号是否正确,一旦提交则工号不可修改");
         }
+        $("#staff_id").blur(function () {
+            var ret = /^[0-9]+$/;
+            var sid = $("#staff_id").val()
+            if(ret.test(sid)) {
+                $.get("findStaffExist", {sid: $("#staff_id").val()}, function (resultmap) {
+                    if (resultmap.result) {
+                        $("#staff_id").removeClass("is-invalid");
+                        $("#staff_id").addClass("is-valid");
+                        $("#resinfo").css("color", "green");
+                        $("#resinfo").text(resultmap.info);
+                        $("#btn_sub").attr("disabled",false);
+                    } else {
+                        $("#staff_id").addClass("is-invalid");
+                        $("#resinfo").css("color", "red");
+                        $("#resinfo").text(resultmap.info);
+                        $("#btn_sub").attr("disabled",true);
+                    }
+                }, "json");
+            }else{
+                $("#staff_id").addClass("is-invalid");
+                $("#resinfo").css("color", "red");
+                $("#resinfo").text("输入不合法");
+                $("#btn_sub").attr("disabled",true);
+            }
+        })
     </script>
 </div>
 </body>

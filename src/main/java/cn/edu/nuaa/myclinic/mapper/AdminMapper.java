@@ -17,7 +17,7 @@ public interface AdminMapper {
      * 查询所有用户
      * @return
      */
-    public List<User> findAllUser();
+    public List<User> findAllUser(String condition);
 
     /**
      * 修改用户

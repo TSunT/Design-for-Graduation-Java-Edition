@@ -41,7 +41,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="?con=Admin">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">管理员首页</li>
                         </ol>
                     </div><!-- /.col -->
@@ -61,7 +61,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" name="myform" th:action="@{/toAdmin/insertUser}" method="post">
+                            <form role="form" name="myform" th:action="@{/toAdmin/insertStaff}" method="post">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-4">
@@ -95,7 +95,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>薪水(每月)</label>
-                                                <input type="text" class="form-control" id="salary" name="staff_salary" value="">
+                                                <input type="text" class="form-control" id="salary" name="salary" value="">
                                             </div>
                                         </div>
                                     </div>

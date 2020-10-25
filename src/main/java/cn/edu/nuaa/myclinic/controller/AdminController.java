@@ -8,9 +8,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.http.HttpRequest;
 import java.util.HashMap;
@@ -27,15 +26,16 @@ public class AdminController {
         return "Admin/Adminindex";
     }
     @ResponseBody
-    @RequestMapping(value = "/showUserList",produces = { "application/json;charset=UTF-8"})
-    public Map<String,Object> showUserList(@RequestParam("page") int page,@RequestParam("size") int size){
-        List<User> userList = adminService.findAllUser(page, size);
+    @GetMapping(value = "/showUserList",produces = { "application/json;charset=UTF-8"})
+    public Map<String,Object> showUserList(@RequestParam("page") int page,@RequestParam("size") int size,@RequestParam("condition") String condition){
+        System.out.println("condition>>"+condition);
+        List<User> userList = adminService.findAllUser(page, size,condition);
         PageInfo pageInfo = new PageInfo(userList);
         Map<String ,Object> resultUserListMap = new HashMap<>();
         resultUserListMap.put("pageInfo",pageInfo);
         return resultUserListMap;
     }
-    @RequestMapping("/toUpdateUser")
+    @GetMapping("/toUpdateUser")
     public String toUpdateUser(@RequestParam(name = "id",required = true) int id,Model model){
         UserNormal user = adminService.findUserById(id);
         if(user!=null) {
@@ -45,7 +45,7 @@ public class AdminController {
             return "Admin/Adminindex";
         }
     }
-    @RequestMapping("/updateUser")
+    @PostMapping("/updateUser")
     public String updateUser(UserNormal userNormal, HttpServletRequest request, Model model){
         boolean b = adminService.updateUser(userNormal);
         if (b){
@@ -58,14 +58,14 @@ public class AdminController {
         }
     }
     @ResponseBody
-    @RequestMapping(value = "/showStaffList",produces = { "application/json;charset=UTF-8"})
+    @GetMapping(value = "/showStaffList",produces = { "application/json;charset=UTF-8"})
     public Map<String,Object> showStaffList(@RequestParam(name = "page",defaultValue = "1") int page,
                                             @RequestParam(name="size",defaultValue = "5") int size){
         Map<String ,Object> resultStaffListMap = new HashMap<>();
         resultStaffListMap.put("pageInfo",adminService.findAllStaff(page,size));
         return resultStaffListMap;
     }
-    @RequestMapping("/toUpdateStaff")
+    @GetMapping("/toUpdateStaff")
     public String toUpdateStaff(@RequestParam(name="id",required = true) int id, Model model){
         Staff staff = adminService.findStaffById(id);
         if (staff!=null){
@@ -75,8 +75,7 @@ public class AdminController {
             return "Admin/Adminindex";
         }
     }
-    @RequestMapping("/updateStaff")
-    @ResponseBody
+    @PostMapping("/updateStaff")
     public String updateStaff(Staff staff,HttpServletRequest request,Model model){
         boolean b = adminService.updateStaff(staff);
         if (b){
@@ -88,24 +87,50 @@ public class AdminController {
             return "Admin/Adminindex"; //待完善
         }
     }
-    @RequestMapping("/toaddUser")
+    @GetMapping("/toaddUser")
     public String toaddUser(){
         return "Admin/AdminAddUser";
     }
-    @RequestMapping("/toaddStaff")
+    @GetMapping("/toaddStaff")
     public String toaddStaff(){
         return "Admin/AdminAddStaff";
     }
-    @RequestMapping("/insertUser")
+    @PostMapping("/insertUser")
     public String insertUser(User user,HttpServletRequest request,Model model){
         boolean b = adminService.insertUser(user);
         if (b){
-            model.addAttribute("msg","用户成功");
+            model.addAttribute("msg","插入用户成功");
             String contextPath = request.getContextPath();
             model.addAttribute("refreshInfo","3;url='"+contextPath+"/toAdmin/index'");
             return "tips/success";
         }else {
             return "Admin/Adminindex"; //待完善
         }
+    }
+    @PostMapping("/insertStaff")
+    public String insertStaff(Staff staff,HttpServletRequest request,Model model){
+        boolean b = adminService.insertStaff(staff);
+        if (b){
+            model.addAttribute("msg","插入员工成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toAdmin/index'");
+            return "tips/success";
+        }else {
+            return "Admin/Adminindex"; //待完善
+        }
+    }
+    @ResponseBody
+    @GetMapping(value = "/findStaffExist",produces = { "application/json;charset=UTF-8"})
+    public Map<String,Object> findStaffExist(@RequestParam("sid") int sid){
+        Staff resstaff = adminService.findStaffById(sid);
+        Map<String,Object> requestMap =new HashMap<>();
+        if (resstaff!=null){
+            requestMap.put("result",true);
+            requestMap.put("info","用户可以注册");
+        }else {
+            requestMap.put("result",false);
+            requestMap.put("info","工号不存在");
+        }
+        return requestMap;
     }
 }

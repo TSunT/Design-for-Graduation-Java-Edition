@@ -64,6 +64,15 @@
                                 <h3 class="card-title">用户信息表</h3>
                             </div>
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="dataTables_length" id="example1_length"></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                            <div class="row-3"><div class="dataTables_length" id="ex"></div></div>
+                                            <div class="row-3"><input type="search" class="form-control form-control-sm" id="search-user" style="float: right;margin-bottom: 10px" placeholder="输入查询姓名"></div>
+                                    </div>
+                                </div>
                                 <table id="userlist" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
@@ -171,8 +180,13 @@
         loadUserList(1,4);
         loadStaffList(1,4);
     });
+    $("#search-user").blur(function (){
+       loadUserList(1,4);
+    });
     function loadUserList(page,size){
-        $.get("showUserList",{page:page,size:size},function (result){
+        var condition = $("#search-user").val();
+
+        $.get("showUserList",{page:page,size:size,condition:condition},function (result){
             //显示列表
             var u_list = "";
             var contextPath=$("#contextPath").val();
