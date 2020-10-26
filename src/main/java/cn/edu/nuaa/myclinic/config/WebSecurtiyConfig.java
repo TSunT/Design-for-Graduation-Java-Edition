@@ -39,7 +39,7 @@ public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/toAdmin/**").hasRole("ADMIN")
                 .antMatchers("/toDoctor/**").hasRole("DOCTOR")
-                .antMatchers("/toPatient/**").hasRole("patient");
+                .antMatchers("/toPatient/**").hasRole("PATIENT");
         http.formLogin().loginPage("/toLogin").successHandler(new customAuthenticationSuccessHandle());
         http.rememberMe().rememberMeParameter("remember");
         http.logout().logoutSuccessUrl("/toLogin");

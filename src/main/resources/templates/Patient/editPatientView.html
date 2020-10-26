@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <!-- Bootstrap CSS for dev-->
     <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
     <title>登记病人信息</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
     <!--边栏样式-->
     <style>
         body {
@@ -134,67 +131,17 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link " href="?con=Patient">
-                            <span data-feather="home"></span>
-                            病人总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=add">
-                            <span data-feather="file"></span>
-                            病人登记
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询病人
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=dailyadd">
-                            <span data-feather="users"></span>
-                            查看当日登记病人
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>挂号处理</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="file-text"></span>
-                            挂号
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
-                            <span data-feather="file-text"></span>
-                            查看挂号信息
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:insert="~{/Patient/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <form class="needs-validation" name="myform" action="?con=Patient&ac=update" method="post">
+            <form class="needs-validation" name="myform" th:action="@{/toPatient/updatePatient}" method="post">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">修改病号为<?=$arr['patient_id']?>的病人记录</h1>
+                    <h1 class="h2">修改病号为<span th:text="${patientInfo.patientid}"></span>的病人记录</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <input type="reset" class="btn btn-sm btn-outline-secondary dropdown-toggle" value="还原修改">
                         <span data-feather="calendar"></span>
@@ -206,19 +153,19 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="patientName">姓名</label>
-                                <input type="text" class="form-control" id="patientName" name="patient_name" value="<?php echo $arr['patient_name']?>" required>
+                                <input type="text" class="form-control" id="patientName" name="patientname" th:value="${patientInfo.patientname}" required>
                                 <div class="invalid-feedback">
                                     Valid first name is required.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <input type="hidden" class="form-control" id="lastName" name="patient_id" value="<?php echo $arr['patient_id']?>" required>
+                                <input type="hidden" class="form-control" id="lastName" name="patientid" th:value="${patientInfo.patientid}" required>
                             </div>
                         </div>
                         <hr class="mb-4">
                         <div class="mb-3">
                             <label for="phone">手机号 </label>
-                            <input type="tel" class="form-control" name="patient_tel" id="phone" value="<?php echo $arr['patient_tel']?>">
+                            <input type="tel" class="form-control" name="patienttel" id="phone" th:value="${patientInfo.patienttel}">
                             <div class="invalid-feedback">
                                 Please enter a valid phone number for updates.
                             </div>
@@ -227,18 +174,18 @@
                         <label>性别</label>
                         <div class="d-block my-3">
                             <div class="custom-control custom-radio">
-                                <input id="malepatient" name="patient_gender" type="radio" value="男" class="custom-control-input" <?php if ($arr['patient_gender']=='男') echo 'checked' ?>>
+                                <input id="malepatient" name="patientgender" type="radio" value="0" class="custom-control-input" th:checked="${patientInfo.patientgender == 0}">
                                 <label class="custom-control-label" for="malepatient">男</label>
                             </div>
                             <div class="custom-control custom-radio">
-                                <input id="fmalepatient" name="patient_gender" type="radio" value="女" class="custom-control-input" <?php if ($arr['patient_gender']=='女') echo 'checked' ?>>
+                                <input id="fmalepatient" name="patientgender" type="radio" value="1" class="custom-control-input" th:checked="${patientInfo.patientgender == 1}">
                                 <label class="custom-control-label" for="fmalepatient">女</label>
                             </div>
                         </div>
                         <hr class="mb-4">
                         <div class="mb-3">
                             <label for="address">过敏信息</label>
-                            <input type="text" class="form-control" name="allergy" id="address" value="<?php echo $arr['allergy']?>" required>
+                            <input type="text" class="form-control" name="allergy" id="address" th:value="${patientInfo.allergy}" required>
                             <div class="invalid-feedback">
                                 Please enter your allergy info.
                             </div>

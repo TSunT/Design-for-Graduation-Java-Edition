@@ -1,0 +1,59 @@
+<html lang="cn-zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="asidebar">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/toPatient/index}">
+                    <span data-feather="home"></span>
+                    病人总表 <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/toPatient/toInsertPatient}">
+                    <span data-feather="file"></span>
+                    病人登记
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="?con=Patient&ac=seek">
+                    <span data-feather="shopping-cart"></span>
+                    查询病人
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="?con=Patient&ac=dailyadd">
+                    <span data-feather="users"></span>
+                    查看当日登记病人
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>挂号处理</span>
+            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                <span data-feather="plus-circle"></span>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="?con=Patient&ac=seek">
+                    <span data-feather="file-text"></span>
+                    挂号
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
+                    <span data-feather="file-text"></span>
+                    查看挂号信息
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

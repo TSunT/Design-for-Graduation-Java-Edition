@@ -27,7 +27,7 @@ public class RouterController {
     public String toDoctor(){
         return "Doctor/Doctorindex";
     }
-    @RequestMapping("/toPatient")
+    @RequestMapping("/toPatienttest")
     public String toPatient(){
         return "Patient/PatientindexView";
     }
@@ -47,7 +47,7 @@ public class RouterController {
                 switch (role){
                     case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
                     case "ROLE_DOCTOR" : return "redirect:/toDoctor";
-                    case "ROLE_PATIENT" : return "redirect:/toPatient";
+                    case "ROLE_PATIENT" : return "redirect:/toPatient/index";
                 }
             }
         }

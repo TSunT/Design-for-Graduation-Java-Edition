@@ -14,13 +14,8 @@
     <script th:src="@{/libs/js/popper.js}" ></script>
     <script th:src="@{/libs/js/bootstrap.js}"></script>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/libs/DataTables.css}">
-
     <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" th:src="@{/libs/jquery.min.js}"></script>
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" th:src="@{/libs/jquery.dataTables.js}"></script>
-
+    <script type="text/javascript" charset="utf8" th:src="@{/libs/jquery/jquery.min.js}"></script>
     <!--边栏样式-->
     <style>
         body {
@@ -136,90 +131,16 @@
 <body>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">病人信息管理中心</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <input class="form-control form-control-dark w-100" id="search-patient" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="home"></span>
-                            病人总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=add">
-                            <span data-feather="file"></span>
-                            病人登记
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询病人
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=dailyadd">
-                            <span data-feather="users"></span>
-                            查看当日登记病人
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2"></span>
-                            Reports
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers"></span>
-                            Integrations
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>挂号处理</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="file-text"></span>
-                            挂号
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
-                            <span data-feather="file-text"></span>
-                            查看挂号信息
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Year-end sale
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:insert="~{/Patient/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">病人总表</h1>
@@ -231,33 +152,91 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table id="example" class="display" cellspacing="0" width="100%" >
+                <table id="patientList" class="table" cellspacing="0" width="100%" >
                     <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">病号</th>
-                        <th scope="col">姓名</th>
-                        <th scope="col">出生年份</th>
-                        <th scope="col">电话号</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">病号</th>
+                            <th scope="col">姓名</th>
+                            <th scope="col">性别</th>
+                            <th scope="col">电话</th>
+                            <th scope="col">操作</th>
+                        </tr>
                     </thead>
+                    <tbody id="patientListBody"></tbody>
                 </table>
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" id="patientNavigateBar" role="group" aria-label="First group">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon">@</div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                    </div>
+                </div>
             </div>
         </main>
     </div>
+    <input type="hidden" id="contextPath" th:value="${#servletContext.contextPath}">
 </div>
-    <script>
+<script type="text/javascript">
+    $(function () {
+        loadPatientList(1,10);
+    })
+    function loadPatientList(page,size){
+        var condition = $("#search-patient").val();
 
-    $(document).ready( function () {
-        $('#example').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "ajax": "./Paging/patientIndexTable.php"
-        });
-    } );
+        $.get("showPatientList",{page:page,size:size,condition:condition},function (result){
+            //显示列表
+            var u_list = "";
+            var contextPath=$("#contextPath").val();
+            contextPath+='/toPatient/toUpdatePatient?id=';
+            console.log(contextPath);
+            for (var i = 0;i<result.pageInfo.size;i++){
+                var patient = result.pageInfo.list[i];
+                if(patient.patientgender==0){
+                    var gender='男';
+                }else{
+                    var gender='女';
+                }
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+patient.patientid+'</th>\n' +
+                    '                                    <td>'+patient.patientname+'</td>\n' +
+                    '                                    <td>'+gender+'</td>\n' +
+                    '                                    <td>'+patient.patienttel+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <a href="'+contextPath+patient.patientid+'">修改</a>\n' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                u_list=u_list+tr;
+            }
+            $("#patientListBody").html(u_list);
+            //显示导航栏
+            var lis ='';
+            if (result.pageInfo.hasPreviousPage==false){
+                var li = '<button type="button" class="btn btn-secondary">«</button>'
+            }else {
+                var li ='<button type="button" class="btn btn-secondary" onclick="javascript:loadPatientList('+result.pageInfo.prePage+','+size+')">«</button>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.pageInfo.navigateLastPage;i++){
+                var num = result.pageInfo.navigatepageNums[i];
+                var li = '<button type="button" class="btn btn-secondary" onclick="javascript:loadPatientList('+num+','+size+')">'+num+'</button>';
+                lis +=li;
+            }
+            if (result.pageInfo.hasNextPage==false){
+                var li = '<button type="button" class="btn btn-secondary">»</button>'
+            }else {
+                var li ='<button type="button" class="btn btn-secondary" onclick="javascript:loadPatientList('+result.pageInfo.nextPage+','+size+')">»</button>'
+            }
+            lis +=li;//添加向后一页
+            $("#patientNavigateBar").html(lis);
 
+        },"json");
+    }
+    $("#search-patient").blur(function () {
+        loadPatientList(1,10);
+    })
 </script>
-</div>
-
-
 </body>
 </html>

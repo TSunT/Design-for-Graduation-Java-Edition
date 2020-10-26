@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.PatientMapper">
+    <select id="findAllPatient" resultType="Patient" parameterType="String">
+        select * from patient where 1=1
+        <if test="condition !=null">
+            and patientname like CONCAT('%',#{condition},'%')
+        </if>
+    </select>
+    <select id="findPatientById" parameterType="Integer" resultType="Patient">
+        select * from patient where patientid =#{id}
+    </select>
+    <update id="updatePatient" parameterType="Patient" >
+        update patient set patientname=#{patientname} , patientgender=#{patientgender},patienttel=#{patienttel},allergy=#{allergy} where patientid=#{patientid}
+    </update>
+    <insert id="insertPatient" parameterType="Patient">
+        insert into patient (patientidentity,patientname,patientgender,patienttel,allergy,inputtime)
+        values (#{patientidentity},#{patientname},#{patientgender},#{patienttel},#{allergy},#{inputtime})
+    </insert>
+    <select id="checkedIdentity" parameterType="String" resultType="Patient">
+        select * from patient where patientidentity = #{identity}
+    </select>
+</mapper>
