@@ -2,10 +2,11 @@ package cn.edu.nuaa.myclinic.pojo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Patient {
+public class Patient implements Serializable {
     private Integer patientid;
     private String patientidentity;
     private String patientname;

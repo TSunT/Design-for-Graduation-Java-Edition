@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 26/10/2020 16:59:41
+ Date: 29/10/2020 17:56:29
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `patient`  (
   `allergy` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `inputtime` date NULL DEFAULT NULL,
   PRIMARY KEY (`patientid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '病人表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '病人表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of patient
@@ -78,7 +78,7 @@ CREATE TABLE `role`  (
   `rid` int(0) NOT NULL AUTO_INCREMENT COMMENT '角色id',
   `rname` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色名',
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role
@@ -87,6 +87,7 @@ INSERT INTO `role` VALUES (1, 'ADMIN');
 INSERT INTO `role` VALUES (2, 'DOCTOR');
 INSERT INTO `role` VALUES (3, 'PATIENT');
 INSERT INTO `role` VALUES (4, 'PHARMACY');
+INSERT INTO `role` VALUES (5, 'NOTICE');
 
 -- ----------------------------
 -- Table structure for staff
@@ -111,8 +112,38 @@ CREATE TABLE `staff`  (
 -- ----------------------------
 INSERT INTO `staff` VALUES (1, 'staff1', NULL, 10000, 0, NULL, NULL, NULL);
 INSERT INTO `staff` VALUES (2, 'staff2', '其它', 10000, 0, '1111', 1, '1111');
-INSERT INTO `staff` VALUES (3, 'staff3', NULL, 10000, 0, NULL, NULL, NULL);
+INSERT INTO `staff` VALUES (3, 'staff3', NULL, 10000, 0, NULL, 3, NULL);
 INSERT INTO `staff` VALUES (4, 'staff4', NULL, 10000, 0, NULL, NULL, NULL);
+INSERT INTO `staff` VALUES (5, 'staff5', '医士', 8000, 0, '13372009880', 3, 'office');
+INSERT INTO `staff` VALUES (6, 'staff6', '医师', 10000, 0, '13372009881', 2, 'office');
+INSERT INTO `staff` VALUES (7, 'notice', '其它', 5500, 1, '13513255414', 15, '1floor');
+
+-- ----------------------------
+-- Table structure for treatment
+-- ----------------------------
+DROP TABLE IF EXISTS `treatment`;
+CREATE TABLE `treatment`  (
+  `patientid` int(0) NOT NULL,
+  `staffid` int(0) NOT NULL,
+  `time` date NULL DEFAULT NULL,
+  `heartrate` int(0) UNSIGNED NULL DEFAULT NULL,
+  `bloodpressure` int(0) UNSIGNED NULL DEFAULT NULL,
+  `temperature` int(0) UNSIGNED NULL DEFAULT NULL,
+  `patientsymptoms` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `presentillness` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `pastillness` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `diagnose` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `prescription` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT 0,
+  INDEX `patientid`(`patientid`) USING BTREE,
+  INDEX `staffid`(`staffid`) USING BTREE,
+  CONSTRAINT `treatment_ibfk_1` FOREIGN KEY (`patientid`) REFERENCES `patient` (`patientid`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `treatment_ibfk_2` FOREIGN KEY (`staffid`) REFERENCES `staff` (`staffid`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of treatment
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -130,15 +161,18 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sid`(`sid`) USING BTREE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`sid`) REFERENCES `staff` (`staffid`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 39, 1);
+INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 46, 1);
 INSERT INTO `user` VALUES (2, 'user2', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '::0', 0, 2);
-INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 38, 3);
+INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 52, 3);
 INSERT INTO `user` VALUES (15, 'user4', '$2a$10$6SCtX1k1TUp3lHkeRnqVjODWMHQ1hQu9E0Oj8mXbjTHOhdawYcPhe', 1, 0, '0:0:0:0:0:0:0:1', 1, NULL);
+INSERT INTO `user` VALUES (16, 'user5', '$2a$10$3IzMDU2x/lOQa07IKtYUuO1YloGM7yjxD7awQ2zjVsYfsbmR10EXK', 1, 0, '0:0:0:0:0:0:0:1', 20, 5);
+INSERT INTO `user` VALUES (17, 'user6', '$2a$10$chkFjOSZflKL9Kch/EhD3.37P7hC87/NcPeta5JMOJexbYDgrpP.m', 1, 0, '0:0:0:0:0:0:0:1', 1, 6);
+INSERT INTO `user` VALUES (18, 'notice', '$2a$10$o5npDWNTYwf4H.4OSA4v1.Lny0oHIF814hFRWTLjGrSdle3gF/HY6', 1, 0, '0:0:0:0:0:0:0:1', 1, 7);
 
 -- ----------------------------
 -- Table structure for user_role
@@ -160,5 +194,8 @@ INSERT INTO `user_role` VALUES (1, 1);
 INSERT INTO `user_role` VALUES (2, 2);
 INSERT INTO `user_role` VALUES (3, 3);
 INSERT INTO `user_role` VALUES (15, 2);
+INSERT INTO `user_role` VALUES (16, 2);
+INSERT INTO `user_role` VALUES (17, 2);
+INSERT INTO `user_role` VALUES (18, 5);
 
 SET FOREIGN_KEY_CHECKS = 1;

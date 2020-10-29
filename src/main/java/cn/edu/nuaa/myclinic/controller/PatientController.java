@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.pojo.Patient;
+import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import cn.edu.nuaa.myclinic.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,5 +76,26 @@ public class PatientController {
             responseMap.put("info","该身份证可以注册");
         }
         return responseMap;
+    }
+    @GetMapping("/toRegisterPatient")
+    public String toRegisterPatient(@RequestParam Integer id,Model model){
+        PatientBrief patientBrief = patientService.findPatientBriefById(id);
+        model.addAttribute("patient",patientBrief);
+        return "Patient/showRegisterView";
+    }
+    @PostMapping("/registPatient")
+    public String registerPatient(@RequestParam(name = "patientid") Integer patientid,
+                                  @RequestParam(name="patientname") String patientname,
+                                  @RequestParam(name = "depid") Integer depid,
+                                  Model model,HttpServletRequest request){
+        Boolean b=patientService.registerPatient(new PatientBrief(patientid,patientname),depid);
+        if (b){
+            model.addAttribute("msg","病人挂号成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toPatient/index'");
+            return "tips/success";
+        }else {
+            return "Patient/PatientindexView"; //待完善
+        }
     }
 }

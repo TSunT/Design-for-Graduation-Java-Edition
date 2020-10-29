@@ -2,9 +2,12 @@ package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.PatientMapper;
 import cn.edu.nuaa.myclinic.pojo.Patient;
+import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,6 +15,8 @@ import java.util.List;
 
 @Service
 public class PatientService {
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     private PatientMapper patientMapper;
     public PageInfo findAllPatient(int currentpage , int size, String condition){
@@ -33,5 +38,13 @@ public class PatientService {
     public Boolean checkedIdentity(String identity){
         Patient patient = patientMapper.checkedIdentity(identity);
         return patient != null;
+    }
+
+    public Boolean registerPatient(PatientBrief patientBrief,Integer depid){
+        Date date=new Date();
+        return redisTemplate.opsForZSet().add("depRegistryQueue" + depid, patientBrief, date.getTime());
+    }
+    public PatientBrief findPatientBriefById(Integer patientid){
+        return patientMapper.findPatientBrief(patientid);
     }
 }

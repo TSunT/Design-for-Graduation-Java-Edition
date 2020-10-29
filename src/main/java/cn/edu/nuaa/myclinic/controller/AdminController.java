@@ -27,7 +27,6 @@ public class AdminController {
     @ResponseBody
     @GetMapping(value = "/showUserList",produces = { "application/json;charset=UTF-8"})
     public Map<String,Object> showUserList(@RequestParam("page") int page,@RequestParam("size") int size,@RequestParam("condition") String condition){
-        System.out.println("condition>>"+condition);
         List<User> userList = adminService.findAllUser(page, size,condition);
         PageInfo pageInfo = new PageInfo(userList);
         Map<String ,Object> resultUserListMap = new HashMap<>();

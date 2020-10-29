@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.mapper;
 
 import cn.edu.nuaa.myclinic.pojo.Patient;
+import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,5 @@ public interface PatientMapper {
     public Integer updatePatient(Patient patient);
     public Integer insertPatient(Patient patient);
     public Patient checkedIdentity(String identity);
+    public PatientBrief findPatientBrief(Integer patientid);
 }

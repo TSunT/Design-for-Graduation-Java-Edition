@@ -27,8 +27,8 @@
         salary = #{salary} , stafftel = #{stafftel} , dep = #{dep} , office = #{office} where staffid=#{staffid}
     </update>
     <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        insert into user (username,password,enable,locked,logintimes)
-        values(#{username},#{password},#{enable},#{locked},#{logintimes})
+        insert into user (username,password,enable,locked,logintimes,sid)
+        values(#{username},#{password},#{enable},#{locked},#{logintimes},#{sid})
     </insert>
     <insert id="insterRole">
         insert into user_role (uid,rid) values (#{uid},#{rid})

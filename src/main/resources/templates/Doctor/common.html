@@ -38,12 +38,12 @@
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge"><?=$register_num?></span>
+                <span class="badge badge-warning navbar-badge"><span th:text="${registryPatientlength}"></span></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-header">共<?=$register_num?>个病人挂号</span>
+                <span class="dropdown-header">共<span th:text="${registryPatientlength}"></span>个病人挂号</span>
                 <div class="dropdown-divider"></div>
-                <a href="?con=Doctor&ac=callOnePatient" class="dropdown-item">
+                <a th:href="@{/toDoctor/callRegistryPatient}" class="dropdown-item">
                     <i class="fas fa-users mr-2"></i> 叫号
                     <span class="float-right text-muted text-sm">叫最早挂号的病人</span>
                 </a>

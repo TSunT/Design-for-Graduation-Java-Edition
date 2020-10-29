@@ -27,17 +27,23 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  redis:
+    host: localhost
+    port: 6379
 
 #配置mybatis
 mybatis:
   type-aliases-package: cn.edu.nuaa.myclinic.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
+  configuration:
+    cache-enabled: true
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
 
 server:
   servlet:

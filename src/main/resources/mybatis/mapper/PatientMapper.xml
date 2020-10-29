@@ -22,4 +22,7 @@
     <select id="checkedIdentity" parameterType="String" resultType="Patient">
         select * from patient where patientidentity = #{identity}
     </select>
+    <select id="findPatientBrief" parameterType="Integer" resultType="PatientBrief">
+        select patientid , patientname from patient where patientid = #{patientid}
+    </select>
 </mapper>

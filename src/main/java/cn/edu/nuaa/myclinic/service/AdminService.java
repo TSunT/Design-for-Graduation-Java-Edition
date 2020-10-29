@@ -19,7 +19,6 @@ public class AdminService {
     public List<User> findAllUser(int currentpage , int size,String condition){
         PageHelper.startPage(currentpage,size);
         if (condition.length()==0){
-            System.out.println("condition is null");
             condition=null;
         }
         List<User> userList = adminMapper.findAllUser(condition);

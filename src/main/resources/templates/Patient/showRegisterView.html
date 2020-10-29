@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>输入挂号信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" th:src="@{/libs/jquery/jquery.min.js}"></script>
     <!--边栏样式-->
     <style>
         body {
@@ -139,81 +138,7 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">
-                                <span data-feather="home"></span>
-                                病人总表 <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?con=Patient&ac=add">
-                                <span data-feather="file"></span>
-                                病人登记
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?con=Patient&ac=seek">
-                                <span data-feather="shopping-cart"></span>
-                                查询病人
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?con=Patient&ac=dailyadd">
-                                <span data-feather="users"></span>
-                                查看当日登记病人
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
-                                Reports
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="layers"></span>
-                                Integrations
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>挂号处理</span>
-                        <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                            <span data-feather="plus-circle"></span>
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="?con=Patient&ac=register">
-                                <span data-feather="file-text"></span>
-                                挂号
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
-                                <span data-feather="file-text"></span>
-                                查看挂号信息
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Year-end sale
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+            <div th:insert="~{/Patient/common::asidebar}"></div>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">病号信息</h1>
@@ -224,10 +149,11 @@
                         </button>
                     </div>
                 </div>
-                <form name="register" class="from_query" action="?con=Patient&ac=insertregister" method="post">
+                <form name="register" class="from_query" th:action="@{/toPatient/registPatient}" method="post">
                 <div class="query1">
                         <p>
-                            病人病号：<input class="text" type="text" name="patient_id" value="<?=$_GET['id']?>" size="40" readonly>
+                            病人病号：<input class="text" type="text" name="patientid" th:value="${patient.getPatientid()}" size="40" readonly><br>
+                            病人姓名：<input class="text" type="text" name="patientname" th:value="${patient.getPatientname()}" size="40" readonly>
                         </p>
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">填写科室</h1>
@@ -235,7 +161,7 @@
                     <div class="query2">
                             <p>
                                 <label>选择科室</label>
-                                <select name="dep_id">
+                                <select name="depid">
                                     <option value="1">心内科</option>
                                     <option value="2">呼吸科</option>
                                     <option value="3">血液科</option>
@@ -255,7 +181,6 @@
                     </div>
                 </div>
                 </form>
-                </div>
             </main>
         </div>
     </div>

@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +24,7 @@ public class RouterController {
     public String toAdmin(){
         return "Admin/Adminindex";
     }
-    @RequestMapping("/toDoctor")
+    @RequestMapping("/toDoctortest")
     public String toDoctor(){
         return "Doctor/Doctorindex";
     }
@@ -31,6 +32,8 @@ public class RouterController {
     public String toPatient(){
         return "Patient/PatientindexView";
     }
+    @RequestMapping("/toNotice/test")
+    public String toNotice(){ return "Notice/Noticeindex";}
     @RequestMapping("/toLoginInfo")
     public String toLoginInfo(){
         return "login/ShowUserInfo";
@@ -46,8 +49,9 @@ public class RouterController {
                 System.out.println(role);
                 switch (role){
                     case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
-                    case "ROLE_DOCTOR" : return "redirect:/toDoctor";
+                    case "ROLE_DOCTOR" : return "redirect:/toDoctor/index";
                     case "ROLE_PATIENT" : return "redirect:/toPatient/index";
+                    case "ROLE_NOTICE": return "redirect:/toNotice/test";
                 }
             }
         }
