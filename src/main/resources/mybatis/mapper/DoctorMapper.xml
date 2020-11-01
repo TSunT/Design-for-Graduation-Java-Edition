@@ -6,4 +6,10 @@
     <select id="getStaffBySid" resultType="Staff" parameterType="int">
         select * from staff where staffid = #{sid}
     </select>
+    <insert id="insertNewTreatment" >
+        insert into treatment(patinetid,staffid,time) values (#{pid},#{sid},#{time})
+    </insert>
+    <select id="getOnePatientByid" resultType="Patient">
+        select * from patient where patientid = #{pid}
+    </select>
 </mapper>

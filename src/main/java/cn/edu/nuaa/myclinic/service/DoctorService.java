@@ -30,25 +30,30 @@ public class DoctorService {
         PatientBrief patientBrief = (PatientBrief) redisTemplate.opsForZSet().range("depRegistryQueue" + depid,0,0).toArray()[0];
         return patientBrief;
     }
-    public Map<String,Object> callRegistryPatientWithTime(Integer depid,String staffname,String office){
+    public Map<String,Object> callRegistryPatientWithTime(Integer depid,Integer staffid,String staffname,String office){
         Map<String,Object> map = new HashMap<>();
         Set<ZSetOperations.TypedTuple<PatientBrief>> set = redisTemplate.opsForZSet().rangeWithScores("depRegistryQueue" + depid, 0, 0);
         for (ZSetOperations.TypedTuple<PatientBrief> tuple:set){
             PatientBrief value = tuple.getValue();
             map.put("value",value);
-            insertToNotice(depid,staffname,value,office);
+            insertToNotice(depid,staffid,staffname,value,office);
             redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
             Date date = new Date(tuple.getScore().longValue());
             map.put("score",date);
         }
         return map;
     }
-    private void insertToNotice(Integer depid, String staffname,PatientBrief patientBrief,String office){
+    private void insertToNotice(Integer depid,Integer staffid, String staffname,PatientBrief patientBrief,String office){
         Map<String,Object> map = new HashMap<>();
         map.put("patient",patientBrief);
         map.put("doctor",staffname);
         map.put("office",office);
+        map.put("staffid",staffid);
         redisTemplate.opsForList().leftPush("depNoticeList"+depid,map);
+    }
 
+    public Boolean insertNewTreatment(Integer patientid,Integer staffid){
+        Integer res = docterMapper.insertNewTreatment(patientid, staffid, new Date());
+        return res==1;
     }
 }

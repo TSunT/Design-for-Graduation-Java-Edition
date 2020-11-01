@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>诊室叫号页</title>
-    <link rel="stylesheet" href="./View/libs/css/all.min.css">
-    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
     <!-- Google Font: Source Sans Pro -->
-    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/libs/css/SourceSansPro.css}">
 
-    <!-- For dep-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
-    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
+    <script th:src="@{/libs/js/adminlte.min.js}"></script>
 
-    <script src="./View/libs/jquery/jquery.min.js"></script>
-    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="./View/libs/js/adminlte.min.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.min.js"></script>
-    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/libs/js/adminlte.min.js"></script>
 </head>
 <body class="hold-transition sidebar-collapse layout-top-nav">
 <div class="wrapper">
@@ -102,23 +91,21 @@
                                         <th>病号</th>
                                         <th>姓名</th>
                                         <th>就诊地点</th>
+                                        <th>医生姓名</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($arrs1 as $arr){ ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
-                                        <td><?php echo $arr['patient_name'] ?></td>
-                                        <td><?php echo $arr['staff_office'] ?></td>
+                                    <tr th:each="entries:${noticeList}">
+                                        <th scope="row" th:text="${entries['patient']['patientid']}"></th>
+                                        <td th:text="${entries['patient']['patientname']}"></td>
+                                        <td th:text="${entries['office']}"></td>
+                                        <td th:text="${entries['doctor']}"></td>
                                     </tr>
-                                    <?php }?>
                                     </tbody>
                                 </table>
                             </div>
                         </div><!-- /.card -->
-                    </div>
-                    <!-- /.col-md-6 -->
-                    <div class="col-lg-6">
+
                         <div class="card card-warning">
                             <div class="card-header">
                                 <h5 class="card-title">队列情况</h5>
@@ -129,24 +116,24 @@
                                     <tr>
                                         <th>病号</th>
                                         <th>姓名</th>
-                                        <th>挂号时间</th>
+
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($arrs2 as $arr){ ?>
-                                    <tr>
-                                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
-                                        <td><?php echo $arr['patient_name'] ?></td>
-                                        <td><?php echo date('Y-m-d H:i:s',$arr['register_time']) ?></td>
+
+                                    <tr th:each="patient:${queueList}">
+                                        <th scope="row" th:text="${patient['patientid']}"></th>
+                                        <td th:text="${patient['patientname']}"></td>
                                     </tr>
-                                    <?php }?>
+
                                     </tbody>
                                 </table>
                                 <p>仅显示前10位病人</p>
                             </div>
                         </div>
                     </div>
-                    <!-- /.col-md-6 -->
+
+
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->

@@ -7,9 +7,7 @@ import cn.edu.nuaa.myclinic.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormatSymbols;
@@ -35,7 +33,7 @@ public class DoctorController {
         Staff staff = (Staff) request.getSession().getAttribute("staff");
         Long registerSize = doctorService.getRegisterSize(staff.getDep());
         if (registerSize!=0){
-            Map<String,Object> registryPatient = doctorService.callRegistryPatientWithTime(staff.getDep(),staff.getStaffname(),staff.getOffice());
+            Map<String,Object> registryPatient = doctorService.callRegistryPatientWithTime(staff.getDep(),staff.getStaffid(),staff.getStaffname(),staff.getOffice());
             model.addAttribute("registryPatient",registryPatient.get("value"));
             model.addAttribute("registrytime", registryPatient.get("score"));
             model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
@@ -46,7 +44,17 @@ public class DoctorController {
         }
     }
     @PostMapping("/checkedRegistryPatient")
-    public String CheckedRegistryPatient(HttpServletRequest request, Model model){
+    @ResponseBody
+    public String CheckedRegistryPatient(@RequestParam(name = "patientid") Integer patientid,@RequestParam(name = "staffid") Integer staffid,
+                                         @RequestParam(name = "checked") String checked,@RequestParam(name = "registrytime") Integer registrytime,
+                                         HttpServletRequest request, Model model){
+        //System.out.println("patientid: "+patientid+"--"+"staffid: "+staffid+"--"+"checked: "+checked);
+        if(checked.equals("true")){
+            //确认成功
+            Boolean b = doctorService.insertNewTreatment(patientid, staffid);
+        }else {
+            //过号
+        }
         return null;
     }
 }

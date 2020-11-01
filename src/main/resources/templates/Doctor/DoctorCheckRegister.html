@@ -60,7 +60,7 @@
                     <div class="col-12">
                         <div class="card card-warning">
                             <div class="card-header">
-                                <h3 class="card-title">病号：<span th:text="${registryPatient.getPatientid()}"></span> </h3>
+                                <h3 class="card-title">病号：<span th:text="${registryPatient['patientid']}"></span> </h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
@@ -70,28 +70,24 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="patientname">姓名</label>
-                                                <input type="text" class="form-control" id="patientname" name="Patientname" th:value="${registryPatient.getPatientname()}" readonly>
-                                                <input type="hidden" id="staff_id" name="staffid" th:value="${session.staff.getStaffid()}">
-                                                <input type="hidden" name="patient_id" th:value="${registryPatient.getPatientid()}">
+                                                <input type="text" class="form-control" id="patientname" name="Patientname" th:value="${registryPatient['patientname']}" readonly>
+                                                <input type="hidden" id="staffid" name="staffid" th:value="${session.staff.getStaffid()}">
+                                                <input type="hidden" name="patientid" th:value="${registryPatient['patientid']}">
                                             </div>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                <label>电话</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
+                                        <div class="col-8">
                                             <div class="form-group">
                                                 <label>挂号时间</label><br>
                                                 <span th:text="${registrytime}"></span>
+                                                <input type="hidden" name="registrytime" th:value="${registrytime}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-warning">确认</button>
-                                    <button type="button" class="btn btn-danger float-right" id="passbtn" onclick="">过号</button>
+                                    <button type="submit" class="btn btn-warning" name="checked" value="true">确认</button>
+                                    <button type="submit" class="btn btn-danger float-right" id="passbtn" name="checked" value="false">过号</button>
                                 </div>
                             </form>
                         </div>
