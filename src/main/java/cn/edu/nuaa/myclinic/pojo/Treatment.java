@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +18,6 @@ public class Treatment {
     private String presentillness;
     private String pastillness;
     private String diagnose;
-    private String prescription;
+    private List<Prescription> prescriptions;
     private Boolean completed;
 }

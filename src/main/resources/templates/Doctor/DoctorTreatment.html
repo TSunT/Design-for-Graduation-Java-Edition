@@ -84,7 +84,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <form action="?con=Doctor&ac=postTreatmentInfo" method="post">
+                            <form th:action="@{/toDoctor/postTreatmentHandler}" method="post" id="treatmentform">
                                 <div class="card-body">
                                     <div class="tab-content" id="custom-tabs-one-tabContent">
                                         <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
@@ -245,6 +245,7 @@
 
                                                         </tbody>
                                                     </table>
+                                                    <input type="hidden" name="prescriptions" id="prescriptions">
                                                 </div>
                                             </div>
 
@@ -253,8 +254,8 @@
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <input type="submit" name="action" value="提交" class="btn btn-success">
-                                    <input type="submit" name="action" value="保存" class="btn btn-warning">
+                                    <input type="button" id="treatmentinfosubmit" name="action" value="提交" class="btn btn-success">
+                                    <input type="button" name="action" value="保存" class="btn btn-warning">
                                     <button type="reset" class="btn btn-danger float-right" id="delete">退出</button>
                                 </div><!-- /.card-footer -->
                             </form>
@@ -387,35 +388,46 @@
     function add(medicine_id,name,cost){
 
         var trHTML = '<tr>'+
-            '<td>'+medicine_id+'</td>'+
-            '<td>'+name+'</td>'+
-            '<td>'+'<input type="number" name="medicinenum'+medicine_id+'" value="1">'+'</td>'+
-            '<td>'+cost+'</td>'+
+            '<td>'+medicine_id+'<input type="hidden" id="medicinenid" name="medicineid[]" value="'+medicine_id+'">'+'</td>'+
+            '<td>'+name+'<input type="hidden" id="medicinename" name="medicinename[]" value="'+name+'">'+'</td>'+
+            '<td>'+'<input type="number" id="medicinenum" name="medicinenum[]" value="1">'+'</td>'+
+            '<td>'+cost+'<input type="hidden" id="medicinecost" name="medicinecost[]" value="'+cost+'">'+'</td>'+
             '<td>'+'<button class="btn btn-warning btn-xs" id="check">删除</button>'+'</td>'+
             '</tr>';
         $("#todolist").append(trHTML);//在table最后面添加一行
-        var prescript = new Prescript();
-        prescript.medicineid=medicine_id;
-        prescript.medicinename=name;
-        prescript.cost=cost;
-        prescriptions.push(prescript);
-        console.log(prescriptions);
+
     }
 
     //监听是否选中某行，该监听是持续的
-
     $('#todolist tbody').on( 'click', '#check', function () {
 
         //获取行
         var row = $("table#todolist tr").index($(this).closest("tr"));
+
         //获取某列（从0列开始计数）的值
         var id = $("table#todolist").find("tr").eq(row).find("td").eq(0).text();
 
         $(this).parent().parent().remove();
-
         var updateId=id;
-
     } );
+
+
+    //提交就诊信息
+    $('#treatmentinfosubmit').click(function () {
+        // $('#prescriptions').val(JSON.stringify(prescriptions));
+        // var formdata = $("#treatmentform").serializeObject();
+        // var stringifyfrom = JSON.stringify(formdata);
+        // console.log(stringifyfrom);
+        // $.ajax({
+        //     type : "Post",
+        //     contentType : "application/json; charset=utf-8",
+        //     // 方法所在页面和方法名
+        //     dataType : "json",
+        //     data : stringifyfrom,
+        //     url : "postTreatmentHandler",
+        // });
+        $("#treatmentform").submit();
+    })
     //禁止f5刷新
     // document.onkeydown = function (e) {
     //     var ev = window.event || e;
@@ -427,6 +439,24 @@
     //     }
     // }
     // document.oncontextmenu=function(){return false};//禁止右键刷新
+
+    //序列化from
+    //form序列化为json
+    $.fn.serializeObject = function() {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
 </script>
 </body>
 </html>

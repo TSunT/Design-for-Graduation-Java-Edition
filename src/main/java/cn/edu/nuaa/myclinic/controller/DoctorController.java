@@ -12,10 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/toDoctor")
@@ -104,5 +101,16 @@ public class DoctorController {
         Map<String,Object> result = new HashMap();
         result.put("pageInfo",allMedicines);
         return result;
+    }
+    @PostMapping("/postTreatmentHandler")
+    @ResponseBody
+    public String postTreatmentHandler(@RequestParam(name="medicineid[]" ,required = false) int[] medicineids,
+                                       @RequestParam(name="medicinename[]",required = false) String[] medicinenames,
+                                       @RequestParam(name="medicinenum[]",required = false) int[] medicinenums,
+                                       @RequestParam(name="medicinecost[]",required = false) int[] medicinecost){
+        System.out.println(medicineids.length);
+        System.out.println(medicineids[0]+"->>>"+medicinenames[0]+"->>>"+medicinenums[0]+"->>>"+medicinecost[0]);
+        System.out.println(medicineids[1]+"->>>"+medicinenames[1]+"->>>"+medicinenums[1]+"->>>"+medicinecost[1]);
+        return "true";
     }
 }
