@@ -16,7 +16,6 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRoleMapper.loadUserByUsername(s);
         if (user==null) throw new UsernameNotFoundException("the user is not exist in database");
-        System.out.println(user.getUsername());
         user.setRoles(userRoleMapper.getUserRolesByUserId(user.getId()));
         return user;
     }

@@ -1,17 +1,18 @@
 package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.DocterMapper;
+import cn.edu.nuaa.myclinic.pojo.Medicine;
+import cn.edu.nuaa.myclinic.pojo.Patient;
 import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import cn.edu.nuaa.myclinic.pojo.Staff;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DoctorService {
@@ -36,24 +37,46 @@ public class DoctorService {
         for (ZSetOperations.TypedTuple<PatientBrief> tuple:set){
             PatientBrief value = tuple.getValue();
             map.put("value",value);
-            insertToNotice(depid,staffid,staffname,value,office);
+            opsforNoticeList(depid,staffid,staffname,value,office,true);
             redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
             Date date = new Date(tuple.getScore().longValue());
             map.put("score",date);
         }
         return map;
     }
-    private void insertToNotice(Integer depid,Integer staffid, String staffname,PatientBrief patientBrief,String office){
+    private void opsforNoticeList(Integer depid, Integer staffid, String staffname, PatientBrief patientBrief, String office,Boolean inserted){
         Map<String,Object> map = new HashMap<>();
         map.put("patient",patientBrief);
         map.put("doctor",staffname);
         map.put("office",office);
         map.put("staffid",staffid);
-        redisTemplate.opsForList().leftPush("depNoticeList"+depid,map);
+        if(inserted){
+            //添加通知
+            redisTemplate.opsForList().leftPush("depNoticeList"+depid,map);
+        }else {
+            //删除通知
+            redisTemplate.opsForList().remove("depNoticeList"+depid,1,map);
+        }
+
     }
 
-    public Boolean insertNewTreatment(Integer patientid,Integer staffid){
-        Integer res = docterMapper.insertNewTreatment(patientid, staffid, new Date());
+    public Boolean insertNewTreatment(Integer patientid,Integer staffid,Date treattime){
+        Integer res = docterMapper.insertNewTreatmentbrief(patientid, staffid, treattime);
         return res==1;
+    }
+    public Patient getOnePatientbyId(Integer pid){
+        return docterMapper.getOnePatientByid(pid);
+    }
+    public void removeNotice(Integer depid,Integer staffid,String staffname,String office,Integer patientid,String patientname){
+        PatientBrief patientBrief = new PatientBrief(patientid,patientname);
+        opsforNoticeList(depid,staffid,staffname,patientBrief,office,false);
+    }
+    public PageInfo<Medicine> getAllMedicine(int page,int size,String condition){
+        PageHelper.startPage(page,size);
+        if (condition.length()==0){
+            condition=null;
+        }
+        List<Medicine> medicineList = docterMapper.getAllMedicine(condition);
+        return new PageInfo<Medicine>(medicineList);
     }
 }

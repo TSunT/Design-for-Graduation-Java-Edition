@@ -10,7 +10,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
+/**
+ * @Author 无关痛痒
+ * @create 2020/5/8
+ * @Description: 方法是自定义redis的配置类，自定义序列化器
+ */
 @Configuration
 public class RedisConfig {
     @Bean

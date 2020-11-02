@@ -6,10 +6,16 @@
     <select id="getStaffBySid" resultType="Staff" parameterType="int">
         select * from staff where staffid = #{sid}
     </select>
-    <insert id="insertNewTreatment" >
-        insert into treatment(patinetid,staffid,time) values (#{pid},#{sid},#{time})
+    <insert id="insertNewTreatmentbrief" >
+        insert into treatmentbrief(patientid,staffid,time) values (#{pid},#{sid},#{time})
     </insert>
     <select id="getOnePatientByid" resultType="Patient">
         select * from patient where patientid = #{pid}
+    </select>
+    <select id="getAllMedicine" resultType="medicine">
+        select * from medicine where 1=1
+        <if test="condition != null">
+            and medicinename like CONCAT('%',#{condition},'%')
+        </if>
     </select>
 </mapper>

@@ -70,7 +70,7 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="patientname">姓名</label>
-                                                <input type="text" class="form-control" id="patientname" name="Patientname" th:value="${registryPatient['patientname']}" readonly>
+                                                <input type="text" class="form-control" id="patientname" name="patientname" th:value="${registryPatient['patientname']}" readonly>
                                                 <input type="hidden" id="staffid" name="staffid" th:value="${session.staff.getStaffid()}">
                                                 <input type="hidden" name="patientid" th:value="${registryPatient['patientid']}">
                                             </div>

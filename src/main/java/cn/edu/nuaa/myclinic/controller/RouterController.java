@@ -46,7 +46,6 @@ public class RouterController {
             Object[] objects = ((UserDetails) authentication.getPrincipal()).getAuthorities().toArray();
             if (objects.length>=1){
                 String role = objects[0].toString();
-                System.out.println(role);
                 switch (role){
                     case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
                     case "ROLE_DOCTOR" : return "redirect:/toDoctor/index";

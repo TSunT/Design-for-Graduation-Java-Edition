@@ -234,7 +234,7 @@
             $("#identity").addClass("is-invalid");
             $("#identityvaditionInfo").addClass("invalid-feedback");
             $("#identityvaditionInfo").text("身份证号错误");
-            $("#btn_sub").attr("disabled",false);
+            $("#btn_sub").attr("disabled",ture);
         }else {
             $.get("checkIdentity", {"identity": identitytext}, function (result) {
                 if (result.result) {
@@ -242,11 +242,11 @@
                     $("#identity").addClass("is-valid");
                     $("#identityvaditionInfo").removeClass("invalid-feedback");
                     $("#identityvaditionInfo").addClass("valid-feedback");
-                    $("#btn_sub").attr("disabled",true);
+                    $("#btn_sub").attr("disabled",false);
                 } else {
                     $("#identity").addClass("is-invalid");
                     $("#identityvaditionInfo").addClass("invalid-feedback");
-                    $("#btn_sub").attr("disabled",false);
+                    $("#btn_sub").attr("disabled",true);
                 }
                 $("#identityvaditionInfo").text(result.info);
             }, "json");
