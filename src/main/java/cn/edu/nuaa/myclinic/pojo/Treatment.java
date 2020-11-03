@@ -18,6 +18,5 @@ public class Treatment {
     private String presentillness;
     private String pastillness;
     private String diagnose;
-    private List<Prescription> prescriptions;
-    private Boolean completed;
+    private String prescription;
 }

@@ -79,7 +79,7 @@
                                             <div class="form-group">
                                                 <label>挂号时间</label><br>
                                                 <span th:text="${registrytime}"></span>
-                                                <input type="hidden" name="registrytime" th:value="${registrytime}">
+                                                <input type="hidden" name="registrytime" th:value="${#dates.format(registrytime,'yyyy-MM-dd HH:mm:ss')}">
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +128,7 @@
             //跳转地址
             //找控制器？表示当前文件（病人控制器）
             //ac(action)表示要操作的动作
-            location.href="?con=&ac=passOnePatient&id="+<?=$arr['patient_id']?>+"&time="+<?=$arr['register_time']?>;
+            location.href="?con=&ac=passOnePatient&id=";
         }
     }
 

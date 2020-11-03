@@ -6,8 +6,8 @@
     <select id="getStaffBySid" resultType="Staff" parameterType="int">
         select * from staff where staffid = #{sid}
     </select>
-    <insert id="insertNewTreatmentbrief" >
-        insert into treatmentbrief(patientid,staffid,time) values (#{pid},#{sid},#{time})
+    <insert id="insertNewTreatmentbrief" useGeneratedKeys="true" keyProperty="tbid" >
+        insert into treatmentbrief(patientid,staffid,time) values (#{patientid},#{staffid},#{time})
     </insert>
     <select id="getOnePatientByid" resultType="Patient">
         select * from patient where patientid = #{pid}
@@ -18,4 +18,17 @@
             and medicinename like CONCAT('%',#{condition},'%')
         </if>
     </select>
+    <insert id="insertTreatment" useGeneratedKeys="true" keyProperty="treatmentid">
+        insert into treatment (heartrate,bloodpressure,temperature,patientsymptoms,presentillness,pastillness,diagnose,prescription)
+        values (#{heartrate},#{bloodpressure},#{temperature},#{patientsymptoms},#{presentillness},#{pastillness},#{diagnose},#{prescription})
+    </insert>
+    <insert id="updateTreatmentbrief" >
+        update treatmentbrief set treatmentid = #{treatmentid}, diagnose = #{diagnose} , completed = #{completed} where tbid = #{tbid}
+    </insert>
+    <insert id="insertPrescription" parameterType="Prescription">
+        insert into prescription (staffid,patientid,time,medicineid,num,take,paid) values (#{staffid},#{patientid},#{time},#{medicineid},#{num},#{take},#{paid})
+    </insert>
+    <insert id="insertPayment" parameterType="Payment">
+        insert into payment(patientid,staffid,time, totalcost,paid) values (#{patientid},#{staffid},#{time},#{totalcost},#{paid})
+    </insert>
 </mapper>

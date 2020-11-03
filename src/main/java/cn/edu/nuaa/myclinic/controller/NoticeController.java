@@ -25,9 +25,7 @@ public class NoticeController {
     @PostMapping("/showNoticeList")
     public String showNoticeList(@RequestParam(name = "depid") Integer depid, Model model){
         List<Map<String,Object>> noticeList = noticeService.noticeList(depid);
-        System.out.println(noticeList);
         Object[] queueList = noticeService.queueList(depid);
-        System.out.println(queueList);
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("queueList",queueList);
         return "Notice/Noticedisplay";

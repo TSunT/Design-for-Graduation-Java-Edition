@@ -127,7 +127,7 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label>挂号时间:</label><br><span th:text="${registryTime}"></span>
+<!--                                                        <label>挂号时间:</label><br><span th:text="${registryTime}"></span>-->
                                                     </div>
                                                 </div>
                                             </div><hr>
@@ -140,8 +140,9 @@
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
-                                                        <label>就诊时间时间:</label><br><span th:text="${treattime}"></span>
-                                                        <input type="hidden" name="time" th:value="${treattime}">
+                                                        <label>就诊时间时间:</label><br><span th:text="${#dates.format(treattime,'yyyy-MM-dd HH:mm:ss')}"></span>
+<!--                                                        <input type="hidden" name="time" th:value="${treattime}">-->
+                                                    <input type="hidden" name="time" th:value="${#dates.format(treattime,'yyyy-MM-dd HH:mm:ss')}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -191,7 +192,6 @@
                                             <input type="text" class="form-control" id="diagnose" name="diagnose">
                                         </div>
                                         <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
-                                            <input type="hidden"  name="isprescription" value="false">
                                             <div class="col-12">
                                                 <div class="icheck-primary d-inline">
                                                     <input type="checkbox" id="checkboxPrimary2" name="isprescription" value="true">
@@ -245,7 +245,6 @@
 
                                                         </tbody>
                                                     </table>
-                                                    <input type="hidden" name="prescriptions" id="prescriptions">
                                                 </div>
                                             </div>
 
@@ -309,7 +308,7 @@
             <tr>
                 <th scope="row" width="150px"><?php echo date('Y-m-d',$arr2['add_time']) ?></th>
                 <td><?php echo $arr2['diagnose'] ?></td>
-                <td width="50px"><a id="check" onclick="return confirm();" href="?con=Doctor&ac=showPatientTreament&patient_id=<?=$arr['patient_id']?>&add_time=<?=$arr2['add_time']?>">查看</a> </td>
+                <td width="50px"><a id="checkjump" onclick="return confirm();" href="?con=Doctor&ac=showPatientTreament&patient_id=<?=$arr['patient_id']?>&add_time=<?=$arr2['add_time']?>">查看</a> </td>
             </tr>
             <?php } ?>
             </tbody>
@@ -373,7 +372,7 @@
     $(function () {
         loadMedicineList(1,10);
     });
-    // var checkbtn=document.getElementById('check');
+    // var checkbtn=document.getElementById('checkjump');
     // checkbtn.onclick=function () {
     //     //询问是否要删除
     //     return  window.confirm('填写的内容将清除，请确定是否保存！');
@@ -388,10 +387,10 @@
     function add(medicine_id,name,cost){
 
         var trHTML = '<tr>'+
-            '<td>'+medicine_id+'<input type="hidden" id="medicinenid" name="medicineid[]" value="'+medicine_id+'">'+'</td>'+
-            '<td>'+name+'<input type="hidden" id="medicinename" name="medicinename[]" value="'+name+'">'+'</td>'+
-            '<td>'+'<input type="number" id="medicinenum" name="medicinenum[]" value="1">'+'</td>'+
-            '<td>'+cost+'<input type="hidden" id="medicinecost" name="medicinecost[]" value="'+cost+'">'+'</td>'+
+            '<td>'+medicine_id+'<input type="hidden" class="medicinenid" name="medicineid[]" value="'+medicine_id+'">'+'</td>'+
+            '<td>'+name+'<input type="hidden" class="medicinename" name="medicinename[]" value="'+name+'">'+'</td>'+
+            '<td>'+'<input type="number" class="medicinenum" name="medicinenum[]" value="1">'+'</td>'+
+            '<td>'+cost+'<input type="hidden" class="medicinecost" name="medicinecost[]" value="'+cost+'">'+'</td>'+
             '<td>'+'<button class="btn btn-warning btn-xs" id="check">删除</button>'+'</td>'+
             '</tr>';
         $("#todolist").append(trHTML);//在table最后面添加一行
@@ -440,23 +439,6 @@
     // }
     // document.oncontextmenu=function(){return false};//禁止右键刷新
 
-    //序列化from
-    //form序列化为json
-    $.fn.serializeObject = function() {
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function() {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
 </script>
 </body>
 </html>

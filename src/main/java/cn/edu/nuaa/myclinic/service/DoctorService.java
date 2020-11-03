@@ -1,16 +1,15 @@
 package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.DocterMapper;
-import cn.edu.nuaa.myclinic.pojo.Medicine;
-import cn.edu.nuaa.myclinic.pojo.Patient;
-import cn.edu.nuaa.myclinic.pojo.PatientBrief;
-import cn.edu.nuaa.myclinic.pojo.Staff;
+import cn.edu.nuaa.myclinic.pojo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,7 +37,8 @@ public class DoctorService {
             PatientBrief value = tuple.getValue();
             map.put("value",value);
             opsforNoticeList(depid,staffid,staffname,value,office,true);
-            redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
+            //测试成功记得把下列注释打开
+            //redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
             Date date = new Date(tuple.getScore().longValue());
             map.put("score",date);
         }
@@ -59,18 +59,21 @@ public class DoctorService {
         }
 
     }
-
-    public Boolean insertNewTreatment(Integer patientid,Integer staffid,Date treattime){
-        Integer res = docterMapper.insertNewTreatmentbrief(patientid, staffid, treattime);
-        return res==1;
+    //持久化简略就诊信息
+    public Integer insertNewTreatmentbiref(Integer patientid,Integer staffid,Date treattime){
+        Treatmentbrief treatmentbrief = new Treatmentbrief(patientid,staffid,treattime);
+        docterMapper.insertNewTreatmentbrief(treatmentbrief);
+        return treatmentbrief.getTbid();
     }
     public Patient getOnePatientbyId(Integer pid){
         return docterMapper.getOnePatientByid(pid);
     }
+    //删除提醒列表相关病人信息
     public void removeNotice(Integer depid,Integer staffid,String staffname,String office,Integer patientid,String patientname){
         PatientBrief patientBrief = new PatientBrief(patientid,patientname);
         opsforNoticeList(depid,staffid,staffname,patientBrief,office,false);
     }
+    //获取药品信息
     public PageInfo<Medicine> getAllMedicine(int page,int size,String condition){
         PageHelper.startPage(page,size);
         if (condition.length()==0){
@@ -79,4 +82,58 @@ public class DoctorService {
         List<Medicine> medicineList = docterMapper.getAllMedicine(condition);
         return new PageInfo<Medicine>(medicineList);
     }
+    //处理详细就诊信息并持久化
+    public Boolean postTreatmentHandler(Integer tbid,Integer heartrate,Integer bloodpressure,Integer temperature,
+                                        String patientsymptoms,String presentillness,String pastillness,String diagnose,
+                                        String[] medicinenames ,int[] medicinenums,Boolean completed){
+        Treatment treatment=new Treatment();
+        treatment.setBloodpressure(bloodpressure);
+        treatment.setDiagnose(diagnose);
+        treatment.setHeartrate(heartrate);
+        treatment.setPastillness(pastillness);
+        treatment.setPresentillness(presentillness);
+        treatment.setPatientsymptoms(patientsymptoms);
+        treatment.setTemperature(temperature);
+        if (medicinenames!=null&&medicinenums!=null){
+            String prescription = "";
+            StringBuilder stringBuilder = new StringBuilder(prescription);
+            for (int i = 0; i < medicinenames.length; i++) {
+                String strbuff=medicinenames[i]+"*"+medicinenums[i]+";";
+                stringBuilder.append(strbuff);
+            }
+            prescription=stringBuilder.toString();
+            treatment.setPrescription(prescription);
+        }else {
+            treatment.setPrescription("没开处方");
+        }
+        Integer insertTreatmentres = docterMapper.insertTreatment(treatment);
+        Integer treatmentid = treatment.getTreatmentid();
+        Integer updateTreatmentbriefres = docterMapper.updateTreatmentbrief(tbid, treatmentid, diagnose, completed);
+        return insertTreatmentres==1&&updateTreatmentbriefres==1;
+    }
+
+    //处理处方信息和支付信息
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Boolean postPrescriptionHandler(int[] medicineids,String[] medicinenames,int[] medicinenums,int[] medicinecosts,
+                                    Integer patientid,Integer staffid,Date time){
+        Boolean flag = false;
+        Boolean res = false;
+        int totalcost = 0;
+        for (int i = 0; i < medicineids.length; i++) {
+            Integer id = medicineids[i];
+            Integer num = medicinenums[i];
+            Integer cost = medicinecosts[i];
+            Prescription prescription = new Prescription(id,patientid,staffid,time,num,false,false);
+            flag = docterMapper.insertPrescription(prescription)==1;
+            if (!flag) throw new RuntimeException("添加处方异常,Exist an exception when insert prescription!");
+            cost = cost*num;
+            totalcost = totalcost +cost;
+        }
+        Payment payment = new Payment(patientid,staffid,time,totalcost,false);
+        Integer insertPayment = docterMapper.insertPayment(payment);
+        if (insertPayment!=1) throw new RuntimeException("添加支付信息异常,Exist an exception when insert the payment info!");
+        res = flag&&insertPayment==1;
+        return res;
+    }
+
 }

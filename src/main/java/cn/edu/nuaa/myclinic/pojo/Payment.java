@@ -8,14 +8,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Prescription implements Serializable {
-    private Integer medicineid;
+@AllArgsConstructor
+public class Payment implements Serializable {
     private Integer patientid;
     private Integer staffid;
     private Date time;
-    private Integer num;
-    private Boolean take;
+    private Integer totalcost;
     private Boolean paid;
 }
