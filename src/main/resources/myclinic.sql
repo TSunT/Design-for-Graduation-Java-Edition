@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 03/11/2020 18:27:00
+ Date: 04/11/2020 18:03:36
 */
 
 SET NAMES utf8mb4;
@@ -125,7 +125,6 @@ CREATE TABLE `payment`  (
 -- ----------------------------
 -- Records of payment
 -- ----------------------------
-INSERT INTO `payment` VALUES (9, 5, '2020-11-03 10:25:47', 80, 0);
 
 -- ----------------------------
 -- Table structure for prescription
@@ -150,8 +149,6 @@ CREATE TABLE `prescription`  (
 -- ----------------------------
 -- Records of prescription
 -- ----------------------------
-INSERT INTO `prescription` VALUES (5, 9, '2020-11-03 10:25:47', 5, 2, 0, 0);
-INSERT INTO `prescription` VALUES (5, 9, '2020-11-03 10:25:47', 7, 1, 0, 0);
 
 -- ----------------------------
 -- Table structure for role
@@ -216,12 +213,18 @@ CREATE TABLE `treatment`  (
   `prescription` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `treatmentid` int(0) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`treatmentid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of treatment
 -- ----------------------------
-INSERT INTO `treatment` VALUES (64, 54, 37, '胸痛', '一月下旬再次出现胸闷、气急、心悸加重，夜间不能平卧，阵发性心前区隐痛，轻度咳嗽，咯白色粘痰，自觉无发热，无咯血。', '平时体质较差,易患感冒。无肝炎及结核病史。未作预防接种已近30 年。 系统回顾:无眼痛、视力障碍，无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', '冠心病', '红霉素片*2;阿昔洛韦*1;', 5);
+INSERT INTO `treatment` VALUES (64, 54, 37, '嗓子疼痛3天', '轻度咳嗽，咯白色粘痰，发热，无咯血。', '平时体质较差,易患感冒。无肝炎及结核病史。未作预防接种已近30 年，无眼痛、视力障碍，无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', '咽炎', '没开处方', 11);
+INSERT INTO `treatment` VALUES (88, 23, 22, 'xx', 'xxx', 'xxxx', '', '没开处方', 13);
+INSERT INTO `treatment` VALUES (88, 23, 22, '嗓子疼痛3天', '轻度咳嗽，咯白色粘痰，发热，无咯血。', '平时体质较差,易患感冒。无肝炎及结核病史。未作预防接种已近30 年，无眼痛、视力障碍，无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', '', '没开处方', 14);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 15);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 16);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 17);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 18);
 
 -- ----------------------------
 -- Table structure for treatmentbrief
@@ -235,6 +238,7 @@ CREATE TABLE `treatmentbrief`  (
   `diagnose` varchar(60) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `tbid` int(0) NOT NULL AUTO_INCREMENT,
   `completed` tinyint(1) NULL DEFAULT 0,
+  `patientname` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   PRIMARY KEY (`tbid`) USING BTREE,
   INDEX `patientid`(`patientid`) USING BTREE,
   INDEX `staffid`(`staffid`) USING BTREE,
@@ -242,12 +246,14 @@ CREATE TABLE `treatmentbrief`  (
   CONSTRAINT `treatmentbrief_ibfk_1` FOREIGN KEY (`patientid`) REFERENCES `patient` (`patientid`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `treatmentbrief_ibfk_2` FOREIGN KEY (`staffid`) REFERENCES `staff` (`staffid`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `treatmentbrief_ibfk_3` FOREIGN KEY (`treatmentid`) REFERENCES `treatment` (`treatmentid`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of treatmentbrief
 -- ----------------------------
-INSERT INTO `treatmentbrief` VALUES (9, 5, '2020-11-03 10:25:01', 5, '冠心病', 8, 1);
+INSERT INTO `treatmentbrief` VALUES (10, 5, '2020-11-04 07:16:15', 11, '咽炎', 20, 1, 'patient10');
+INSERT INTO `treatmentbrief` VALUES (3, 5, '2020-11-04 09:59:04', 17, '', 27, 1, 'patient3');
+INSERT INTO `treatmentbrief` VALUES (7, 5, '2020-11-04 10:01:58', 18, '', 28, 0, 'patient7');
 
 -- ----------------------------
 -- Table structure for user
@@ -270,11 +276,11 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 48, 1);
-INSERT INTO `user` VALUES (2, 'user2', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '::0', 0, 2);
-INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 71, 3);
+INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 50, 1);
+INSERT INTO `user` VALUES (2, 'user2', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 1, 2);
+INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 79, 3);
 INSERT INTO `user` VALUES (15, 'user4', '$2a$10$6SCtX1k1TUp3lHkeRnqVjODWMHQ1hQu9E0Oj8mXbjTHOhdawYcPhe', 1, 0, '0:0:0:0:0:0:0:1', 1, NULL);
-INSERT INTO `user` VALUES (16, 'user5', '$2a$10$3IzMDU2x/lOQa07IKtYUuO1YloGM7yjxD7awQ2zjVsYfsbmR10EXK', 1, 0, '0:0:0:0:0:0:0:1', 81, 5);
+INSERT INTO `user` VALUES (16, 'user5', '$2a$10$3IzMDU2x/lOQa07IKtYUuO1YloGM7yjxD7awQ2zjVsYfsbmR10EXK', 1, 0, '0:0:0:0:0:0:0:1', 106, 5);
 INSERT INTO `user` VALUES (17, 'user6', '$2a$10$chkFjOSZflKL9Kch/EhD3.37P7hC87/NcPeta5JMOJexbYDgrpP.m', 1, 0, '0:0:0:0:0:0:0:1', 1, 6);
 INSERT INTO `user` VALUES (18, 'notice', '$2a$10$o5npDWNTYwf4H.4OSA4v1.Lny0oHIF814hFRWTLjGrSdle3gF/HY6', 1, 0, '0:0:0:0:0:0:0:1', 8, 7);
 

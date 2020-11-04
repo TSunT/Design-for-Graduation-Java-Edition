@@ -95,7 +95,7 @@ public class DoctorController {
             Staff staff = (Staff) request.getSession().getAttribute("staff");
             doctorService.removeNotice(staff.getDep(),staffid,staff.getStaffname(),staff.getOffice(),patientid,patientname);
             Date treattime = new Date();
-            Integer tbid = doctorService.insertNewTreatmentbiref(patientid,staffid, treattime);
+            Integer tbid = doctorService.insertNewTreatmentbiref(patientid,staffid, treattime,patientname);
             HttpSession session = request.getSession();
             session.setAttribute("presentTreatmentbirefid",tbid);
             session.setAttribute("presentTreatmentTime",treattime);
@@ -113,6 +113,8 @@ public class DoctorController {
         Integer patientid = (Integer) session.getAttribute("presentPatientid");
         Date treattime = (Date) session.getAttribute("presentTreatmentTime");
         Patient patient = doctorService.getOnePatientbyId(patientid);
+        Staff staff = (Staff) session.getAttribute("staff");
+        model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
         model.addAttribute("patientInfo",patient);
         model.addAttribute("patientAge",calculateAge(patient.getPatientidentity()));
         model.addAttribute("staffInfo",session.getAttribute("staff"));
@@ -131,38 +133,80 @@ public class DoctorController {
         result.put("pageInfo",allMedicines);
         return result;
     }
+
     @PostMapping("/postTreatmentHandler")
-    @ResponseBody
-    public String postTreatmentHandler(@RequestParam(name = "isprescription",defaultValue = "false") Boolean isprescription,
-                                       @RequestParam(name="medicineid[]" ,required = false) int[] medicineids,
-                                       @RequestParam(name="medicinename[]",required = false) String[] medicinenames,
-                                       @RequestParam(name="medicinenum[]",required = false) int[] medicinenums,
-                                       @RequestParam(name="medicinecost[]",required = false) int[] medicinecost,
-                                       Integer staffid,Integer patientid,Integer patientage,String allergy,
-                                       Integer temperature,Integer bloodpressure,Integer heartrate,
-                                       String symptoms,String present_illness,String past_illness,String diagnose,
-                                       Model model,HttpServletRequest request){
+    public String postTreatment(@RequestParam(name = "isprescription",defaultValue = "false") Boolean isprescription,
+                                @RequestParam(name="medicineid[]" ,required = false) int[] medicineids,
+                                @RequestParam(name="medicinename[]",required = false) String[] medicinenames,
+                                @RequestParam(name="medicinenum[]",required = false) int[] medicinenums,
+                                @RequestParam(name="medicinecost[]",required = false) int[] medicinecost,
+                                Integer staffid,Integer patientid, Integer temperature,Integer bloodpressure,
+                                Integer heartrate,Boolean saveflag, String symptoms,String present_illness,
+                                String past_illness,String diagnose, Model model,HttpServletRequest request){
 
         //记录病情信息和治疗信息
         HttpSession session = request.getSession();
         Integer tbid = (Integer) session.getAttribute("presentTreatmentbirefid");
+        Boolean res1 = false;
+        Boolean res2 = false;
         if(tbid!=null){
-            doctorService.postTreatmentHandler(tbid,heartrate,bloodpressure,temperature,symptoms,present_illness,past_illness,diagnose,medicinenames,medicinenums,true);
+            res1 = doctorService.postTreatmentHandler(tbid, heartrate, bloodpressure, temperature, symptoms, present_illness, past_illness, diagnose, medicinenames, medicinenums, !saveflag);
         }
         //添加处方和支付信息
-        if (isprescription) {
-            System.out.println(medicineids.length);
-            System.out.println(medicineids[0]+"->>>"+medicinenames[0]+"->>>"+medicinenums[0]+"->>>"+medicinecost[0]);
-            System.out.println(medicineids[1]+"->>>"+medicinenames[1]+"->>>"+medicinenums[1]+"->>>"+medicinecost[1]);
-            Boolean b = doctorService.postPrescriptionHandler(medicineids, medicinenames, medicinenums, medicinecost, patientid, staffid, new Date());
-            System.out.println(b);
+        if (isprescription&& !saveflag) {
+            res2 = doctorService.postPrescriptionHandler(medicineids, medicinenames, medicinenums, medicinecost, patientid, staffid, new Date());
+        }else {
+            //若没开处方，修改标记为true
+            res2 = true;
         }
-
-        //如果治疗信息、处方信息、支付信息处理成功，删除相关session属性
-        session.removeAttribute("presentTreatmentbirefid");
-        session.removeAttribute("presentTreatmentTime");
-        session.removeAttribute("presentPatientid");
-        return "true";
+        if (res1&&res2){
+            //如果治疗信息、处方信息、支付信息处理成功，删除相关session属性
+            session.removeAttribute("presentTreatmentbirefid");
+            session.removeAttribute("presentTreatmentTime");
+            session.removeAttribute("presentPatientid");
+        }else {
+            model.addAttribute("erro","提交不成功");
+            return null;
+        }
+        return "redirect:/toDoctor/index";
     }
 
+    @GetMapping("/showTreatCompletedView")
+    public String showTreatCompletedView(HttpServletRequest request,Model model){
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
+        return "Doctor/showPatientscompletedList";
+    }
+
+    @GetMapping(value = "/getTreatCompletedList",produces = { "application/json;charset=UTF-8"})
+    @ResponseBody
+    public Map<String,PageInfo<Treatmentbrief>> getTreatCompletedList(@RequestParam(name="page" ,defaultValue = "1") int page,
+                                        @RequestParam(name = "size",defaultValue = "10") int size,
+                                        @RequestParam(name = "condition",required = false) String condition,
+                                        HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        PageInfo<Treatmentbrief> treatmentbriefPageInfo = doctorService.showTreatCompletedList(staff.getStaffid(), page, size, condition);
+        Map<String,PageInfo<Treatmentbrief>> result = new HashMap<>();
+        result.put("pageInfo",treatmentbriefPageInfo);
+        return result;
+    }
+    @GetMapping("/showtreatmentcompleteddetail")
+    public String showTreatmentCompleteDetial(@RequestParam(name="tbid") Integer tbid,Model model){
+        Map<String,Object> treatmentInfo = doctorService.getTreatmentCompletedDetail(tbid);
+        if (treatmentInfo!=null){
+            model.addAttribute("treatmentInfo",treatmentInfo);
+            Treatmentbrief treatmentbrief = (Treatmentbrief) treatmentInfo.get("treatmentbrief");
+            Integer patientid = treatmentbrief.getPatientid();
+            Patient onePatientbyId = doctorService.getOnePatientbyId(patientid);
+            model.addAttribute("patientInfo",onePatientbyId);
+            model.addAttribute("patientAge",calculateAge(onePatientbyId.getPatientidentity()));
+            String staffname = doctorService.getStaffnameByid(treatmentbrief.getStaffid());
+            model.addAttribute("staffname",staffname);
+            return "Doctor/DoctorShowOnePatient";
+        }
+        //出错
+        return "Doctor/DoctorShowOnePatient";
+    }
 }

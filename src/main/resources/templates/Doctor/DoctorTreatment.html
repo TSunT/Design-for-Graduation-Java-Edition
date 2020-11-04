@@ -251,10 +251,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" id="saveflag" name="saveflag">
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <input type="button" id="treatmentinfosubmit" name="action" value="提交" class="btn btn-success">
-                                    <input type="button" name="action" value="保存" class="btn btn-warning">
+                                    <input type="button" id="savetreatmentbtn" name="action" value="保存" class="btn btn-warning">
                                     <button type="reset" class="btn btn-danger float-right" id="delete">退出</button>
                                 </div><!-- /.card-footer -->
                             </form>
@@ -372,6 +373,9 @@
     $(function () {
         loadMedicineList(1,10);
     });
+    $('#search-medicine').blur(function () {
+        loadMedicineList(1,10);
+    })
     // var checkbtn=document.getElementById('checkjump');
     // checkbtn.onclick=function () {
     //     //询问是否要删除
@@ -413,20 +417,13 @@
 
     //提交就诊信息
     $('#treatmentinfosubmit').click(function () {
-        // $('#prescriptions').val(JSON.stringify(prescriptions));
-        // var formdata = $("#treatmentform").serializeObject();
-        // var stringifyfrom = JSON.stringify(formdata);
-        // console.log(stringifyfrom);
-        // $.ajax({
-        //     type : "Post",
-        //     contentType : "application/json; charset=utf-8",
-        //     // 方法所在页面和方法名
-        //     dataType : "json",
-        //     data : stringifyfrom,
-        //     url : "postTreatmentHandler",
-        // });
+        $('#saveflag').val("false");
         $("#treatmentform").submit();
-    })
+    });
+    $('#savetreatmentbtn').click(function (){
+        $('#saveflag').val("true");
+        $("#treatmentform").submit();
+    });
     //禁止f5刷新
     // document.onkeydown = function (e) {
     //     var ev = window.event || e;

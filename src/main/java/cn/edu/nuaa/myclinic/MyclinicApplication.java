@@ -13,12 +13,4 @@ public class MyclinicApplication {
         SpringApplication.run(MyclinicApplication.class, args);
     }
 
-    /**
-     * 服务器时区设置
-     * 解决服务端时差问题
-     */
-    //@PostConstruct
-    void setDefaultTimezone() {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
-    }
 }

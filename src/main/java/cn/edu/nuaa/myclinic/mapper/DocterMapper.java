@@ -18,4 +18,8 @@ public interface DocterMapper {
     public Integer updateTreatmentbrief(Integer tbid,Integer treatmentid,String diagnose,Boolean completed);
     public Integer insertPrescription(Prescription prescription);
     public Integer insertPayment(Payment payment);
+    public List<Treatmentbrief> getTreatCompletedList(Integer staffid,String condition);
+    public Treatmentbrief getOneTreatmentbriefBytbid(Integer tbid);
+    public Treatment getOneTreatmentByid(Integer id);
+    public String getStaffnameByid(Integer id);
 }

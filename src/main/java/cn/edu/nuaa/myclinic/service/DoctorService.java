@@ -38,7 +38,7 @@ public class DoctorService {
             map.put("value",value);
             opsforNoticeList(depid,staffid,staffname,value,office,true);
             //测试成功记得把下列注释打开
-            //redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
+            redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
             Date date = new Date(tuple.getScore().longValue());
             map.put("score",date);
         }
@@ -60,8 +60,8 @@ public class DoctorService {
 
     }
     //持久化简略就诊信息
-    public Integer insertNewTreatmentbiref(Integer patientid,Integer staffid,Date treattime){
-        Treatmentbrief treatmentbrief = new Treatmentbrief(patientid,staffid,treattime);
+    public Integer insertNewTreatmentbiref(Integer patientid,Integer staffid,Date treattime,String patientname){
+        Treatmentbrief treatmentbrief = new Treatmentbrief(patientid,staffid,treattime,patientname);
         docterMapper.insertNewTreatmentbrief(treatmentbrief);
         return treatmentbrief.getTbid();
     }
@@ -83,6 +83,7 @@ public class DoctorService {
         return new PageInfo<Medicine>(medicineList);
     }
     //处理详细就诊信息并持久化
+    @Transactional(propagation = Propagation.REQUIRED)
     public Boolean postTreatmentHandler(Integer tbid,Integer heartrate,Integer bloodpressure,Integer temperature,
                                         String patientsymptoms,String presentillness,String pastillness,String diagnose,
                                         String[] medicinenames ,int[] medicinenums,Boolean completed){
@@ -136,4 +137,27 @@ public class DoctorService {
         return res;
     }
 
+    public PageInfo<Treatmentbrief> showTreatCompletedList(Integer staffid,int page ,int size,String condition){
+        PageHelper.startPage(page,size);
+        List<Treatmentbrief> treatmentbriefList = docterMapper.getTreatCompletedList(staffid, condition);
+        return new PageInfo<>(treatmentbriefList);
+    }
+
+    public Map<String,Object> getTreatmentCompletedDetail(Integer tbid){
+        Treatmentbrief treatmentbrief = docterMapper.getOneTreatmentbriefBytbid(tbid);
+        if (treatmentbrief!=null) {
+            Map<String,Object> resultMap = new HashMap<>();
+            resultMap.put("treatmentbrief",treatmentbrief);
+            if (treatmentbrief.getCompleted()) {
+                Treatment oneTreatment = docterMapper.getOneTreatmentByid(treatmentbrief.getTreatmentid());
+                resultMap.put("treatment",oneTreatment);
+                return resultMap;
+            }
+        }
+        return null;
+    }
+
+    public String getStaffnameByid(Integer id){
+        return docterMapper.getStaffnameByid(id);
+    }
 }

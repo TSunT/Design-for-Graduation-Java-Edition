@@ -17,10 +17,12 @@ public class Treatmentbrief implements Serializable {
     private String diagnose;
     private Boolean completed;
     private Integer tbid;
-    public Treatmentbrief(Integer pid, Integer sid, Date time){
+    private String patientname;
+    public Treatmentbrief(Integer pid, Integer sid, Date time,String patientname){
         this.patientid=pid;
         this.staffid=sid;
         this.time=time;
+        this.patientname = patientname;
         this.completed=false;
     }
 
