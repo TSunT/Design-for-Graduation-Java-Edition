@@ -326,7 +326,6 @@
 </div>
 
 <script type="text/javascript" >
-    var prescriptions =[];
     function loadMedicineList(page,pagesize){
         var condition = $("#search-medicine").val();
         $.get("showMedicineList",{page:page,size:pagesize,condition:condition},function (result) {
@@ -417,7 +416,7 @@
         $('#saveflag').val("true");
         $("#treatmentform").submit();
     });
-
+    var patientid =$('#patientid').val();
     var contextPath=$("#contextPath").val();
     var showdetail = contextPath+'/toDoctor/showtreatmentcompleteddetail?tbid=';
     function loadTreatmentHistory(size,page) {

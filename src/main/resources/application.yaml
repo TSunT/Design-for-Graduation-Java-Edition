@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    url: jdbc:mysql://localhost:3306/myclinic?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/myclinic?serverTimezone=GMT%2B8&characterEncoding=UTF-8
     password: rootroot
     driver-class-name: com.mysql.cj.jdbc.Driver
     #指定数据源的类
