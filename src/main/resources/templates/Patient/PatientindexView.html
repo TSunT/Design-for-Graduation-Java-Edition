@@ -191,6 +191,7 @@
             var u_list = "";
             var contextPath=$("#contextPath").val();
             var registerPath=contextPath+'/toPatient/toRegisterPatient?id=';
+            var getpaymentPath = contextPath +'/toPatient/findPaymentView?patientid=';
             contextPath+='/toPatient/toUpdatePatient?id=';
             console.log(contextPath);
             for (var i = 0;i<result.pageInfo.size;i++){
@@ -206,7 +207,7 @@
                     '                                    <td>'+gender+'</td>\n' +
                     '                                    <td>'+patient.patienttel+'</td>\n' +
                     '                                    <td>\n' +
-                    '                                        <a href="'+contextPath+patient.patientid+'">修改</a>|<a href="'+registerPath+patient.patientid+'">挂号</a> \n' +
+                    '                                        <a href="'+contextPath+patient.patientid+'">修改</a>|<a href="'+registerPath+patient.patientid+'">挂号</a>|<a href="'+getpaymentPath+patient.patientid+'">收费</a>\n' +
                     '                                    </td>\n' +
                     '                                </tr>';
                 u_list=u_list+tr;

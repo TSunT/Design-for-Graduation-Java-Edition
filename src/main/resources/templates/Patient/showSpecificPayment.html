@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
     <title>查看支付信息</title>
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
-    <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
 </head>
 <body class="bg-light">
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -32,35 +30,36 @@
 
     <div class="starter-template"><br><br><br>
 
-        <h1><?=$arrs2['patient_id']?>号病人详细药品收费</h1>
+        <h1><span th:text="${patientid}"></span>号病人详细药品收费</h1>
 
             <div class="row">
                 <div class="col-md-10 order-md-2 mb-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">处方单</span>
                     </h4>
-                    <form action="?con=Patient&ac=completePayment" method="post">
+                    <form th:action="@{/toPatient/postpayment}" method="post">
                         <ul class="list-group mb-3">
-                            <?php foreach ($arrs1 as $arr){?>
+                            <div th:each="prescription:${specificPrescription}">
                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                     <div>
-                                        <h6 class="my-0"><?=$arr['medicine_name']?></h6>
-                                        <small class="text-muted">X<?=$arr['number']?></small>
+                                        <h6 class="my-0"><span th:text="${prescription['medicinename']}"></span></h6>
+                                        <small class="text-muted">X<span th:text="${prescription['num']}"></span></small>
                                     </div>
-                                    <span class="text-muted"><?=$arr['number']*$arr['cost']?>¥</span>
+                                    <span class="text-muted">¥<span th:text="${prescription['num']*prescription['cost']}"></span>
                                 </li>
-                            <?php }?>
+                            </div>
                             <li class="list-group-item d-flex justify-content-between bg-light">
                                 <div class="text-success">
                                     <h6 class="my-0">就诊时间</h6>
                                 </div>
-                                <span class="text-success"><?=date('Y-m-d H:i:s',$arrs2['time'])?></span>
-                                <input type="hidden" name="patient_id" value="<?=$arrs2['patient_id']?>">
-                                <input type="hidden" name="creat_time" value="<?=$arrs2['time']?>">
+                                <span class="text-success"><span th:text="${#dates.format(time,'yyyy-MM-dd HH:mm:ss')}"></span></span>
+                                <input type="hidden" name="patientid" th:value="${patientid}">
+                                <input type="hidden" name="time" th:value="${#dates.format(time,'yyyy-MM-dd HH:mm:ss')}">
+                                <input type="hidden" name="prescriptionnum" th:value="${prescriptionnum}">
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <span>总价</span>
-                                <strong><?=$arrs2['total_cost']?>¥</strong>
+                                <strong><span th:text="${totalcost}"></span> ¥</strong>
                             </li>
                         </ul>
                             <input type="submit" class="btn btn-success float-right" value="缴费成功">

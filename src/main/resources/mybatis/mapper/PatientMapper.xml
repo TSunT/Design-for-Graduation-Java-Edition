@@ -3,6 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.PatientMapper">
+    <resultMap id="findspecificprescription" type="PrescriptionSpecific">
+        <id property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <id property="staffid" column="staffid" jdbcType="INTEGER"/>
+        <id property="time" column="time" jdbcType="DATE"/>
+        <id property="medicineid" column="medicineid" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="take" column="take" jdbcType="TINYINT"/>
+        <result property="paid" column="paid" jdbcType="TINYINT"/>
+        <association property="medicinename" javaType="String" column="medicineid" select="cn.edu.nuaa.myclinic.mapper.PharmacyMapper.getMedicinename"/>
+        <association property="cost" javaType="Integer" column="medicineid" select="cn.edu.nuaa.myclinic.mapper.PharmacyMapper.getMedicinecost"/>
+    </resultMap>
+    <resultMap id="findPaymentwithpatientname" type="Payment">
+        <id property="patientid" column="patientid"/>
+        <id property="staffid" column="staffid"/>
+        <id property="time" column="time"/>
+        <result property="totalcost" column="totalcost"/>
+        <result property="paid" column="paid"/>
+        <association property="patientname" javaType="String" column="patientid" select="cn.edu.nuaa.myclinic.mapper.PatientMapper.findPatientnameById"/>
+    </resultMap>
     <select id="findAllPatient" resultType="Patient" parameterType="String">
         select * from patient where 1=1
         <if test="condition !=null">
@@ -24,5 +43,20 @@
     </select>
     <select id="findPatientBrief" parameterType="Integer" resultType="PatientBrief">
         select patientid , patientname from patient where patientid = #{patientid}
+    </select>
+    <select id="findPayment" parameterType="Integer" resultMap="findPaymentwithpatientname">
+        select * from payment where patientid = #{patientid} and paid = false
+    </select>
+    <update id="updatePaymentPaid" parameterType="Payment">
+        update payment set paid = true where patientid = #{patientid} and time = #{time}
+    </update>
+    <select id="getPrescriptionInfo" parameterType="Prescription" resultMap="findspecificprescription">
+        select * from prescription where patientid = #{patientid} and time = #{time}
+    </select>
+    <update id="updatePrescriptionPaid" parameterType="Prescription" >
+        update prescription set paid = true where patientid = #{patientid} and time = #{time}
+    </update>
+    <select id="findPatientnameById" resultType="String" parameterType="Integer">
+        select patientname from patient where patientid = #{id}
     </select>
 </mapper>

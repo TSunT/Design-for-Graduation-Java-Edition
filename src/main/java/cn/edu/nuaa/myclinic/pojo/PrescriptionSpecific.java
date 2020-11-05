@@ -8,8 +8,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientBrief implements Serializable {
-    private Integer patientid;
-    private String patientname;
-
+public class PrescriptionSpecific extends Prescription implements Serializable{
+    private String medicinename;
+    private Integer cost;
 }

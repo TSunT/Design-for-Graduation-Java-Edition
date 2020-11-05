@@ -1,6 +1,9 @@
 package cn.edu.nuaa.myclinic;
 
+import cn.edu.nuaa.myclinic.mapper.PatientMapper;
 import cn.edu.nuaa.myclinic.pojo.PatientBrief;
+import cn.edu.nuaa.myclinic.pojo.Prescription;
+import cn.edu.nuaa.myclinic.pojo.PrescriptionSpecific;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
@@ -24,6 +27,8 @@ class MyclinicApplicationTests {
     AdminService adminService;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    PatientMapper patientMapper;
     @Test
     void contextLoads() {
         userSecurityService.test();
@@ -89,5 +94,13 @@ class MyclinicApplicationTests {
             System.out.println("value:"+value);
             System.out.println("score:"+tuple.getScore());
         }
+    }
+
+    @Test
+    void testprescription(){
+        Prescription prescription = new Prescription();
+        prescription.setPatientid(7);
+        List<PrescriptionSpecific> prescriptionInfo = patientMapper.getPrescriptionInfo(prescription);
+        System.out.println(prescriptionInfo);
     }
 }

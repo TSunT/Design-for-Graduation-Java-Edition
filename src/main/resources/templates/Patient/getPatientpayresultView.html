@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
+<!doctype html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <title>搜索病人结果</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
     <!--边栏样式-->
     <style>
         body {
@@ -133,87 +129,13 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="home"></span>
-                            病人总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=add">
-                            <span data-feather="file"></span>
-                            病人登记
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询病人
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=dailyadd">
-                            <span data-feather="users"></span>
-                            查看当日登记病人
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="bar-chart-2"></span>
-                            Reports
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="layers"></span>
-                            Integrations
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>挂号处理</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=seek">
-                            <span data-feather="file-text"></span>
-                            挂号
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Patient&ac=showregisterinfo">
-                            <span data-feather="file-text"></span>
-                            查看挂号信息
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Year-end sale
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:insert="~{/Patient/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">查询结果</h1>
@@ -230,25 +152,22 @@
                     <tr>
                         <th scope="col">病号</th>
                         <th scope="col">姓名</th>
-                        <th scope="col">处方医生</th>
                         <th scope="col">总价</th>
-                        <th scope="col">就诊时间</th>
+                        <th scope="col">出单时间</th>
                         <th scope="col">操作项</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($arrs as $arr){?>
-                    <tr>
-                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
-                        <td><?php echo $arr['patient_name'] ?></td>
-                        <td><?php echo $arr['staff_name'] ?></td>
-                        <td><?php echo $arr['total_cost'] ?></td>
-                        <td><?php echo date('Y-m-d H:i:s',$arr['creat_time'])?></td>
+
+                    <tr th:each="payment:${paymentInfo}">
+                        <th scope="row"><span th:text="${payment['patientid']}"></span></th>
+                        <td><span th:text="${payment['patientname']}"></span></td>
+                        <td><span th:text="${payment['totalcost']}"></span> </td>
+                        <td><span th:text="${#dates.format(payment['time'],'yyyy-MM-dd HH:mm:ss')}"></span></td>
                         <td>
-                            <a href="?con=Patient&ac=payinfo&id=<?=$arr['patient_id']?>&time=<?=$arr['creat_time']?>">缴费明细</a>
+                            <a th:href="@{/toPatient/getspecificpayment(patientid=${payment['patientid']},time = ${#dates.format(payment['time'],'yyyy-MM-dd/HH:mm:ss')},totalcost = ${payment['totalcost']})}">缴费明细</a>
                         </td>
                     </tr>
-                    <?php }?>
                     <tr>
                         <td class="pagelist" colspan="7">
                             <br>共有<font id="rec" color="red"></font>个结果

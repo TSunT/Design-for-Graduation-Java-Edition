@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.PharmacyMapper">
+    <select id="getMedicinename" parameterType="Integer" resultType="String">
+        select medicinename from medicine where medicineid = #{id}
+    </select>
+    <select id="getMedicinecost" parameterType="Integer" resultType="Integer">
+        select cost from medicine where medicineid = #{id}
+    </select>
+</mapper>

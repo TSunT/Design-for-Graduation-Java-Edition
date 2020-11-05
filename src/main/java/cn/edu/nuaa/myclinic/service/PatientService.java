@@ -1,17 +1,16 @@
 package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.PatientMapper;
-import cn.edu.nuaa.myclinic.pojo.Patient;
-import cn.edu.nuaa.myclinic.pojo.PatientBrief;
+import cn.edu.nuaa.myclinic.pojo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class PatientService {
@@ -46,5 +45,16 @@ public class PatientService {
     }
     public PatientBrief findPatientBriefById(Integer patientid){
         return patientMapper.findPatientBrief(patientid);
+    }
+
+    public List<Payment> getPaymentInfo(Integer patientid){
+        return patientMapper.findPayment(patientid);
+    }
+
+    public List<PrescriptionSpecific> getSpecificPrescription(Integer patientid , Date time){
+        Prescription prescription = new Prescription();
+        prescription.setPatientid(patientid);
+        prescription.setTime(time);
+        return patientMapper.getPrescriptionInfo(prescription);
     }
 }

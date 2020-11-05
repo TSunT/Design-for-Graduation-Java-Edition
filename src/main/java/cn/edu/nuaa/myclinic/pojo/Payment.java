@@ -13,9 +13,18 @@ import java.util.Date;
 @AllArgsConstructor
 public class Payment implements Serializable {
     private Integer patientid;
+    private String patientname;
     private Integer staffid;
     @JsonFormat(pattern = "yyyy-MM-dd HH:ss:mm",timezone = "GMT+8")
     private Date time;
     private Integer totalcost;
     private Boolean paid;
+
+    public Payment(Integer patientid, Integer staffid, Date time, Integer totalcost, Boolean paid) {
+        this.patientid = patientid;
+        this.staffid = staffid;
+        this.time = time;
+        this.totalcost = totalcost;
+        this.paid = paid;
+    }
 }

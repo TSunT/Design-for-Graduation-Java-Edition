@@ -2,14 +2,19 @@ package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.pojo.Patient;
 import cn.edu.nuaa.myclinic.pojo.PatientBrief;
+import cn.edu.nuaa.myclinic.pojo.Prescription;
+import cn.edu.nuaa.myclinic.pojo.PrescriptionSpecific;
 import cn.edu.nuaa.myclinic.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -97,5 +102,30 @@ public class PatientController {
         }else {
             return "Patient/PatientindexView"; //待完善
         }
+    }
+    @GetMapping("/findPaymentView")
+    public String findPaymentView(@RequestParam(name = "patientid") Integer patientid,Model model){
+        model.addAttribute("paymentInfo",patientService.getPaymentInfo(patientid));
+        return "Patient/getPatientpayresultView";
+    }
+    @GetMapping("/getspecificpayment")
+    public String getSpecificPayment(@RequestParam(name = "patientid") Integer patientid,
+                                     @RequestParam(name = "time") @DateTimeFormat(pattern = "yyyy-MM-dd/HH:mm:ss") Date time,
+                                     @RequestParam(name = "totalcost") Integer totalcost, Model model){
+        List<PrescriptionSpecific> specificPrescription = patientService.getSpecificPrescription(patientid, time);
+        model.addAttribute("specificPrescription",specificPrescription);
+        model.addAttribute("patientid",patientid);
+        model.addAttribute("time",time);
+        model.addAttribute("totalcost",totalcost);
+        model.addAttribute("prescriptionnum",specificPrescription.size());
+        return "Patient/showSpecificPayment";
+    }
+
+    @ResponseBody
+    @PostMapping("/postpayment")
+    public String postPayment(@RequestParam(name = "patientid") Integer patientid,
+                              @RequestParam(name = "time") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date time,
+                              @RequestParam(name = "prescriptionnum") int prescriptionnum,Model model){
+        return "true";
     }
 }
