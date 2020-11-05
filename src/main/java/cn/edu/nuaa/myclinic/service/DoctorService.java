@@ -143,14 +143,23 @@ public class DoctorService {
         return new PageInfo<>(treatmentbriefList);
     }
 
-    public Map<String,Object> getTreatmentCompletedDetail(Integer tbid){
+    public PageInfo<Treatmentbrief> showTreatingList(Integer staffid,int page ,int size,String condition){
+        PageHelper.startPage(page,size);
+        List<Treatmentbrief> treatmentbriefList = docterMapper.getTreatingList(staffid, condition);
+        return new PageInfo<>(treatmentbriefList);
+    }
+
+    public Map<String,Object> getTreatmentDetail(Integer tbid){
         Treatmentbrief treatmentbrief = docterMapper.getOneTreatmentbriefBytbid(tbid);
         if (treatmentbrief!=null) {
             Map<String,Object> resultMap = new HashMap<>();
             resultMap.put("treatmentbrief",treatmentbrief);
-            if (treatmentbrief.getCompleted()) {
+            if (treatmentbrief.getTreatmentid()!=null) {
                 Treatment oneTreatment = docterMapper.getOneTreatmentByid(treatmentbrief.getTreatmentid());
                 resultMap.put("treatment",oneTreatment);
+                return resultMap;
+            }else {
+                resultMap.put("treatment",new Treatment());
                 return resultMap;
             }
         }
@@ -159,5 +168,19 @@ public class DoctorService {
 
     public String getStaffnameByid(Integer id){
         return docterMapper.getStaffnameByid(id);
+    }
+
+    public Integer getTreatingCount(Integer staffid){
+        return docterMapper.getTreatingcount(staffid);
+    }
+
+    public Integer getTreatmentCompletedCount(Integer staffid){
+        return docterMapper.getTreatmentCompletedcount(staffid);
+    }
+
+    public PageInfo<Treatmentbrief> getPatientTreatmentHistory(Integer patientid,int page ,int size){
+        PageHelper.startPage(page,size);
+        List<Treatmentbrief> treatmentbriefList = docterMapper.getTreatmentHistoryByPatient(patientid);
+        return new PageInfo<Treatmentbrief>(treatmentbriefList);
     }
 }

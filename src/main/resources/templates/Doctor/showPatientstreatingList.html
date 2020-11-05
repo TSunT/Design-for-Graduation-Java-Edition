@@ -1,167 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>医生-诊断页</title>
-    <link rel="stylesheet" href="./View/libs/css/all.min.css">
-    <link rel="stylesheet" href="./View/libs/css/font-awesome.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/libs/css/font-awesome.min.css}">
     <!-- DataTables -->
-    <link rel="stylesheet" href="./View/libs/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" th:href="@{/libs/css/dataTables.bootstrap4.css}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
     <!-- Google Font: Source Sans Pro -->
-    <link href="./View/libs/css/Source+Sans+Pro.css" rel="stylesheet">
+    <link th:href="@{/libs/css/SourceSansPro.css}" rel="stylesheet">
 
-    <!-- For dep-->
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
-    <link rel="stylesheet" href="../../static/libs/css/font-awesome.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="../../static/libs/css/dataTables.bootstrap4.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="../../static/libs/css/Source+Sans+Pro.css" rel="stylesheet">
-
-    <script src="./View/libs/jquery/jquery.min.js"></script>
-    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="./View/libs/js/jquery.dataTables.js"></script>
-    <script src="./View/libs/js/dataTables.bootstrap4.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.min.js"></script>
-    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
-    <script src="../../static/libs/js/jquery.dataTables.js"></script>
-    <script src="../../static/libs/js/dataTables.bootstrap4.js"></script>
-
-    <!--需要一个$arr[]来传递相应的数据 -->
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
 </head>
 <body class="sidebar-mini" style="height: auto;">
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" aria-hidden="true"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">首页</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Contact</a>
-            </li>
-        </ul>
-
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-3">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="查询病人" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            <!-- Notifications Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge"><?=$register_num?></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">共<?=$register_num?>个病人挂号</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 叫号
-                        <span class="float-right text-muted text-sm">叫最早挂号的病人</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 过号
-                        <span class="float-right text-muted text-sm">叫下一个病人</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                        class="fas fa-th-large"></i></a>
-            </li>
-        </ul>
-    </nav>
+    <div th:replace="~{/Doctor/common::topbar}"></div>
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="#" class="brand-link">
-            <i class="fa fa-h-square fa-lg brand-image-xl" aria-hidden="true" style="padding-left: 20px"></i>
-            <span class="brand-text font-weight-light">Hospital Center</span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <i class="fa fa-user-md fa-lg brand-image-xl  fa-lg" aria-hidden="true" style="color: #268fff; padding-left: 8px; padding-top: 8px"></i>
-                </div>
-                <div class="info">
-                    <a href="?con=Login&ac=showuserinfo" class="d-block"><?=$_SESSION['username']?></a>
-                </div>
-            </div>
-            <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Add icons to the links using the .nav-icon class
-                         with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link active">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                快捷列表
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>就诊病人列表</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>完成就诊列表</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Simple Link
-                                <span class="right badge badge-danger">New</span>
-                            </p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- /.sidebar-menu -->
-        </div>
-        <!-- /.sidebar -->
-    </aside>
+    <div th:replace="~{/Doctor/common::asidebar}"></div>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -195,6 +60,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <input type="search" class="form-control form-control-sm" id="search-treating" style="float: right;margin-bottom: 10px" placeholder="输入病人姓名">
                             <table id="example1" class="table text-nowrap table-hover">
                                 <thead>
                                 <tr>
@@ -205,23 +71,17 @@
                                     <th>操作项</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <?php foreach($arrs as $arr1){ ?>
-                                <tr>
-                                    <th scope="row"><?php echo $arr1['patient_id'] ?></th>
-                                    <td><?php echo $arr1['patient_name'] ?></td>
-                                    <td><?php echo date('Y-m-d H:i:s',$arr1['add_time'])?></td>
-                                    <td><?php echo $arr1['diagnose'] ?></td>
-                                    <td>
-                                        <input id="btn ichecked" type="button" value="编辑" onclick="window.location.href='?con=Doctor&ac=editTreatment&patient_id=<?=$arr1['patient_id'] ?>&add_time=<?=$arr1['add_time']?>'">
-                                    </td>
-                                </tr>
-                                <?php } ?>
+                                <tbody id="treatinglist">
+
                                 </tbody>
                             </table>
+                            <ul id="navigatebartreatinglist" class="pagination pagination-sm m-0 float-right">
+
+                            </ul>
                         </div>
                         <!-- /.card-body -->
                         </div>
+                        <input type="hidden" id="contextPath" th:value="${#servletContext.contextPath}">
                     </div>
                 </div><!-- /.col-lg-8 -->
             </div><!-- /.row -->
@@ -254,10 +114,56 @@
 <script type="text/javascript" >
     //DataTable配置
     $(function () {
-        $("#example1").DataTable({
-            "ordering": false,
-        });
+        loadTreatingList(1,10);
     });
+
+    var contextPath=$("#contextPath").val();
+    var showdetail = contextPath+'/toDoctor/showtreatingdetail?tbid=';
+
+    function loadTreatingList(page,size){
+        var condition = $('#search-treating').val();
+        $.get("getTreatingList",{page:page,size:size,condition:condition},function (result) {
+            //表格数据
+            var tc_list='';
+            for (var i = 0;i<result.pageInfo.size;i++){
+                var treatmentbrief = result.pageInfo.list[i];
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+treatmentbrief.patientid+'</th>\n' +
+                    '                                    <td>'+treatmentbrief.patientname+'</td>\n' +
+                    '                                    <td>'+treatmentbrief.time+'</td>\n' +
+                    '                                    <td>'+treatmentbrief.diagnose+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <button id="btn"><a href='+showdetail+treatmentbrief.tbid+'>查看</a></button>' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                tc_list=tc_list+tr;
+            }
+            $("#treatinglist").html(tc_list);
+            //导航数据
+            var lis ='';
+            if (result.pageInfo.hasPreviousPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">«</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatingList('+result.pageInfo.prePage+','+size+')">«</a></li>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.pageInfo.navigateLastPage;i++){
+                var num = result.pageInfo.navigatepageNums[i];
+                var li = '<li class="page-item"><a class="page-link" href="javascript:loadTreatingList('+num+','+size+')">'+num+'</a></li>';
+                lis +=li;
+            }
+            if (result.pageInfo.hasNextPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">»</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatingList('+result.pageInfo.nextPage+','+size+')">»</a></li>'
+            }
+            lis +=li;//添加向后一页
+            $("#navigatebartreatinglist").html(lis);
+        },"json");
+    }
+    $('#search-treating').blur(function () {
+        loadTreatingList(1,10);
+    })
 </script>
 </body>
 </html>

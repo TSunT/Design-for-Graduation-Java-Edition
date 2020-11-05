@@ -17,7 +17,6 @@
 
     <script th:src="@{/libs/jquery/jquery.min.js}"></script>
     <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/libs/js/jquery.dataTables.js}"></script>
     <script th:src="@{/libs/js/dataTables.bootstrap4.js}"></script>
 
     <!--需要一个$arr[]来传递相应的数据 -->
@@ -63,7 +62,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <input type="search" class="form-control form-control-sm" id="search-treatcompleted" style="float: right;margin-bottom: 10px" placeholder="输入查询药品名">
+                                <input type="search" class="form-control form-control-sm" id="search-treatcompleted" style="float: right;margin-bottom: 10px" placeholder="输入病人姓名">
                                 <table id="example1" class="table text-nowrap table-hover">
                                     <thead>
                                     <tr>
@@ -147,18 +146,18 @@
             if (result.pageInfo.hasPreviousPage==false){
                 var li = '<li class="page-item"><a class="page-link" href="#">«</a></li>'
             }else {
-                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+result.pageInfo.prePage+','+pagesize+')">«</a></li>'
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+result.pageInfo.prePage+','+size+')">«</a></li>'
             }
             lis +=li;//向前一页
             for(var i=0;i<result.pageInfo.navigateLastPage;i++){
                 var num = result.pageInfo.navigatepageNums[i];
-                var li = '<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+num+','+pagesize+')">'+num+'</a></li>';
+                var li = '<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+num+','+size+')">'+num+'</a></li>';
                 lis +=li;
             }
             if (result.pageInfo.hasNextPage==false){
                 var li = '<li class="page-item"><a class="page-link" href="#">»</a></li>'
             }else {
-                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+result.pageInfo.nextPage+','+pagesize+')">»</a></li>'
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatCompletedList('+result.pageInfo.nextPage+','+size+')">»</a></li>'
             }
             lis +=li;//添加向后一页
             $("#navigatebartreatcompletedlist").html(lis);

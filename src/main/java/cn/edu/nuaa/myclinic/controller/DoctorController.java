@@ -62,11 +62,16 @@ public class DoctorController {
 
     @GetMapping("/index")
     public String index(HttpServletRequest request, Model model){
-        User user = (User) request.getSession().getAttribute("user");
-        Integer sid = user.getSid();
-        Staff staff = doctorService.getStaffBySid(sid);
-        request.getSession().setAttribute("staff",staff);
+        Staff staff = (Staff) request.getSession().getAttribute("staff");
+        if(staff==null){
+            User user = (User) request.getSession().getAttribute("user");
+            Integer sid = user.getSid();
+            staff = doctorService.getStaffBySid(sid);
+            request.getSession().setAttribute("staff",staff);
+        }
         model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
+        model.addAttribute("treatingCount",doctorService.getTreatingCount(staff.getStaffid()));
+        model.addAttribute("treatmentcompletedcount",doctorService.getTreatmentCompletedCount(staff.getStaffid()));
         return "Doctor/Doctorindex";
     }
     @GetMapping("/callRegistryPatient")
@@ -192,9 +197,18 @@ public class DoctorController {
         result.put("pageInfo",treatmentbriefPageInfo);
         return result;
     }
-    @GetMapping("/showtreatmentcompleteddetail")
+
+    @GetMapping("/showTreatingView")
+    public String showTreatingView(HttpServletRequest request,Model model){
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
+        return "Doctor/showPatientstreatingList";
+    }
+
+    @GetMapping(value = "/showtreatmentcompleteddetail")
     public String showTreatmentCompleteDetial(@RequestParam(name="tbid") Integer tbid,Model model){
-        Map<String,Object> treatmentInfo = doctorService.getTreatmentCompletedDetail(tbid);
+        Map<String,Object> treatmentInfo = doctorService.getTreatmentDetail(tbid);
         if (treatmentInfo!=null){
             model.addAttribute("treatmentInfo",treatmentInfo);
             Treatmentbrief treatmentbrief = (Treatmentbrief) treatmentInfo.get("treatmentbrief");
@@ -208,5 +222,52 @@ public class DoctorController {
         }
         //出错
         return "Doctor/DoctorShowOnePatient";
+    }
+
+    @GetMapping(value = "/getTreatingList",produces = { "application/json;charset=UTF-8"})
+    @ResponseBody
+    public Map<String,PageInfo<Treatmentbrief>> getTreatingList(@RequestParam(name="page" ,defaultValue = "1") int page,
+                                              @RequestParam(name = "size",defaultValue = "10") int size,
+                                              @RequestParam(name = "condition",required = false) String condition,
+                                              HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        PageInfo<Treatmentbrief> treatmentbriefPageInfo = doctorService.showTreatingList(staff.getStaffid(), page, size, condition);
+        Map<String,PageInfo<Treatmentbrief>> result = new HashMap<>();
+        result.put("pageInfo",treatmentbriefPageInfo);
+        return result;
+    }
+
+    @GetMapping("/showtreatingdetail")
+    public String showTreatingDetial(@RequestParam(name="tbid") Integer tbid,Model model,HttpServletRequest request){
+        Map<String,Object> treatmentInfo = doctorService.getTreatmentDetail(tbid);
+        if (treatmentInfo!=null){
+            Treatmentbrief treatmentbrief = (Treatmentbrief) treatmentInfo.get("treatmentbrief");
+            Integer patientid = treatmentbrief.getPatientid();
+            HttpSession session = request.getSession();
+            session.setAttribute("presentTreatmentbirefid",tbid);
+            session.setAttribute("presentTreatmentTime",treatmentbrief.getTime());
+            session.setAttribute("presentPatientid",patientid);
+            model.addAttribute("treatmentInfo",treatmentInfo);
+            Patient onePatientbyId = doctorService.getOnePatientbyId(patientid);
+            model.addAttribute("patientInfo",onePatientbyId);
+            model.addAttribute("patientAge",calculateAge(onePatientbyId.getPatientidentity()));
+            Staff staff = (Staff) session.getAttribute("staff");
+            model.addAttribute("staffInfo",staff);
+            return "Doctor/editTreatment";
+        }
+        //出错
+        return "Doctor/Doctorindex";
+    }
+
+
+    @GetMapping(value = "/getPatientTreatmentHistory",produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public Map<String,Object> getPatientTreatmentHistory (@RequestParam(name = "page" ,defaultValue = "1") int page,
+                                                          @RequestParam(name = "size",defaultValue = "10") int size,
+                                                          @RequestParam(name = "patientid") int patientid){
+        Map<String,Object> result = new HashMap<>();
+        result.put("historypageInfo",doctorService.getPatientTreatmentHistory(patientid,page,size));
+        return result;
     }
 }

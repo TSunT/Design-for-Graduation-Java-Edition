@@ -22,4 +22,8 @@ public interface DocterMapper {
     public Treatmentbrief getOneTreatmentbriefBytbid(Integer tbid);
     public Treatment getOneTreatmentByid(Integer id);
     public String getStaffnameByid(Integer id);
+    public List<Treatmentbrief> getTreatingList(Integer staffid,String condition);
+    public Integer getTreatingcount(Integer staffid);
+    public Integer getTreatmentCompletedcount(Integer staffid);
+    public List<Treatmentbrief> getTreatmentHistoryByPatient(Integer patientid);
 }

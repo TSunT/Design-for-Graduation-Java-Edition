@@ -47,5 +47,21 @@
     <select id="getStaffnameByid" resultType="String" parameterType="Integer">
         select staffname from staff where staffid = #{id}
     </select>
+    <select id="getTreatingList" resultType="Treatmentbrief">
+        select * from treatmentbrief where staffid = #{staffid} and completed = false
+        <if test="condition != null">
+            and patientname like CONCAT('%',#{condition},'%')
+        </if>
+        order by tbid desc
+    </select>
+    <select id="getTreatingcount" resultType="Integer" parameterType="Integer">
+        select count(tbid) from treatmentbrief where staffid = #{staffid} and completed = false
+    </select>
+    <select id="getTreatmentCompletedcount" resultType="Integer" parameterType="Integer">
+        select count(tbid) from treatmentbrief where staffid = #{staffid} and completed = true
+    </select>
+    <select id="getTreatmentHistoryByPatient" resultType="Treatmentbrief" parameterType="Integer">
+        select * from treatmentbrief where patientid = #{patientid} and completed = true
+    </select>
 </mapper>
 

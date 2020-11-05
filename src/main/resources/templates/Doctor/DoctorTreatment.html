@@ -49,7 +49,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0 text-dark">就诊病号为<font color="red"><?=$arr['patient_id']?></font> 号病人</h1>
+                        <h1 class="m-0 text-dark">就诊病号为<font color="red"><span th:text="${patientInfo.getPatientid()}"></span></font> 号病人</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -135,7 +135,7 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="allergy">病史信息</label><br>
-                                                        <div class="btn btn-warning" onClick="syalert.syopen('alert2')">查看</div>
+                                                        <div class="btn btn-warning" id="checkhistory">查看</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
@@ -262,6 +262,7 @@
                         </div>
                     </div>
                         <!-- /.card -->
+                    <input type="hidden" id="contextPath" th:value="${#servletContext.contextPath}">
                 </div>
                     <!-- /.col-lg-12 -->
                 <!-- /.row -->
@@ -304,15 +305,8 @@
                 <th>操作</th>
             </tr>
             </thead>
-            <tbody>
-            <?php foreach($arrs2 as $arr2){ ?>
-            <tr>
-                <th scope="row" width="150px"><?php echo date('Y-m-d',$arr2['add_time']) ?></th>
-                <td><?php echo $arr2['diagnose'] ?></td>
-                <td width="50px"><a id="checkjump" onclick="return confirm();" href="?con=Doctor&ac=showPatientTreament&patient_id=<?=$arr['patient_id']?>&add_time=<?=$arr2['add_time']?>">查看</a> </td>
-            </tr>
-            <?php } ?>
-            </tbody>
+            <tbody id = "treatmenthistorylist">
+
             <tfoot>
             <tr>
                 <th>就诊日期</th>
@@ -321,6 +315,9 @@
             </tr>
             </tfoot>
         </table>
+        <ul id="navigatebarhistory" class="pagination pagination-sm m-0 float-right">
+
+        </ul>
     </div>
     <div class="sy-btn">
         <button onClick="ok('alert2')">确定</button>
@@ -328,7 +325,7 @@
 </div>
 
 <script type="text/javascript" >
-    var prescriptions =[];
+    var patientid = $('#patientid').val();
     function loadMedicineList(page,pagesize){
         var condition = $("#search-medicine").val();
         $.get("showMedicineList",{page:page,size:pagesize,condition:condition},function (result) {
@@ -376,17 +373,12 @@
     $('#search-medicine').blur(function () {
         loadMedicineList(1,10);
     })
-    // var checkbtn=document.getElementById('checkjump');
-    // checkbtn.onclick=function () {
-    //     //询问是否要删除
-    //     return  window.confirm('填写的内容将清除，请确定是否保存！');
-    // }
-    //datatables
+
     //弹出窗口
-    // function ok(id){
-    //     syalert.syhide(id);
-    // }
-    function Prescript(){}
+    function ok(id){
+        syalert.syhide(id);
+    }
+    
     //药物的选择添加
     function add(medicine_id,name,cost){
 
@@ -424,6 +416,52 @@
         $('#saveflag').val("true");
         $("#treatmentform").submit();
     });
+    var contextPath=$("#contextPath").val();
+    var showdetail = contextPath+'/toDoctor/showtreatmentcompleteddetail?tbid=';
+    function loadTreatmentHistory(size,page) {
+        $.get("getPatientTreatmentHistory",{page:page,size:size,patientid:patientid},function (result) {
+            //表格数据
+            var tc_list='';
+            for (var i = 0;i<result.historypageInfo.size;i++){
+                var treatmentbrief = result.historypageInfo.list[i];
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+treatmentbrief.time+'</th>\n' +
+                    '                                    <td>'+treatmentbrief.diagnose+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <button id="btn"><a href='+showdetail+treatmentbrief.tbid+'>查看</a></button>' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                tc_list=tc_list+tr;
+            }
+            $("#treatmenthistorylist").html(tc_list);
+            //导航数据
+            var lis ='';
+            if (result.historypageInfo.hasPreviousPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">«</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatmentHistory('+result.pageInfo.prePage+','+size+')">«</a></li>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.historypageInfo.navigateLastPage;i++){
+                var num = result.historypageInfo.navigatepageNums[i];
+                var li = '<li class="page-item"><a class="page-link" href="javascript:loadTreatmentHistory('+num+','+size+')">'+num+'</a></li>';
+                lis +=li;
+            }
+            if (result.historypageInfo.hasNextPage==false){
+                var li = '<li class="page-item"><a class="page-link" href="#">»</a></li>'
+            }else {
+                var li ='<li class="page-item"><a class="page-link" href="javascript:loadTreatmentHistory('+result.pageInfo.nextPage+','+size+')">»</a></li>'
+            }
+            lis +=li;//添加向后一页
+            $("#navigatebarhistory").html(lis);
+        },"json")
+    }
+
+    $("#checkhistory").click(function (){
+        syalert.syopen('alert2');
+        loadTreatmentHistory(1,5);
+    })
+
     //禁止f5刷新
     // document.onkeydown = function (e) {
     //     var ev = window.event || e;

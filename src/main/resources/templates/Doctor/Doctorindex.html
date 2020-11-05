@@ -63,15 +63,14 @@
                                 <!-- small card -->
                                 <div class="small-box bg-info">
                                     <div class="inner">
-                                        <h3><?=$processing_num?></h3>
-
+                                        <h3><span th:text="${treatingCount}"></span></h3>
                                         <p>进行中</p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-spinner"></i>
                                     </div>
-                                    <a href="?con=Doctor&ac=showPatientList" class="small-box-footer">
-                                        详细信息 <i class="fas fa-arrow-circle-right"></i>
+                                    <a th:href="@{/toDoctor/showTreatingView}" class="small-box-footer">
+                                        详细列表 <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
                             </div>
@@ -80,15 +79,14 @@
                                 <!-- small card -->
                                 <div class="small-box bg-success">
                                     <div class="inner">
-                                        <h3><?=$completed_num?></h3>
-
+                                        <h3><span th:text="${treatmentcompletedcount}"></span></h3>
                                         <p>结束就诊</p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-check"></i>
                                     </div>
                                     <a th:href="@{/toDoctor/showTreatCompletedView}" class="small-box-footer">
-                                        More info <i class="fas fa-arrow-circle-right"></i>
+                                        详细列表 <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
                             </div>
