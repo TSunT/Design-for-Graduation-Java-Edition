@@ -1,22 +1,16 @@
 <!doctype html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
-    <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <title>药房信息中心</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
     <!--边栏样式-->
     <style>
@@ -136,52 +130,13 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy">
-                            <span data-feather="home"></span>
-                            药品总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=add">
-                            <span data-feather="file"></span>
-                            添加药品
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="shopping-cart"></span>
-                            查询药品
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>交付药品</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?">
-                            <span data-feather="file-text"></span>
-                            查询账单
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <div th:replace="~{Pharmacy/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">处方清单</h1>
@@ -193,33 +148,31 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <form action="?con=Pharmacy&ac=updatePrescriptionInfo" method="post">
-                <table class="table table-striped table-hover table-sm" id="table" style="text-align: center" >
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">病人编号</th>
-                        <th scope="col">病人姓名</th>
-                        <th scope="col">药品名称</th>
-                        <th scope="col">开药数量</th>
-                        <th scope="col">库存量</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($arrs as $arr){?>
-                    <tr>
-                        <th scope="row"><?php echo $arr['patient_id'] ?></th>
-                        <td><?php echo $arr['patient_name'] ?></td>
-                        <td><?php echo $arr['medicine_name'] ?></td>
-                        <td><?php echo $arr['number'] ?></td>
-                        <td><?php echo $arr['rest']?></td>
-                        <input type="hidden" name="bill['<?php echo $arr['medicine_id'] ?>']" value="<?php echo $arr['number']?>">
-                    </tr>
-                    <?php }?>
-                    </tbody>
-                </table>
-                    <input type="hidden" name="patient_id" value="<?php echo $arr['patient_id'] ?>">
-                    <input type="hidden" name="creat_time" value="<?=$arr['creat_time']?>">
-                <input type="submit" class="btn btn-success float-right" value="缴费成功">
+                <form th:action="@{/toPharmacy/postTakeMedicine}" method="post">
+                    <table class="table table-striped table-hover table-sm" id="table" style="text-align: center" >
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">药品编号</th>
+                            <th scope="col">药品名称</th>
+                            <th scope="col">开药数量</th>
+                            <th scope="col">库存量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="prescription:${prescriptionnotake}">
+                            <th scope="row"><span th:text="${prescription['medicineid']}"></span></th>
+                            <td><span th:text="${prescription['medicinename']}"></span></td>
+                            <td><span th:text="${prescription['num']}"></span> </td>
+                            <td><span th:text="${prescription['rest']}"></span> </td>
+                            <input type="hidden" name="medicineid[]" th:value="${prescription['medicineid']}">
+                            <input type="hidden" name="num[]" th:value="${prescription['num']}">
+                            <input type="hidden" name="time[]" th:value="${prescription['time']}">
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="patientid" th:value="${patientid}">
+                    <input type="submit" class="btn btn-success float-right" value="取药成功">
                 </form>
             </div>
         </main>

@@ -1,22 +1,16 @@
 <!doctype html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
-    <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <title>药房信息中心</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
     <!--边栏样式-->
     <style>
@@ -136,55 +130,17 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy">
-                            <span data-feather="home"></span>
-                            药品总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=add">
-                            <span data-feather="file"></span>
-                            添加药品
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询药品
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>交付药品</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=insert">
-                            <span data-feather="file-text"></span>
-                            查询账单
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:replace="~{Pharmacy/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <form class="needs-validation" name="myform" action="?con=Pharmacy&ac=update" method="post">
+            <form class="needs-validation" name="myform" th:action="@{/toPharmacy/updateMedicine}" method="post">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">药品编号：<?=$arr['medicine_id']?></h1>
+                    <h1 class="h2">药品编号：<span th:text="${medicineInfo['medicineid']}"></span> </h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <input type="reset" class="btn btn-sm btn-outline-secondary dropdown-toggle">
                         <span data-feather="calendar"></span>
@@ -196,8 +152,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="medicineName">药品名称</label>
-                                <input type="hidden" class="form-control" name="medicine_id" placeholder="" value="<?=$arr['medicine_id']?>" required>
-                                <input type="text" class="form-control" id="medicineName" name="medicine_name" value="<?=$arr['medicine_name']?>" required>
+                                <input type="hidden" class="form-control" name="medicineid" placeholder="" th:value="${medicineInfo['medicineid']}" required>
+                                <input type="text" class="form-control" id="medicineName" name="medicinename" th:value="${medicineInfo['medicinename']}" required>
                                 <div class="invalid-feedback">
                                     Valid medicine name is required.
                                 </div>
@@ -210,32 +166,32 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">TYPE</span>
                                 </div>
-                                <select class="form-control" id="medicine_type" name="medicine_type">
-                                    <option value="抗菌消炎类" <?php if($arr['medicine_type']=='抗菌消炎类') echo 'selected'; ?>>抗菌消炎类</option>
-                                    <option value="清热解毒类" <?php if($arr['medicine_type']=='清热解毒类') echo 'selected'; ?>>清热解毒类</option>
-                                    <option value="止咳平喘类" <?php if($arr['medicine_type']=='止咳平喘类') echo 'selected' ;?>>止咳平喘类</option>
-                                    <option value="胃肠道类" <?php if($arr['medicine_type']=='胃肠道类') echo 'selected' ;?>>胃肠道类</option>
-                                    <option value="抗感冒类" <?php if($arr['medicine_type']=='抗感冒类') echo 'selected' ;?>>抗感冒类</option>
-                                    <option value="维生素类" <?php if($arr['medicine_type']=='维生素类') echo 'selected' ;?>>维生素类</option>
-                                    <option value="抗糖尿病类" <?php if($arr['medicine_type']=='抗糖尿病类') echo 'selected' ;?>>抗糖尿病类</option>
-                                    <option value="妇科类" <?php if($arr['medicine_type']=='妇科类') echo 'selected' ;?>妇科类</option>
-                                    <option value="泌尿排石类" <?php if($arr['medicine_type']=='泌尿排石类') echo 'selected' ;?>>泌尿排石类</option>
-                                    <option value="滋补类" <?php if($arr['medicine_type']=='滋补类') echo 'selected' ;?>>滋补类</option>
-                                    <option value="肝胆类" <?php if($arr['medicine_type']=='肝胆类') echo 'selected' ;?>>肝胆类</option>
-                                    <option value="激素类" <?php if($arr['medicine_type']=='激素类') echo 'selected' ;?>>激素类</option>
-                                    <option value="注射剂" <?php if($arr['medicine_type']=='注射剂') echo 'selected' ;?>>注射剂</option>
+                                <select class="form-control" id="medicine_type" name="medicinetype">
+                                    <option value="抗菌消炎类" th:selected="${medicineInfo['medicinetype']=='抗菌消炎类'}">抗菌消炎类</option>
+                                    <option value="清热解毒类" th:selected="${medicineInfo['medicinetype']=='清热解毒类'}">>清热解毒类</option>
+                                    <option value="止咳平喘类" th:selected="${medicineInfo['medicinetype']=='止咳平喘类'}">>止咳平喘类</option>
+                                    <option value="胃肠道类" th:selected="${medicineInfo['medicinetype']=='胃肠道类'}">>胃肠道类</option>
+                                    <option value="抗感冒类" th:selected="${medicineInfo['medicinetype']=='抗感冒类'}">>抗感冒类</option>
+                                    <option value="维生素类" th:selected="${medicineInfo['medicinetype']=='维生素类'}">>维生素类</option>
+                                    <option value="抗糖尿病类" th:selected="${medicineInfo['medicinetype']=='抗糖尿病类'}">>抗糖尿病类</option>
+                                    <option value="妇科类" th:selected="${medicineInfo['medicinetype']=='妇科类'}">>妇科类</option>
+                                    <option value="泌尿排石类" th:selected="${medicineInfo['medicinetype']=='泌尿排石类'}">>泌尿排石类</option>
+                                    <option value="滋补类" th:selected="${medicineInfo['medicinetype']=='滋补类'}">>滋补类</option>
+                                    <option value="肝胆类" th:selected="${medicineInfo['medicinetype']=='肝胆类'}">>肝胆类</option>
+                                    <option value="激素类" th:selected="${medicineInfo['medicinetype']=='激素类'}">>激素类</option>
+                                    <option value="注射剂" th:selected="${medicineInfo['medicinetype']=='注射剂'}">>注射剂</option>
                                 </select>
                             </div>
                         </div>
                         <hr class="mb-4">
                         <div class="mb-3">
                             <label for="price">单价 </label>
-                            <input type="number" class="form-control" name="cost" id="price" value="<?=$arr['cost']?>" required>
+                            <input type="number" class="form-control" name="cost" id="price" th:value="${medicineInfo['cost']}" required>
                         </div>
                         <hr class="mb-4">
                         <div class="mb-3">
                             <label for="address">库存</label>
-                            <input type="number" class="form-control" name="rest" id="address" value="<?=$arr['rest']?>" required>
+                            <input type="number" class="form-control" name="rest" id="address" th:value="${medicineInfo['rest']}" required>
                         </div>
                         <hr class="mb-4">
                         <button class="btn btn-primary btn-lg btn-block" type="submit" onclick="return check_input()">提交</button>

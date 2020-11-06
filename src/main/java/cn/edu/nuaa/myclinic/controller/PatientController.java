@@ -121,11 +121,19 @@ public class PatientController {
         return "Patient/showSpecificPayment";
     }
 
-    @ResponseBody
     @PostMapping("/postpayment")
     public String postPayment(@RequestParam(name = "patientid") Integer patientid,
                               @RequestParam(name = "time") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date time,
-                              @RequestParam(name = "prescriptionnum") int prescriptionnum,Model model){
-        return "true";
+                              @RequestParam(name = "prescriptionnum") int prescriptionnum,
+                              Model model,HttpServletRequest request){
+        Boolean b = patientService.updatePaymentandPrescription(patientid, time, prescriptionnum);
+        if (b){
+            model.addAttribute("msg","支付成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toPatient/index'");
+            return "tips/success";
+        }else {
+            return "Patient/PatientindexView"; //待完善
+        }
     }
 }

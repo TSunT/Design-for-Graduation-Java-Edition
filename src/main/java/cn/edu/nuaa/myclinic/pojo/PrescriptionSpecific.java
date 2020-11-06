@@ -11,4 +11,5 @@ import java.io.Serializable;
 public class PrescriptionSpecific extends Prescription implements Serializable{
     private String medicinename;
     private Integer cost;
+    private Integer rest;
 }

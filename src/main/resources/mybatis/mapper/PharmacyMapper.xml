@@ -3,10 +3,48 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.PharmacyMapper">
+    <resultMap id="getspecificprescription" type="PrescriptionSpecific">
+        <id property="patientid" column="patientid" jdbcType="INTEGER"/>
+        <id property="staffid" column="staffid" jdbcType="INTEGER"/>
+        <id property="time" column="time" jdbcType="DATE"/>
+        <id property="medicineid" column="medicineid" jdbcType="INTEGER"/>
+        <result property="num" column="num" jdbcType="INTEGER"/>
+        <result property="take" column="take" jdbcType="TINYINT"/>
+        <result property="paid" column="paid" jdbcType="TINYINT"/>
+        <association property="medicinename" javaType="String" column="medicineid" select="cn.edu.nuaa.myclinic.mapper.PharmacyMapper.getMedicinename"/>
+        <association property="rest" javaType="Integer" column="medicineid" select="cn.edu.nuaa.myclinic.mapper.PharmacyMapper.getMedicineRest"/>
+    </resultMap>
     <select id="getMedicinename" parameterType="Integer" resultType="String">
         select medicinename from medicine where medicineid = #{id}
     </select>
     <select id="getMedicinecost" parameterType="Integer" resultType="Integer">
         select cost from medicine where medicineid = #{id}
     </select>
+    <select id="getMedicineList" resultType="Medicine">
+        select * from medicine where 1=1
+        <if test="condition !=null">
+            and medicinename like CONCAT('%',#{condition},'%')
+        </if>
+    </select>
+    <select id="getMedicineInfo" resultType="Medicine">
+        select * from medicine where medicineid = #{id}
+    </select>
+    <update id="updateMedicineInfo" parameterType="Medicine">
+        update medicine set medicinename = #{medicinename} , medicinetype = #{medicinetype} , cost = #{cost} , rest = #{rest}  where medicineid = #{medicineid};
+    </update>
+    <select id="getMedicineRest" resultType="Integer">
+        select rest from medicine where medicineid=#{id}
+    </select>
+    <select id="getUnTakeList" resultMap="getspecificprescription">
+        select * from prescription where patientid = #{patientid} and paid = true and take = false
+    </select>
+    <select id="getMedicineRestforpretaken" resultType="Integer">
+        select rest from medicine where medicineid=#{id} for update
+    </select>
+    <update id="updateMedicineRest" >
+        update medicine set rest = #{rest} where medicineid=#{medicineid}
+    </update>
+    <update id="updatePrescription">
+        update prescription set take = true  where patientid = #{patientid} and medicineid = #{medicineid} and paid = true
+    </update>
 </mapper>

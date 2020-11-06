@@ -1,22 +1,16 @@
 <!doctype html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
-    <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <title>药房信息中心</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
     <!--边栏样式-->
     <style>
@@ -136,51 +130,13 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy">
-                            <span data-feather="home"></span>
-                            药品总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=add">
-                            <span data-feather="file"></span>
-                            添加药品
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询药品
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>交付药品</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="file-text"></span>
-                            查询病人支付信息
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:replace="~{Pharmacy/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">输入查询信息</h1>
@@ -192,12 +148,12 @@
                 </div>
             </div>
             <div class="query">
-                <form name="myquery" class="from_query" action="?con=Pharmacy&ac=queryPayment" method="post">
+                <form name="myquery" class="from_query" th:action="@{/toPharmacy/getQueryPrescriptionResult}" method="post">
                     <p>
                         <label>输入病号：
                         <label>
                         <br><br>
-                        <input class="sunmit_text" type="text" name="query" size="40" >
+                        <input class="sunmit_text" type="text" name="patientid" size="40" >
                         <input type="submit" class="btn btn-success" value="搜索" onClick="return check()"><br>
                     <p id="erro">提示：完整输入病号</p>
                     </p>

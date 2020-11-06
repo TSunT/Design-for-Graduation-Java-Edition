@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -51,10 +53,27 @@ public class PatientService {
         return patientMapper.findPayment(patientid);
     }
 
-    public List<PrescriptionSpecific> getSpecificPrescription(Integer patientid , Date time){
+    public List<PrescriptionSpecific> getSpecificPrescription(Integer patientid , Date time) {
         Prescription prescription = new Prescription();
         prescription.setPatientid(patientid);
         prescription.setTime(time);
         return patientMapper.getPrescriptionInfo(prescription);
     }
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Boolean updatePaymentandPrescription(Integer patientid,Date time , int prescriptionnum){
+        Prescription prescription = new Prescription();
+        prescription.setPatientid(patientid);
+        prescription.setTime(time);
+        Integer infulencerows = patientMapper.updatePrescriptionPaid(prescription);
+        if (infulencerows!=prescriptionnum) {
+            throw new RuntimeException("修改处方信息出错,Exist an exception when updating prescription info!");
+        }
+        Payment payment = new Payment();
+        payment.setPatientid(patientid);
+        payment.setTime(time);
+        Integer paymentupdaterows = patientMapper.updatePaymentPaid(payment);
+        if (paymentupdaterows!=1) throw new RuntimeException("修改支付信息出错,Exist an exception when updating payment info!");
+        return true;
+    }
 }
+

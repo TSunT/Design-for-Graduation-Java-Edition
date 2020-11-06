@@ -50,7 +50,8 @@ public class RouterController {
                     case "ROLE_ADMIN" : return "redirect:/toAdmin/index";
                     case "ROLE_DOCTOR" : return "redirect:/toDoctor/index";
                     case "ROLE_PATIENT" : return "redirect:/toPatient/index";
-                    case "ROLE_NOTICE": return "redirect:/toNotice/test";
+                    case "ROLE_NOTICE": return "redirect:/toNotice/index";
+                    case "ROLE_PHARMACY" : return "redirect:/toPharmacy/index";
                 }
             }
         }

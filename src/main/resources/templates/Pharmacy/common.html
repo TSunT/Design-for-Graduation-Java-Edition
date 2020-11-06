@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="asidebar">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/toPharmacy/index}">
+                    <span data-feather="home"></span>
+                    药品总表 <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/toPharmacy/addMedicine}">
+                    <span data-feather="file"></span>
+                    添加药品
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>交付药品</span>
+            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                <span data-feather="plus-circle"></span>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/toPharmacy/checkPatientPrescription}">
+                    <span data-feather="file-text"></span>
+                    查询病人信息
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

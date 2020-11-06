@@ -1,29 +1,16 @@
 <!doctype html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
-    <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <title>药房信息中心</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
-
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="./Paging/libs/DataTables.css">
-
-    <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="./Paging/libs/jquery.min.js"></script>
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="./Paging/libs/jquery.dataTables.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
     <!--边栏样式-->
     <style>
@@ -140,54 +127,16 @@
 <body>
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">药房中心</a>
-    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <input class="form-control form-control-dark w-100" id="search-medicine" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="?con=Login&ac=showuserinfo">账号信息</a>
+            <a class="nav-link" th:href="@{/toLoginInfo}">账号信息</a>
         </li>
     </ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                            <span data-feather="home"></span>
-                            药品总表 <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=add">
-                            <span data-feather="file"></span>
-                            添加药品
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=seek">
-                            <span data-feather="shopping-cart"></span>
-                            查询药品
-                        </a>
-                    </li>
-                </ul>
-
-                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                    <span>交付药品</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
-                        <span data-feather="plus-circle"></span>
-                    </a>
-                </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="?con=Pharmacy&ac=searchPatient">
-                            <span data-feather="file-text"></span>
-                            查询病人信息
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div th:replace="~{/Pharmacy/common::asidebar}"></div>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">药物表</h1>
@@ -199,7 +148,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <table id="example" class="display" cellspacing="0" width="100%" >
+                <table id="example" class="table" cellspacing="0" width="100%" >
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">编号</th>
@@ -209,28 +158,78 @@
                         <th scope="col">操作项</th>
                     </tr>
                     </thead>
+                    <tbody id = "medicinelist">
+
+                    </tbody>
                 </table>
             </div>
+            <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" id="medicineNavigateBar" role="group" aria-label="First group">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" id="btnGroupAddon">@</div>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+                </div>
+            </div>
+            <input type="hidden" id="contextPath" th:value="${#servletContext.contextPath}">
         </main>
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready( function () {
-       var table = $('#example').DataTable( {
-            "processing": true,
-            "serverSide": true,
-            "ajax": "./Paging/pharmacyIndexTable.php",
-            "columnDefs": [ {
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<button>edit</button>"
-            } ]
-        });
-        $('#example tbody').on( 'click', 'button', function () {
-            var data = table.row( $(this).parents('tr') ).data()[0];
-            window.location.href="?con=Pharmacy&ac=edit&id="+data;
-        } );
-    } );
+    $(function () {
+        loadMedicineList(1,10);
+    })
+    function loadMedicineList(page,size){
+        var condition = $("#search-medicine").val();
+
+        $.get("getMedicineList",{page:page,size:size,condition:condition},function (result){
+            //显示列表
+            var m_list = "";
+            var contextPath=$("#contextPath").val();
+            contextPath+='/toPharmacy/toUpdateMedicine?id=';
+            console.log(contextPath);
+            for (var i = 0;i<result.pageInfo.size;i++){
+                var medicine = result.pageInfo.list[i];
+                var tr = '<tr>\n' +
+                    '                                    <th scope="row">'+medicine.medicineid+'</th>\n' +
+                    '                                    <td>'+medicine.medicinename+'</td>\n' +
+                    '                                    <td>'+medicine.cost+'</td>\n' +
+                    '                                    <td>'+medicine.rest+'</td>\n' +
+                    '                                    <td>\n' +
+                    '                                        <a href="'+contextPath+medicine.medicineid+'">修改</a>\n' +
+                    '                                    </td>\n' +
+                    '                                </tr>';
+                m_list=m_list+tr;
+            }
+            $("#medicinelist").html(m_list);
+            //显示导航栏
+            var lis ='';
+            if (result.pageInfo.hasPreviousPage==false){
+                var li = '<button type="button" class="btn btn-secondary">«</button>'
+            }else {
+                var li ='<button type="button" class="btn btn-secondary" onclick="javascript:loadMedicineList('+result.pageInfo.prePage+','+size+')">«</button>'
+            }
+            lis +=li;//向前一页
+            for(var i=0;i<result.pageInfo.navigateLastPage;i++){
+                var num = result.pageInfo.navigatepageNums[i];
+                var li = '<button type="button" class="btn btn-secondary" onclick="javascript:loadMedicineList('+num+','+size+')">'+num+'</button>';
+                lis +=li;
+            }
+            if (result.pageInfo.hasNextPage==false){
+                var li = '<button type="button" class="btn btn-secondary">»</button>'
+            }else {
+                var li ='<button type="button" class="btn btn-secondary" onclick="javascript:loadMedicineList('+result.pageInfo.nextPage+','+size+')">»</button>'
+            }
+            lis +=li;//添加向后一页
+            $("#medicineNavigateBar").html(lis);
+
+        },"json");
+    }
+    $("#search-medicine").blur(function () {
+        loadMedicineList(1,10);
+    });
 </script>
 
 </body>
