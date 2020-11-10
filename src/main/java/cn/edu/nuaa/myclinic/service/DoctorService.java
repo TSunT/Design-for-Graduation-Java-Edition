@@ -76,7 +76,7 @@ public class DoctorService {
     //获取药品信息
     public PageInfo<Medicine> getAllMedicine(int page,int size,String condition){
         PageHelper.startPage(page,size);
-        if (condition.length()==0){
+        if (condition==null){
             condition=null;
         }
         List<Medicine> medicineList = docterMapper.getAllMedicine(condition);

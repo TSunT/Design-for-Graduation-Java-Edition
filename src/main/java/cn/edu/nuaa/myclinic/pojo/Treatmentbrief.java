@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel("简略诊疗信息")
 public class Treatmentbrief implements Serializable {
     private Integer patientid;
     private Integer staffid;
