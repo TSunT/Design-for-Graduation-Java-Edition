@@ -1,5 +1,5 @@
 # Design-for-Graduation-Java-Edition
-使用Spring Boot的小型诊所信息系统，毕业设计Java版
+使用Spring Boot的小型诊所信息系统，之前毕设使用php语言完成的，经过学习，自己写了一个Java版
 
 #### 介绍
 这是一个模拟小型诊所的项目，用于本人学习时编写的，基本功能完成
