@@ -78,4 +78,16 @@ public class PharmacyController {
             return "Pharmacy/PharmacyIndex"; //待完善
         }
     }
+    @PostMapping("/insertMedicine")
+    public String insertMedicine(Medicine medicine,HttpServletRequest request, Model model){
+        Boolean b = pharmacyService.insertMedicine(medicine);
+        if (b){
+            model.addAttribute("msg","添加成功");
+            String contextPath = request.getContextPath();
+            model.addAttribute("refreshInfo","3;url='"+contextPath+"/toPharmacy/index'");
+            return "tips/success";
+        }else {
+            return "Pharmacy/PharmacyIndex"; //待完善
+        }
+    }
 }

@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="zh-cn">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS for final-->
-    <link rel="stylesheet" href="./View/libs/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/libs/css/bootstrap.css}">
     <!-- Bootstrap CSS for dev-->
-    <link rel="stylesheet" href="../../static/libs/css/bootstrap.css">
+<!--    <link rel="stylesheet" href="../../static/linkibs/css/bootstrap.css">-->
     <title>药房信息中心</title>
 
-    <script src="./View/libs/jquery/jquery.js"></script>
-    <script src="./View/libs/js/popper.js" ></script>
-    <script src="./View/libs/js/bootstrap.js"></script>
+    <script th:src="@{/libs/jquery/jquery.js}"></script>
+    <script th:src="@{/libs/js/popper.js}" ></script>
+    <script th:src="@{/libs/js/bootstrap.js}"></script>
 
-    <script src="../../static/libs/jquery/jquery.js"></script>
-    <script src="../../static/libs/js/popper.js" ></script>
-    <script src="../../static/libs/js/bootstrap.js"></script>
+<!--    <script src="../../static/libs/jquery/jquery.js"></script>-->
+<!--    <script src="../../static/libs/js/popper.js" ></script>-->
+<!--    <script src="../../static/libs/js/bootstrap.js"></script>-->
 
     <!--边栏样式-->
     <style>
@@ -182,7 +182,7 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-    <form class="needs-validation" name="myform" action="?con=Pharmacy&ac=insert" method="post">
+    <form class="needs-validation" name="myform" th:action="@{/toPharmacy/insertMedicine}" method="post">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">添加药品</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
@@ -196,7 +196,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="medicineName">药品名称</label>
-                        <input type="text" class="form-control" id="medicineName" name="medicine_name" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="medicineName" name="medicinename" placeholder="" value="" required>
                         <div class="invalid-feedback">
                             Valid medicine name is required.
                         </div>
@@ -212,7 +212,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">TYPE</span>
                         </div>
-                        <select class="form-control" id="medicine_type" name="medicine_type">
+                        <select class="form-control" id="medicine_type" name="medicinetype">
                             <option value="抗菌消炎类">抗菌消炎类</option>
                             <option value="清热解毒类">清热解毒类</option>
                             <option value="止咳平喘类">止咳平喘类</option>

@@ -49,4 +49,8 @@ public class PharmacyService {
         }
         return true;
     }
+
+    public Boolean insertMedicine(Medicine medicine){
+        return pharmacyMapper.insertMedicineInfo(medicine)==1;
+    }
 }

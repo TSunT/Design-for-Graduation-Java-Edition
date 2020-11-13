@@ -32,6 +32,9 @@
     <update id="updateMedicineInfo" parameterType="Medicine">
         update medicine set medicinename = #{medicinename} , medicinetype = #{medicinetype} , cost = #{cost} , rest = #{rest}  where medicineid = #{medicineid};
     </update>
+    <insert id="insertMedicineInfo" parameterType="Medicine">
+        insert into medicine (medicinename,medicinetype,cost,rest) values (#{medicinename},#{medicinetype},#{cost},#{rest})
+    </insert>
     <select id="getMedicineRest" resultType="Integer">
         select rest from medicine where medicineid=#{id}
     </select>

@@ -16,6 +16,7 @@ public interface PharmacyMapper {
     public List<Medicine> getMedicineList(String contition);
     public Medicine getMedicineInfo(Integer id);
     public Integer updateMedicineInfo(Medicine medicine);
+    public Integer insertMedicineInfo(Medicine medicine);
     public Integer getMedicineRest(Integer id);
     public int getMedicineRestforpretaken(int id);
     public List<PrescriptionSpecific> getUnTakeList(Integer patientid);
