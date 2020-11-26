@@ -30,7 +30,7 @@ public class SawggerConfig {
                 //enable表示是否启用swagger 默认为true
                 .enable(b)
                 //添加分组，标识一个程序员扫描的包，多个程序员写自己的docket放入ioc中
-                .groupName("taotao")
+                .groupName("MyClinicApi")
                 .select()
                 // 通过.select()方法,apis去配置扫描接口,RequestHandlerSelectors配置如何扫描接口
                 .apis(RequestHandlerSelectors.basePackage("cn.edu.nuaa.myclinic.controller"))
