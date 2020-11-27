@@ -62,6 +62,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0 text-dark"> 等候厅 <small><?=$dep_name?></small></h1>
+                        <input type="hidden" id="depid" th:value="${depid}">
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -79,6 +80,24 @@
         <div class="content">
             <div class="container">
                 <div class="row">
+                    <div class="col-12">
+                    <div class="card">
+                        <form>
+                            <div class="card-header">
+                                <h3 class="card-title">叫号</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body" id="noticeinfo">
+                                叫号信息
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+
+                            </div>
+                            <!-- /.card-footer -->
+                        </form>
+                    </div>
+                </div>
                     <div class="col-lg-6">
                         <div class="card card-danger">
                             <div class="card-header">
@@ -94,7 +113,7 @@
                                         <th>医生姓名</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="noticeTable">
                                     <tr th:each="entries:${noticeList}">
                                         <th scope="row" th:text="${entries['patient']['patientid']}"></th>
                                         <td th:text="${entries['patient']['patientname']}"></td>
@@ -120,7 +139,7 @@
 
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="QueueTable">
 
                                     <tr th:each="patient:${queueList}">
                                         <th scope="row" th:text="${patient['patientid']}"></th>
@@ -156,4 +175,68 @@
 </div>
 <!-- ./wrapper -->
 </body>
+<script type="text/javascript">
+    var socket;
+    var depid;
+    depid = $("#depid").val();
+    //判断当前浏览器是否支持websocket
+    if(window.WebSocket) {
+        //go on
+        socket = new WebSocket("ws://localhost:8080/myclinic/WebSocketLink/"+depid);
+        //相当于channelReado, ev 收到服务器端回送的消息
+        socket.onmessage = function (ev) {
+            console.log(ev);
+            console.log(ev.data);
+            $("#noticeinfo").html(ev.data);
+            refreshList();
+        }
+
+        //相当于连接开启(感知到连接开启)
+        socket.onopen = function (ev) {
+            console.log("websocket连接开启！")
+            $("#noticeinfo").html("连接开启！");
+        }
+
+        //相当于连接关闭(感知到连接关闭)
+        socket.onclose = function (ev) {
+            console.log("websocket连接关闭！");
+        }
+    } else {
+        alert("当前浏览器不支持websocket")
+    }
+
+    function refreshList(){
+        $.get("showNoticeList",{depid:depid},function (data) {
+            console.log(data);
+            var notice_list = '';
+            for (var i = 0; i < data.length; i++) {
+                var entry = data[i];
+                var patient = entry.patient;
+                var tr = '<tr>\n' +
+                    '         <th scope="row">'+patient.patientid+'</th>\n' +
+                    '         <td>'+patient.patientname+'</td>\n' +
+                    '         <td>'+entry.office+'</td>\n' +
+                    '         <td>'+entry.doctor+'</td>\n' +
+                    '     </tr>';
+                notice_list = notice_list + tr;
+            }
+            $("#noticeTable").html(notice_list);
+        },"json");
+
+        $.get("showQueueList",{depid:depid},function (data) {
+            console.log(data);
+            var Queue_list = '';
+            for (var i = 0; i < data.length; i++) {
+                var entry = data[i];
+                var tr = '<tr>\n' +
+                    '         <th scope="row">'+entry.patientid+'</th>\n' +
+                    '         <td>'+entry.patientname+'</td>\n' +
+                    '     </tr>';
+                Queue_list = Queue_list + tr;
+            }
+            $("#QueueTable").html(Queue_list);
+        },"json");
+
+    }
+</script>
 </html>

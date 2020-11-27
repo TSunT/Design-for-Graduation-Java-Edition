@@ -5,10 +5,7 @@ import cn.edu.nuaa.myclinic.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +25,17 @@ public class NoticeController {
         Object[] queueList = noticeService.queueList(depid);
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("queueList",queueList);
+        model.addAttribute("depid",depid);
         return "Notice/Noticedisplay";
+    }
+    @ResponseBody
+    @GetMapping(value = "/showNoticeList" , produces = {"application/json;charset=UTF-8"})
+    public List<Map<String,Object>> showNoticeList(@RequestParam(name = "depid") Integer depid){
+        return noticeService.noticeList(depid);
+    }
+    @ResponseBody
+    @GetMapping(value = "/showQueueList" , produces = {"application/json;charset=UTF-8"})
+    public Object[] showQueueList(@RequestParam(name = "depid") Integer depid){
+        return noticeService.queueList(depid);
     }
 }

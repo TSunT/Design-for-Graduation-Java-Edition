@@ -2,6 +2,7 @@ package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.DocterMapper;
 import cn.edu.nuaa.myclinic.pojo.*;
+import cn.edu.nuaa.myclinic.websocketservice.NoticeSessionMap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.websocket.Session;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -34,13 +37,22 @@ public class DoctorService {
         Map<String,Object> map = new HashMap<>();
         Set<ZSetOperations.TypedTuple<PatientBrief>> set = redisTemplate.opsForZSet().rangeWithScores("depRegistryQueue" + depid, 0, 0);
         for (ZSetOperations.TypedTuple<PatientBrief> tuple:set){
-            PatientBrief value = tuple.getValue();
-            map.put("value",value);
-            opsforNoticeList(depid,staffid,staffname,value,office,true);
+            PatientBrief patientBrief = tuple.getValue();
+            map.put("value",patientBrief);
+            opsforNoticeList(depid,staffid,staffname,patientBrief,office,true);
             //测试成功记得把下列注释打开
-            redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,value);
+            redisTemplate.opsForZSet().remove("depRegistryQueue" + depid,patientBrief);
             Date date = new Date(tuple.getScore().longValue());
             map.put("score",date);
+            //调用websocket
+            Session session = NoticeSessionMap.get(depid.toString());
+            if (session!=null){
+                try {
+                    session.getBasicRemote().sendText("请:"+patientBrief.getPatientid()+"号病人:"+patientBrief.getPatientname()+"去"+office+"诊室,找 "+staffname+" 医生就诊。");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return map;
     }
