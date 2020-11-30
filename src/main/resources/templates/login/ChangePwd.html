@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,31 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./View/libs/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/all.min.css}">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="./View/libs/css/icheck-bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/icheck-bootstrap.min.css}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="./View/libs/css/adminlte.min.css">
-
-    <link rel="stylesheet" href="../../static/libs/css/all.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="../../static/libs/css/icheck-bootstrap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../static/libs/css/adminlte.min.css">
+    <link rel="stylesheet" th:href="@{/libs/css/adminlte.min.css}">
 
     <!-- jQuery -->
-    <script src="./View/libs/jquery/jquery.min.js"></script>
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
     <!-- Bootstrap 4 -->
-    <script src="./View/libs/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/libs/js/bootstrap.bundle.min.js}"></script>
     <!-- AdminLTE App -->
-    <script src="./View/libs/js/adminlte.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="../../static/libs/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="../../static/libs/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="../../static/libs/js/adminlte.min.js"></script>
+    <script th:src="@{/libs/js/adminlte.min.js}"></script>
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -43,9 +30,9 @@
 
     <div class="card">
         <div class="card-body register-card-body">
-            <p class="login-box-msg">工号为：<?=$_SESSION['staff_id']?></p>
+            <p class="login-box-msg">工号为：<span th:text="${session.user.getId()}"></span></p>
 
-            <form action="?con=Login&ac=updatepwd" name="myform" method="post">
+            <form th:action="@{/changePwd}" name="myform" method="post">
                 <div class="input-group mb-3">
                     <input type="password" class="form-control" name="oldpwd" placeholder="Old Password">
                     <div class="input-group-append">

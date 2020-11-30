@@ -33,15 +33,18 @@ public class WebSocketServer {
     }
     @OnClose
     public void onClose(){
+        NoticeSessionMap.remove(depId);
         try {
             localsession.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("one session close.");
     }
 
     @OnError
     public void onError(Throwable error){
+        NoticeSessionMap.remove(depId);
         try {
             localsession.close();
         } catch (IOException e) {

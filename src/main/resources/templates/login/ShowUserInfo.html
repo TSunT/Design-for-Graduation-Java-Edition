@@ -121,7 +121,7 @@
     </div>
     <br><br>
     <div class="form-group">
-        <button class="btn btn-primary float-right" type="button" onclick="window.location.href='?con=Login&ac=changepwd'">修改密码</button>
+        <a class="btn btn-primary float-right" th:href="@{/toChangePwd}">修改密码</a>
         <a class="btn badge-danger float-left" th:href="@{/logout}" >退出账号</a>
     </div><br><br>
     <div class="form-group">
@@ -131,11 +131,7 @@
 </div>
 
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="../../static/libs/jquery/jquery.js"></script>
-<script src="../../static/libs/js/popper.js" ></script>
-<script src="../../static/libs/js/bootstrap.js"></script>
+
 
 </body>
 </html>

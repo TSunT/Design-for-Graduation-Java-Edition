@@ -24,4 +24,19 @@ public interface UserRoleMapper {
      * @return List<Role> 角色集合
      */
     List<Role> getUserRolesByUserId(Integer userId);
+
+    /**
+     * 查询用户密码用于修改密码的验证
+     * @param id
+     * @return
+     */
+    public String findPwdById(int id);
+
+    /**
+     * 修改密码
+     * @param id
+     * @param pwd
+     * @return
+     */
+    public int updatePwdById(int id , String pwd);
 }

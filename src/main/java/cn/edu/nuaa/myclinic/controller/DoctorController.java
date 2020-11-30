@@ -85,8 +85,7 @@ public class DoctorController {
             model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
             return "Doctor/DoctorCheckRegister";
         }else {
-            model.addAttribute("registryPatientlength",doctorService.getRegisterSize(staff.getDep()));
-            return "Doctor/Doctorindex";
+            return "redirect:/toDoctor/index";
         }
     }
     @PostMapping("/checkedRegistryPatient")

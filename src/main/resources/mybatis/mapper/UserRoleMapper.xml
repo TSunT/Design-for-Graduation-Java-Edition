@@ -11,4 +11,10 @@
     <select id="getUserRolesByUserId" resultType="Role">
         select * from role r,user_role ur where r.rid=ur.rid and ur.uid=#{userId}
     </select>
+    <select id="findPwdById" parameterType="int" resultType="String">
+        select password from user where id = #{id};
+    </select>
+    <update id="updatePwdById" >
+        update user set password = #{pwd} where id = #{id};
+    </update>
 </mapper>
