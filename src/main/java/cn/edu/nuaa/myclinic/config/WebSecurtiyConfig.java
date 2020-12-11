@@ -46,6 +46,8 @@ public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe().rememberMeParameter("remember");
         http.logout().logoutSuccessUrl("/toLogin");
         http.csrf().disable();
+        //开启跨域访问
+        http.cors().disable();
     }
 
     public class customAuthenticationSuccessHandle implements AuthenticationSuccessHandler{
