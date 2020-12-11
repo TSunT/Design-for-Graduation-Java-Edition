@@ -25,6 +25,7 @@ public class WebSocketServer {
         System.out.println("sessionId:"+NoticeSessionMap.get(depId).getId());
         this.localsession = session;
         this.depId = depId;
+
     }
 
     @OnMessage
