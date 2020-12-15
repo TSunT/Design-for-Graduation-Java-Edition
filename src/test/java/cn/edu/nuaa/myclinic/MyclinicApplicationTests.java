@@ -1,11 +1,13 @@
 package cn.edu.nuaa.myclinic;
 
+import cn.edu.nuaa.myclinic.mapper.MenuMapper;
 import cn.edu.nuaa.myclinic.mapper.PatientMapper;
 import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import cn.edu.nuaa.myclinic.pojo.Prescription;
 import cn.edu.nuaa.myclinic.pojo.PrescriptionSpecific;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.service.AdminService;
+import cn.edu.nuaa.myclinic.service.MenuService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,10 @@ class MyclinicApplicationTests {
     RedisTemplate redisTemplate;
     @Autowired
     PatientMapper patientMapper;
+    @Autowired
+    MenuService menuService;
+    @Autowired
+    MenuMapper menuMapper;
     @Test
     void contextLoads() {
         userSecurityService.test();
@@ -102,5 +108,10 @@ class MyclinicApplicationTests {
         prescription.setPatientid(7);
         List<PrescriptionSpecific> prescriptionInfo = patientMapper.getPrescriptionInfo(prescription);
         System.out.println(prescriptionInfo);
+    }
+    @Test
+    void testgetAllMenuWithRoles(){
+        System.out.println(menuService.getAllMenuWithRole());
+        System.out.println(menuMapper.getAllRoleByMenuId(1));
     }
 }

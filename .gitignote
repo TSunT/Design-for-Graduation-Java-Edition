@@ -1,4 +1,7 @@
-node_modules/
+view/node_modules/
 *.iml
 .idea
 target/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

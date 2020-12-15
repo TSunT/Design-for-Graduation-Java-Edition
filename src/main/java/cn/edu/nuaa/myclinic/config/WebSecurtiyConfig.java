@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserSecurityService userSecurityService;

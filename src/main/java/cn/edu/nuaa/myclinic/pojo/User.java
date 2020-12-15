@@ -23,6 +23,8 @@ public class User extends UserNormal implements UserDetails {
 
     private List<Role> roles;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();

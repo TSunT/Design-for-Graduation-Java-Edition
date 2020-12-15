@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.MenuMapper">
+    <resultMap id="menuwithrole" type="Menu">
+        <id column="menuid" property="menuid"/>
+        <collection property="roles" ofType="Role" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getAllRoleByMenuId"/>
+    </resultMap>
+    <select id="getAllMenuwithRoles" resultMap="menuwithrole">
+        select * from menu
+    </select>
+    <select id="getAllRoleByMenuId" resultType="Role">
+        select * from role r,menu_role mr where r.rid=mr.roleid and mr.menuid=#{menuid}
+    </select>
+</mapper>
