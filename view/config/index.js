@@ -16,7 +16,7 @@ module.exports = {
         target: 'http://localhost:8086/',
         changeOrigin: true,
         pathRewrite: {
-          '^/': 'myclinic/'
+          '^/': ''
           // 等价于
           // step 1  /api = http://localhost:54321/
           // step 2 /^api = /api + api == http://localhost:54321/api
