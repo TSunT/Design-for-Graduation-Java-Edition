@@ -49,3 +49,4 @@ pagehelper:
 server:
   servlet:
     context-path: /myclinic
+  port: 8086

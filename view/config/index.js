@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/': {
+        target: 'http://localhost:8086/myclinic', //接口域名 
+        changeOrigin: true, //是否跨域
+        pathRewrite: {
+          '/': '' //需要rewrite重写的
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
