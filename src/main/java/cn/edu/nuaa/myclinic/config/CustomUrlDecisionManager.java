@@ -33,9 +33,9 @@ public class CustomUrlDecisionManager implements AccessDecisionManager {
             //获取当前用户所具有的所有权限
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             for (GrantedAuthority authority : authorities) {//遍历这些权限,如果有匹配则返回 ，如果没有匹配的话在循环结束后抛出权限不足异常
-//                System.out.println("authority: "+ authority);
-//                System.out.println("needRole: "+ needRole);
-//                System.out.println("is equal: "+authority.getAuthority().equals(needRole));
+                System.out.println("authority: "+ authority);
+                System.out.println("needRole: "+ needRole);
+                System.out.println("is equal: "+authority.getAuthority().equals(needRole));
                 if (authority.getAuthority().equals(needRole)) {
                     return;
                 }

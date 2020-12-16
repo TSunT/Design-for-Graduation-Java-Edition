@@ -7,9 +7,11 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import store from './store'
 
 Vue.use(ElementUI)
 Vue.use(VueAxios,axios);
+axios.defaults.withCredentials=true;
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false
 
@@ -25,10 +27,27 @@ Vue.prototype.putRequest = putRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.getRequest = getRequest;
 
+import {initMenu} from "./utils/menu";
+
+router.beforeEach((to, from, next) => {
+  console.log("beforeEach");
+  if (to.path === '/') {
+    next();
+  } else {
+    if (window.sessionStorage.getItem("user")) {
+      initMenu(router, store);
+      next();
+    } else {
+      next('/?redirect=' + to.path);
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

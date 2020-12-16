@@ -44,4 +44,5 @@
 ### 待完善功能
 1. 医生开出检查功能
 2. 检查模块
-
+#### 致谢
+1. 前后端分离权限控制 SpringBoot+Vue前后端分离，使用SpringSecurity完美处理权限问题 (_江南一点雨) 地址：https://blog.csdn.net/u012702547/article/details/79010010

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = Vuex.Store({
+const store = new Vuex.Store({
   state:{
     routes: [],
     currentUser: JSON.parse(window.sessionStorage.getItem("user"))

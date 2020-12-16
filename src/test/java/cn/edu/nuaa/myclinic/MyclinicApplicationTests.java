@@ -114,4 +114,8 @@ class MyclinicApplicationTests {
         System.out.println(menuService.getAllMenuWithRole());
         System.out.println(menuMapper.getAllRoleByMenuId(1));
     }
+    @Test
+    void testgetMenusbyUserid(){
+        System.out.println(menuMapper.getMenusByRoleId(1));
+    }
 }

@@ -11,11 +11,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/': {
-        target: 'http://localhost:8086/myclinic', //接口域名 
-        changeOrigin: true, //是否跨域
+      '/': { // 这里配置 '/api' 就等价于 target , 你在链接里访问 /api === http://localhost:54321
+        ws: false,
+        target: 'http://localhost:8086/',
+        changeOrigin: true,
         pathRewrite: {
-          '/': '' //需要rewrite重写的
+          '^/': 'myclinic/'
+          // 等价于
+          // step 1  /api = http://localhost:54321/
+          // step 2 /^api = /api + api == http://localhost:54321/api
         }
       }
     },
@@ -31,7 +35,7 @@ module.exports = {
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
-    useEslint: true,
+    useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,

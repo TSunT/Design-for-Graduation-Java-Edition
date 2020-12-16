@@ -3,14 +3,58 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.MenuMapper">
-    <resultMap id="menuwithrole" type="Menu">
-        <id column="menuid" property="menuid"/>
+    <resultMap id="BaseResultMap" type="Menu" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="path" property="path" jdbcType="VARCHAR" />
+        <result column="component" property="component" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="iconCls" property="iconCls" jdbcType="VARCHAR" />
+<!--        <result column="parentid" property="parentid" jdbcType="INTEGER" />-->
+<!--        <result column="enabled" property="enabled" jdbcType="BIT" />-->
+<!--        <association property="meta" javaType="org.javaboy.vhr.model.Meta">-->
+<!--            <result column="keepAlive" property="keepAlive" jdbcType="BIT" />-->
+<!--            <result column="requireAuth" property="requireAuth" jdbcType="BIT" />-->
+<!--        </association>-->
+    </resultMap>
+    <resultMap id="menuwithrole" type="Menu" extends="BaseResultMap">
         <collection property="roles" ofType="Role" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getAllRoleByMenuId"/>
+    </resultMap>
+    <resultMap id="menubyroleid" type="Menu" extends="BaseResultMap">
+        <collection property="children" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getChildMenu" ofType="Menu" >
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <result column="path" property="path" jdbcType="VARCHAR" />
+            <result column="component" property="component" jdbcType="VARCHAR" />
+            <result column="name" property="name" jdbcType="VARCHAR" />
+<!--            <result column="enabled2" property="enabled" jdbcType="BIT" />-->
+            <collection property="children" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getChildMenu" ofType="Menu" >
+                <id column="id" property="id" jdbcType="INTEGER" />
+                <result column="path" property="path" jdbcType="VARCHAR" />
+                <result column="component" property="component" jdbcType="VARCHAR" />
+                <result column="name" property="name" jdbcType="VARCHAR" />
+                <!--            <result column="enabled2" property="enabled" jdbcType="BIT" />-->
+            </collection>
+        </collection>
     </resultMap>
     <select id="getAllMenuwithRoles" resultMap="menuwithrole">
         select * from menu
     </select>
     <select id="getAllRoleByMenuId" resultType="Role">
         select * from role r,menu_role mr where r.rid=mr.roleid and mr.menuid=#{menuid}
+    </select>
+    <select id="getRoleIdByUserId" resultType="int">
+        select rid from user_role where uid = #{uid}
+    </select>
+    <select id="getMenusByRoleId" resultMap="menubyroleid">
+        select m1.*
+        from menu m1
+        where m1.id in (
+            select menuid
+            from menu_role
+            where roleid = #{rid}
+        )
+    </select>
+    <select id="getChildMenu" resultType="Menu" parameterType="int">
+        select * from menu where parentid = #{id}
     </select>
 </mapper>

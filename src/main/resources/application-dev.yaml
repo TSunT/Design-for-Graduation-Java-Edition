@@ -1,4 +1,7 @@
 spring:
+  security:
+    basic:
+      enabled: true
   profiles: dev
   datasource:
     username: root
