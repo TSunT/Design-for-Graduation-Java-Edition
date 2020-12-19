@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 04/11/2020 18:03:36
+ Date: 19/12/2020 09:40:51
 */
 
 SET NAMES utf8mb4;
@@ -57,24 +57,74 @@ CREATE TABLE `medicine`  (
   `cost` int(0) UNSIGNED NOT NULL,
   `rest` int(0) UNSIGNED NOT NULL,
   PRIMARY KEY (`medicineid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of medicine
 -- ----------------------------
-INSERT INTO `medicine` VALUES (1, '阿莫西林', '抗生素', 30, 96);
-INSERT INTO `medicine` VALUES (2, '青霉素钠', '抗生素', 20, 100);
-INSERT INTO `medicine` VALUES (3, '头孢拉定胶囊', '抗生素', 40, 96);
-INSERT INTO `medicine` VALUES (4, '头孢他啶', '抗菌消炎类', 40, 194);
+INSERT INTO `medicine` VALUES (1, '阿莫西林', '抗菌消炎类', 30, 2);
+INSERT INTO `medicine` VALUES (2, '青霉素钠', '抗生素', 20, 99);
+INSERT INTO `medicine` VALUES (3, '头孢拉定胶囊', '抗菌消炎类', 40, 97);
+INSERT INTO `medicine` VALUES (4, '头孢他啶', '抗菌消炎类', 40, 192);
 INSERT INTO `medicine` VALUES (5, '红霉素片', '抗菌消炎类', 20, 110);
 INSERT INTO `medicine` VALUES (6, '利巴韦林', '抗病毒药', 40, 100);
-INSERT INTO `medicine` VALUES (7, '阿昔洛韦', '抗病毒药', 40, 100);
+INSERT INTO `medicine` VALUES (7, '阿昔洛韦', '抗病毒药', 40, 98);
 INSERT INTO `medicine` VALUES (8, '阿苯达唑片', '抗寄生虫药', 45, 98);
 INSERT INTO `medicine` VALUES (9, '左旋咪唑片', '抗寄生虫药', 46, 100);
-INSERT INTO `medicine` VALUES (10, '卡马西平', '抗痢疾药', 30, 100);
+INSERT INTO `medicine` VALUES (10, '卡马西平', '抗痢疾药', 30, 99);
 INSERT INTO `medicine` VALUES (11, '新斯的明', '抗菌消炎类', 33, 8);
 INSERT INTO `medicine` VALUES (12, '苯巴比妥注射液', '抗痢疾药', 60, 100);
 INSERT INTO `medicine` VALUES (13, '琥珀胆碱', '抗胆碱药', 30, 100);
+
+-- ----------------------------
+-- Table structure for menu
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'id 主键',
+  `url` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '请求路径url',
+  `path` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'vue-route的路由path',
+  `component` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'vue-route的component',
+  `iconCls` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'vue-route的iconCls',
+  `keepAlive` tinyint(1) NULL DEFAULT 1,
+  `requireAuth` tinyint(1) NULL DEFAULT 1,
+  `parentid` int(0) NULL DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menu
+-- ----------------------------
+INSERT INTO `menu` VALUES (1, '/', '', '', NULL, 1, 0, NULL, 'AllUser');
+INSERT INTO `menu` VALUES (2, '/toAdmin/**', '/toAdmin/home', 'AdminHome', NULL, 1, 1, NULL, 'AdminHome');
+INSERT INTO `menu` VALUES (3, '/toAdmin/toUpdateUser', '/toAdmin/toUpdateUser', 'AdminUpdateUser', NULL, 1, 1, 2, 'AdminUpdateUser');
+INSERT INTO `menu` VALUES (4, '/toAdmin/toUpdateStaff', '/toAdmin/toUpdateStaff', 'AdminUpdateStaff', NULL, 1, 1, 2, 'AdminUpdateStaff');
+INSERT INTO `menu` VALUES (5, '/toAdmin/toShowAllUser', '/toAdmin/toShowAllUser', 'AdminShowAllUser', NULL, 1, 1, 2, 'AdminShowAllUser');
+INSERT INTO `menu` VALUES (6, '/toAdmin/toShowAllStaff', '/toAdmin/toShowAllStaff', 'AdminShowAllStaff', NULL, 1, 1, 2, 'AdminShowAllStaff');
+INSERT INTO `menu` VALUES (7, '/toAdmin/toAddUser', '/toAdmin/toAddUser', 'AdminAddUser', NULL, 1, 1, 2, 'AdminAddUser');
+INSERT INTO `menu` VALUES (8, '/toAdmin/toAddStaff', '/toAdmin/toAddStaff', 'AdminAddStaff', NULL, 1, 1, 2, 'AdminAddStaff');
+INSERT INTO `menu` VALUES (9, '/toAdmin/toAddUser/toVaildation', '/toAdmin/toAddUser/toVaildation', 'AdminAddUserVaildation', NULL, 1, 1, 7, 'AdminAddUserVaildation');
+INSERT INTO `menu` VALUES (10, '/menu/navigate', '', NULL, NULL, 1, 1, NULL, NULL);
+
+-- ----------------------------
+-- Table structure for menu_role
+-- ----------------------------
+DROP TABLE IF EXISTS `menu_role`;
+CREATE TABLE `menu_role`  (
+  `menuid` int(0) NOT NULL COMMENT 'menuId',
+  `roleid` int(0) NOT NULL COMMENT 'roleid',
+  PRIMARY KEY (`menuid`, `roleid`) USING BTREE,
+  INDEX `roleid`(`roleid`) USING BTREE,
+  CONSTRAINT `menu_role_ibfk_1` FOREIGN KEY (`menuid`) REFERENCES `menu` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `menu_role_ibfk_2` FOREIGN KEY (`roleid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menu_role
+-- ----------------------------
+INSERT INTO `menu_role` VALUES (2, 1);
+INSERT INTO `menu_role` VALUES (10, 1);
 
 -- ----------------------------
 -- Table structure for patient
@@ -125,6 +175,12 @@ CREATE TABLE `payment`  (
 -- ----------------------------
 -- Records of payment
 -- ----------------------------
+INSERT INTO `payment` VALUES (1, 5, '2020-11-06 16:36:36', 120, 1);
+INSERT INTO `payment` VALUES (3, 5, '2020-12-02 18:19:41', 120, 0);
+INSERT INTO `payment` VALUES (7, 5, '2020-11-05 07:11:37', 60, 0);
+INSERT INTO `payment` VALUES (9, 5, '2020-11-05 08:09:42', 50, 1);
+INSERT INTO `payment` VALUES (10, 5, '2020-11-06 09:12:59', 160, 1);
+INSERT INTO `payment` VALUES (10, 5, '2020-11-06 17:18:25', 150, 1);
 
 -- ----------------------------
 -- Table structure for prescription
@@ -149,6 +205,15 @@ CREATE TABLE `prescription`  (
 -- ----------------------------
 -- Records of prescription
 -- ----------------------------
+INSERT INTO `prescription` VALUES (5, 1, '2020-11-06 16:36:36', 1, 4, 1, 1);
+INSERT INTO `prescription` VALUES (5, 3, '2020-12-02 18:19:41', 8, 2, 0, 0);
+INSERT INTO `prescription` VALUES (5, 3, '2020-12-02 18:19:41', 10, 1, 0, 0);
+INSERT INTO `prescription` VALUES (5, 7, '2020-11-05 07:11:37', 1, 2, 0, 0);
+INSERT INTO `prescription` VALUES (5, 9, '2020-11-05 08:09:42', 2, 1, 1, 1);
+INSERT INTO `prescription` VALUES (5, 9, '2020-11-05 08:09:42', 10, 1, 1, 1);
+INSERT INTO `prescription` VALUES (5, 10, '2020-11-06 09:12:59', 4, 2, 1, 1);
+INSERT INTO `prescription` VALUES (5, 10, '2020-11-06 09:12:59', 7, 2, 1, 1);
+INSERT INTO `prescription` VALUES (5, 10, '2020-11-06 17:18:25', 1, 5, 0, 1);
 
 -- ----------------------------
 -- Table structure for role
@@ -197,6 +262,7 @@ INSERT INTO `staff` VALUES (4, 'staff4', NULL, 10000, 0, NULL, NULL, NULL);
 INSERT INTO `staff` VALUES (5, 'staff5', '医士', 8000, 0, '13372009880', 3, 'office');
 INSERT INTO `staff` VALUES (6, 'staff6', '医师', 10000, 0, '13372009881', 2, 'office');
 INSERT INTO `staff` VALUES (7, 'notice', '其它', 5500, 1, '13513255414', 15, '1floor');
+INSERT INTO `staff` VALUES (8, 'pharmacy', '其它', 8000, 0, '13816735577', 13, 'pharmacy');
 
 -- ----------------------------
 -- Table structure for treatment
@@ -213,7 +279,7 @@ CREATE TABLE `treatment`  (
   `prescription` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `treatmentid` int(0) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`treatmentid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of treatment
@@ -224,7 +290,19 @@ INSERT INTO `treatment` VALUES (88, 23, 22, '嗓子疼痛3天', '轻度咳嗽，
 INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 15);
 INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 16);
 INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 17);
-INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 18);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, 'hhh', 'kkk', 'ggg', '', '没开处方', 18);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, 'hhh', 'kkk', 'ggg', '冠心病 ', '没开处方', 19);
+INSERT INTO `treatment` VALUES (64, 54, 37, 'hhh', 'kkk', 'ggg', '冠心病 ', '阿莫西林*2;', 20);
+INSERT INTO `treatment` VALUES (64, 54, 36, '胸痛', '轻度咳嗽，咯白色粘痰，发热，无咯血。', 'xxxx', '', '没开处方', 21);
+INSERT INTO `treatment` VALUES (64, 54, 36, '胸痛', '轻度咳嗽，咯白色粘痰，发热，无咯血。', 'xxxx', '', '没开处方', 22);
+INSERT INTO `treatment` VALUES (64, 54, 37, '胸痛', '一月下旬再次出现胸闷、气急、心悸加重，夜间不能平卧，阵发性心前区隐痛，轻度咳嗽，咯白色粘痰，自觉无发热，无咯血。', 'xxxx', '冠心病 ', '青霉素钠*1;卡马西平*1;', 23);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 24);
+INSERT INTO `treatment` VALUES (64, 23, 37, '嗓子疼痛3天', '一月下旬再次出现胸闷、气急、心悸加重，夜间不能平卧，阵发性心前区隐痛，轻度咳嗽，咯白色粘痰，自觉无发热，无咯血。', '无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', '', '没开处方', 25);
+INSERT INTO `treatment` VALUES (NULL, NULL, NULL, '', '', '', '', '没开处方', 26);
+INSERT INTO `treatment` VALUES (66, 53, 36, 'hehe', 'haha', 'kkkk', 'kkkkkeeee', '头孢他啶*2;阿昔洛韦*2;', 27);
+INSERT INTO `treatment` VALUES (88, 54, 37, '嗓子疼痛3天', '平时体质较差,易患感冒。无肝炎及结核病史。未作预防接种已近30 年。 系统回顾:无眼痛、视力障碍，无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', 'kkkk', '咽炎', '阿莫西林*4;', 28);
+INSERT INTO `treatment` VALUES (88, 23, 37, '嗓子疼痛3天', '轻度咳嗽，咯白色粘痰，发热，无咯血。', 'kkkk', '咽炎', '阿莫西林*5;', 29);
+INSERT INTO `treatment` VALUES (64, 23, 37, '嗓子疼痛3天', '一月下旬再次出现胸闷、气急、心悸加重，夜间不能平卧，阵发性心前区隐痛，轻度咳嗽，咯白色粘痰，自觉无发热，无咯血。', '无耳流脓、耳痛、重听，无经常鼻阻塞、流脓 涕，无牙痛史。', '', '阿苯达唑片*2;卡马西平*1;', 30);
 
 -- ----------------------------
 -- Table structure for treatmentbrief
@@ -246,14 +324,20 @@ CREATE TABLE `treatmentbrief`  (
   CONSTRAINT `treatmentbrief_ibfk_1` FOREIGN KEY (`patientid`) REFERENCES `patient` (`patientid`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `treatmentbrief_ibfk_2` FOREIGN KEY (`staffid`) REFERENCES `staff` (`staffid`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `treatmentbrief_ibfk_3` FOREIGN KEY (`treatmentid`) REFERENCES `treatment` (`treatmentid`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of treatmentbrief
 -- ----------------------------
 INSERT INTO `treatmentbrief` VALUES (10, 5, '2020-11-04 07:16:15', 11, '咽炎', 20, 1, 'patient10');
 INSERT INTO `treatmentbrief` VALUES (3, 5, '2020-11-04 09:59:04', 17, '', 27, 1, 'patient3');
-INSERT INTO `treatmentbrief` VALUES (7, 5, '2020-11-04 10:01:58', 18, '', 28, 0, 'patient7');
+INSERT INTO `treatmentbrief` VALUES (7, 5, '2020-11-04 10:01:58', 20, '冠心病 ', 28, 1, 'patient7');
+INSERT INTO `treatmentbrief` VALUES (6, 5, '2020-11-05 07:23:08', 22, '', 30, 0, 'patient6');
+INSERT INTO `treatmentbrief` VALUES (9, 5, '2020-11-05 08:08:02', 23, '冠心病 ', 31, 1, 'patient9');
+INSERT INTO `treatmentbrief` VALUES (3, 5, '2020-11-05 08:43:58', 30, '', 32, 1, 'patient3');
+INSERT INTO `treatmentbrief` VALUES (1, 5, '2020-11-05 08:46:48', 28, '咽炎', 33, 1, 'patient1');
+INSERT INTO `treatmentbrief` VALUES (10, 5, '2020-11-05 08:50:20', 29, '咽炎', 34, 1, 'patient10');
+INSERT INTO `treatmentbrief` VALUES (10, 5, '2020-11-05 17:55:31', 27, 'kkkkkeeee', 35, 1, 'patient10');
 
 -- ----------------------------
 -- Table structure for user
@@ -271,30 +355,32 @@ CREATE TABLE `user`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `sid`(`sid`) USING BTREE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`sid`) REFERENCES `staff` (`staffid`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'user1', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 50, 1);
+INSERT INTO `user` VALUES (1, 'user1', '$2a$10$qfTSfZOCa5Hb3GUUGEiOreNT4YugFXKVM2dGmBgevP5/wGAEpTa6a', 1, 0, '0:0:0:0:0:0:0:1', 160, 1);
 INSERT INTO `user` VALUES (2, 'user2', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 1, 2);
-INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 79, 3);
+INSERT INTO `user` VALUES (3, 'user3', '$2a$10$RMuFXGQ5AtH4wOvkUqyvuecpqUSeoxZYqilXzbz50dceRsga.WYiq', 1, 0, '0:0:0:0:0:0:0:1', 99, 3);
 INSERT INTO `user` VALUES (15, 'user4', '$2a$10$6SCtX1k1TUp3lHkeRnqVjODWMHQ1hQu9E0Oj8mXbjTHOhdawYcPhe', 1, 0, '0:0:0:0:0:0:0:1', 1, NULL);
-INSERT INTO `user` VALUES (16, 'user5', '$2a$10$3IzMDU2x/lOQa07IKtYUuO1YloGM7yjxD7awQ2zjVsYfsbmR10EXK', 1, 0, '0:0:0:0:0:0:0:1', 106, 5);
+INSERT INTO `user` VALUES (16, 'user5', '$2a$10$3IzMDU2x/lOQa07IKtYUuO1YloGM7yjxD7awQ2zjVsYfsbmR10EXK', 1, 0, '0:0:0:0:0:0:0:1', 157, 5);
 INSERT INTO `user` VALUES (17, 'user6', '$2a$10$chkFjOSZflKL9Kch/EhD3.37P7hC87/NcPeta5JMOJexbYDgrpP.m', 1, 0, '0:0:0:0:0:0:0:1', 1, 6);
-INSERT INTO `user` VALUES (18, 'notice', '$2a$10$o5npDWNTYwf4H.4OSA4v1.Lny0oHIF814hFRWTLjGrSdle3gF/HY6', 1, 0, '0:0:0:0:0:0:0:1', 8, 7);
+INSERT INTO `user` VALUES (18, 'notice', '$2a$10$o5npDWNTYwf4H.4OSA4v1.Lny0oHIF814hFRWTLjGrSdle3gF/HY6', 1, 0, '0:0:0:0:0:0:0:1', 35, 7);
+INSERT INTO `user` VALUES (19, 'pharmacy', '$2a$10$gI.3dYrTAzXfYfHiCr7d4O9ywbJM4Yubr.nL6nQu2AgvZqABwN84S', 1, 0, '0:0:0:0:0:0:0:1', 15, 8);
 
 -- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`  (
-  `uid` int(0) NULL DEFAULT NULL COMMENT '用户id',
-  `rid` int(0) NULL DEFAULT NULL COMMENT '角色id',
+  `uid` int(0) NOT NULL COMMENT '用户id',
+  `rid` int(0) NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`uid`, `rid`) USING BTREE,
   INDEX `uid`(`uid`) USING BTREE,
   INDEX `rid`(`rid`) USING BTREE,
-  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -307,5 +393,6 @@ INSERT INTO `user_role` VALUES (15, 2);
 INSERT INTO `user_role` VALUES (16, 2);
 INSERT INTO `user_role` VALUES (17, 2);
 INSERT INTO `user_role` VALUES (18, 5);
+INSERT INTO `user_role` VALUES (19, 4);
 
 SET FOREIGN_KEY_CHECKS = 1;

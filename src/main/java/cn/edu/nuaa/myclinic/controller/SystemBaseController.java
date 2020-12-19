@@ -16,7 +16,7 @@ import java.util.List;
 public class SystemBaseController {
     @Autowired
     MenuService menuService;
-    @GetMapping("/system/menu")
+    @GetMapping("/menu/navigate")
     public List<Menu> getMenusByHrId(){
         Integer userid = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         System.out.println(userid+"号用户查询路由..");

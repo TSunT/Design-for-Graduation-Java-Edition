@@ -4,7 +4,7 @@ export const initMenu = (router, store) => {
   if (store.state.routes.length > 0) {
     return;
   }
-  getRequest('/system/menu').then(data => {
+  getRequest('/menu/navigate').then(data => {
     if (data) {
       let fmtRoutes = formatRoutes(data);
       console.log(fmtRoutes);
@@ -13,8 +13,9 @@ export const initMenu = (router, store) => {
     }
   })
 }
+
 export const formatRoutes = (routes) => {
-  let fmRoutes = [];
+  const fmRoutes = [];
   routes.forEach(router => {
     let {
       path,
@@ -23,10 +24,14 @@ export const formatRoutes = (routes) => {
       iconCls,
       children
     } = router;
+    // let childrenarry =[];
+    // if (children && children instanceof Array) {
+    //   childrenarry.push(formatRoutes(children))
+    // }
     if (children && children instanceof Array) {
       children = formatRoutes(children);
     }
-    if(path !=null){
+    if(!(path === null && path.length === 0)){
       let fmRouter = {
         path: path,
         name: name,
@@ -40,7 +45,12 @@ export const formatRoutes = (routes) => {
           }
         }
       }
-      fmRoutes.push(fmRouter);
+      if (fmRouter.path===''){
+        alert("fmroutes path null: "+fmRoutes.length+" route: "+fmRouter.path+" child: "+fmRouter.children);
+      }else {
+        fmRoutes.push(fmRouter);
+      }
+      console.log("fmroutes len: "+fmRoutes.length+" route: "+fmRouter.path+" child: "+fmRouter.children);
     }
   })
   return fmRoutes;
