@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.FilterChain;
@@ -75,6 +77,13 @@ public class WebSecurtiyConfig extends WebSecurityConfigurerAdapter {
             session.setAttribute("user",user);
             httpServletRequest.getRequestDispatcher("/routedistribute").forward(httpServletRequest,httpServletResponse);
         }
+    }
 
+    public class customAuthenticationFailureHandler implements AuthenticationFailureHandler{
+
+        @Override
+        public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+            
+        }
     }
 }

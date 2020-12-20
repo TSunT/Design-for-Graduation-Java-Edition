@@ -2,13 +2,19 @@ package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.exception.SysException;
 import cn.edu.nuaa.myclinic.mapper.UserRoleMapper;
+import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -18,7 +24,13 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userRoleMapper.loadUserByUsername(s);
         if (user==null) throw new UsernameNotFoundException("the user is not exist in database");
-        user.setRoles(userRoleMapper.getUserRolesByUserId(user.getId()));
+        List<Role> roles = userRoleMapper.getUserRolesByUserId(user.getId());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        for (Role role: roles) {
+            String rolename = role.getRname();
+            authorities.add(new SimpleGrantedAuthority(rolename));
+        }
+        user.setAuthorities(authorities);
         return user;
     }
 

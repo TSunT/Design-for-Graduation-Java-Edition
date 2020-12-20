@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 public class RouterController {
     @Autowired
     private UserSecurityService userSecurityService;
-    @RequestMapping({"/","/index","toLogin"})
+    @RequestMapping({"/","/index","/toLogin"})
     public String toLogin(){
         return "login/loginindex";
     }

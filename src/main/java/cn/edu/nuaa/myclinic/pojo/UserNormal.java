@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,4 +19,5 @@ public class UserNormal implements Serializable {
     private Boolean locked;
     private Integer logintimes;
     private String lastloginaddr;
+    private List<Role> roles;
 }

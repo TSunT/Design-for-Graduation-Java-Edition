@@ -50,7 +50,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             setDetails(request, authRequest);
             User principal = new User();
             principal.setUsername(username);
-            sessionRegistry.registerNewSession(request.getSession(true).getId(), principal);
+            //sessionRegistry.registerNewSession(request.getSession(true).getId(), principal);
             return this.getAuthenticationManager().authenticate(authRequest);
         } else {
             //checkCode(response, request.getParameter("code"), verify_code);

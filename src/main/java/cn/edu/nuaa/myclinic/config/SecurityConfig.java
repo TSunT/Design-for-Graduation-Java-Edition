@@ -4,7 +4,10 @@ import cn.edu.nuaa.myclinic.pojo.RespBean;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -15,8 +18,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,13 +25,13 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 import org.springframework.security.web.session.ConcurrentSessionFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -67,7 +68,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter out = response.getWriter();
                     user.setPassword(null);
-                    RespBean ok = RespBean.ok("登录成功!", user);
+                    Map<String,Object> respmap = new HashMap<>();
+                    String token = createAccessToken(user); //创建token
+                    respmap.put("access_token",token);
+                    respmap.put("user",user);
+                    RespBean ok = RespBean.ok("登录成功!", respmap);
                     String s = new ObjectMapper().writeValueAsString(ok);
                     out.write(s);
                     out.flush();
@@ -115,6 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(JwtConfig.antMatchers.split(",")).permitAll() // 不进行权限验证的请求或资源(从配置文件中读取)
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O object) {
@@ -162,14 +168,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }), ConcurrentSessionFilter.class);
         http.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+        http.addFilter(new JwtAuthFilter(authenticationManager()));
     }
-    private CorsConfigurationSource CorsConfigurationSource() {
-        CorsConfigurationSource source =   new UrlBasedCorsConfigurationSource();
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*");	//同源配置，*表示任何请求都视为同源，若需指定ip和端口可以改为如“localhost：8080”，多个以“，”分隔；
-        corsConfiguration.addAllowedHeader("*");//header，允许哪些header，本案中使用的是token，此处可将*替换为token；
-        corsConfiguration.addAllowedMethod("*");	//允许的请求方法，PSOT、GET等
-        ((UrlBasedCorsConfigurationSource) source).registerCorsConfiguration("/**",corsConfiguration); //配置允许跨域访问的url
-        return source;
+
+    /**
+     * 生成Token
+     * @author zwq
+     * @date 2020/4/4
+     * @param userEntity
+     * @return
+     **/
+    public static String createAccessToken(User userEntity){
+        // 登陆成功生成JWT
+        String token = Jwts.builder()
+                // 放入用户名和用户ID
+                .setId(userEntity.getId()+"")
+                // 主题
+                .setSubject(userEntity.getUsername())
+                // 签发时间
+                .setIssuedAt(new Date())
+                // 签发者
+                .setIssuer("Myclinic")
+                // 自定义属性 放入用户拥有权限
+                .claim("authorities", JSON.toJSONString(userEntity.getAuthorities()))
+                // 失效时间
+                .setExpiration(new Date(System.currentTimeMillis() + JwtConfig.expiration))
+                // 签名算法和密钥
+                .signWith(SignatureAlgorithm.HS512,JwtConfig.secret)
+                .compact();
+        return token;
     }
 }

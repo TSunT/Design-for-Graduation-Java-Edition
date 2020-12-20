@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.exception.SysException;
+import cn.edu.nuaa.myclinic.pojo.RespBean;
 import cn.edu.nuaa.myclinic.pojo.Staff;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
@@ -27,12 +28,12 @@ public class AdminController {
     }
     @ResponseBody
     @GetMapping(value = "/showUserList",produces = { "application/json;charset=UTF-8"})
-    public Map<String,Object> showUserList(@RequestParam("page") int page,@RequestParam("size") int size,@RequestParam("condition") String condition){
+    public RespBean showUserList(@RequestParam("page") int page, @RequestParam("size") int size, @RequestParam("condition") String condition){
         List<User> userList = adminService.findAllUser(page, size,condition);
         PageInfo pageInfo = new PageInfo(userList);
         Map<String ,Object> resultUserListMap = new HashMap<>();
         resultUserListMap.put("pageInfo",pageInfo);
-        return resultUserListMap;
+        return RespBean.ok("用户列表查询成功！",resultUserListMap);
     }
     @GetMapping("/toUpdateUser")
     public String toUpdateUser(@RequestParam(name = "id",required = true) int id,Model model){
@@ -58,11 +59,11 @@ public class AdminController {
     }
     @ResponseBody
     @GetMapping(value = "/showStaffList",produces = { "application/json;charset=UTF-8"})
-    public Map<String,Object> showStaffList(@RequestParam(name = "page",defaultValue = "1") int page,
+    public RespBean showStaffList(@RequestParam(name = "page",defaultValue = "1") int page,
                                             @RequestParam(name="size",defaultValue = "5") int size){
         Map<String ,Object> resultStaffListMap = new HashMap<>();
         resultStaffListMap.put("pageInfo",adminService.findAllStaff(page,size));
-        return resultStaffListMap;
+        return RespBean.ok("用户列表查询成功！",resultStaffListMap);
     }
     @GetMapping("/toUpdateStaff")
     public String toUpdateStaff(@RequestParam(name="id",required = true) int id, Model model){

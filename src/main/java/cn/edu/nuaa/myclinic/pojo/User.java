@@ -1,7 +1,5 @@
 package cn.edu.nuaa.myclinic.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,15 +18,13 @@ import java.util.List;
 @ApiModel("用户信息")
 public class User extends UserNormal implements UserDetails {
 
-    private List<Role> roles;
-
-
+    private List<GrantedAuthority> authorities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRname()));
+        for (GrantedAuthority role : this.authorities) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getAuthority()));
         }
         return authorities;
     }
