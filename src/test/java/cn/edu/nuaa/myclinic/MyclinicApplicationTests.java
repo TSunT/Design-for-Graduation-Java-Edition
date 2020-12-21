@@ -1,6 +1,5 @@
 package cn.edu.nuaa.myclinic;
 
-import cn.edu.nuaa.myclinic.mapper.MenuMapper;
 import cn.edu.nuaa.myclinic.mapper.PatientMapper;
 import cn.edu.nuaa.myclinic.pojo.PatientBrief;
 import cn.edu.nuaa.myclinic.pojo.Prescription;
@@ -33,8 +32,7 @@ class MyclinicApplicationTests {
     PatientMapper patientMapper;
     @Autowired
     MenuService menuService;
-    @Autowired
-    MenuMapper menuMapper;
+
     @Test
     void contextLoads() {
         userSecurityService.test();
@@ -112,10 +110,10 @@ class MyclinicApplicationTests {
     @Test
     void testgetAllMenuWithRoles(){
         System.out.println(menuService.getAllMenuWithRole());
-        System.out.println(menuMapper.getAllRoleByMenuId(1));
+        //System.out.println(menuMapper.getAllRoleByMenuId(1));
     }
     @Test
     void testgetMenusbyUserid(){
-        System.out.println(menuMapper.getMenusByRoleId(1));
+        //System.out.println(menuMapper.getMenusByRoleId(new Integer[]{1,6}));
     }
 }

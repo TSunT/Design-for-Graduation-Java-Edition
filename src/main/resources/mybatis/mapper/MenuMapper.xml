@@ -51,10 +51,16 @@
         where m1.id in (
             select menuid
             from menu_role
-            where roleid = #{rid}
+            where roleid in
+        <foreach item="item" index="index" collection="rids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         )
     </select>
     <select id="getChildMenu" resultType="Menu" parameterType="int">
         select * from menu where parentid = #{id}
+    </select>
+    <select id="getUserByUserId" resultType="UserNormal">
+        select username , avatar from user where id = #{uid}
     </select>
 </mapper>

@@ -129,13 +129,13 @@ public class DoctorController {
 
     @ResponseBody
     @GetMapping(value = "/showMedicineList",produces = { "application/json;charset=UTF-8"})
-    public Map<String,Object> showMedicineList(@RequestParam(name="page" ,defaultValue = "1") int page,
+    public RespBean showMedicineList(@RequestParam(name="page" ,defaultValue = "1") int page,
                                                @RequestParam(name = "size",defaultValue = "10") int size,
                                                @RequestParam(name = "condition",required = false) String condition){
         PageInfo<Medicine> allMedicines = doctorService.getAllMedicine(page, size, condition);
         Map<String,Object> result = new HashMap();
         result.put("pageInfo",allMedicines);
-        return result;
+        return RespBean.ok("药品列表查询成功！", result);
     }
 
     @PostMapping("/postTreatmentHandler")

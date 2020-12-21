@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     },
     initRoutes(state, data) {
       state.routes = data;
-    },
+    }
   }
 })
 export default store;

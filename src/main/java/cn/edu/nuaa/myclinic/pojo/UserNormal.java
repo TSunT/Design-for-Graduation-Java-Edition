@@ -19,5 +19,6 @@ public class UserNormal implements Serializable {
     private Boolean locked;
     private Integer logintimes;
     private String lastloginaddr;
+    private String avatar;
     private List<Role> roles;
 }
