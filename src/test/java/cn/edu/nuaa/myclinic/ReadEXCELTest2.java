@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.XMLHelper;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
@@ -8,6 +9,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -21,8 +23,10 @@ public class ReadEXCELTest2 {
         //  you need to process the core Workbook stream.
         // Normally it's of the form rId# or rSheet#
         InputStream sheet2 = r.getSheet("rId1");
+        byte[] isBytes = IOUtils.toByteArray(sheet2);
+        streamOut( new ByteArrayInputStream(isBytes));
         InputSource sheetSource = new InputSource(sheet2);
-        parser.parse(sheetSource);
+//        parser.parse(sheetSource);
         sheet2.close();
     }
     public void processAllSheets(String filename) throws Exception {
@@ -94,7 +98,19 @@ public class ReadEXCELTest2 {
     }
     public static void main(String[] args) throws Exception {
         ReadEXCELTest2 example = new ReadEXCELTest2();
-        example.processOneSheet("D:\\WorkFile\\咪咕相关\\应收应付导入表格专题\\样表\\test1.xlsx");
-        example.processAllSheets("D:\\WorkFile\\咪咕相关\\应收应付导入表格专题\\样表\\test2.xlsx");
+        example.processOneSheet("D:\\temp\\testpoi2.xlsx");
+//        example.processAllSheets("D:\\WorkFile\\咪咕相关\\应收应付导入表格专题\\样表\\test2.xlsx");
+    }
+
+    //读取流，查看文件内容
+    public static void streamOut(InputStream in) throws Exception {
+        System.out.println("excel转为xml------------start");
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) != -1) {
+            System.out.write(buf, 0, len);
+        }
+        System.out.println();
+        System.out.println("excel转为xml------------end");
     }
 }
