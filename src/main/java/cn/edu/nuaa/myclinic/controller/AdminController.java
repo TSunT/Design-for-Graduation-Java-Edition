@@ -33,7 +33,7 @@ public class AdminController {
         PageInfo pageInfo = new PageInfo(userList);
         Map<String ,Object> resultUserListMap = new HashMap<>();
         resultUserListMap.put("pageInfo",pageInfo);
-        return RespBean.ok("用户列表查询成功！",resultUserListMap);
+        return new RespBean<Map<String ,Object>>(200,"用户列表查询成功！",resultUserListMap);
     }
     @GetMapping("/toUpdateUser")
     public String toUpdateUser(@RequestParam(name = "id",required = true) int id,Model model){
@@ -63,7 +63,7 @@ public class AdminController {
                                             @RequestParam(name="size",defaultValue = "5") int size){
         Map<String ,Object> resultStaffListMap = new HashMap<>();
         resultStaffListMap.put("pageInfo",adminService.findAllStaff(page,size));
-        return RespBean.ok("用户列表查询成功！",resultStaffListMap);
+        return new RespBean<Map<String ,Object>>(200,"用户列表查询成功！",resultStaffListMap);
     }
     @GetMapping("/toUpdateStaff")
     public String toUpdateStaff(@RequestParam(name="id",required = true) int id, Model model){

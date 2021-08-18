@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter = new LoginFilter();
+        // 定义登陆的处理程序
         loginFilter.setAuthenticationSuccessHandler((request, response, authentication) -> {
                     //更新登录信息
                     String addr = request.getRemoteAddr();
@@ -70,9 +71,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     user.setPassword(null);
                     Map<String,Object> respmap = new HashMap<>();
                     String token = createAccessToken(user); //创建token
-                    respmap.put("access_token",token);
+                    respmap.put("access_token",token); // 返回token
                     respmap.put("user",user);
-                    RespBean ok = RespBean.ok("登录成功!", respmap);
+                    RespBean<Map<String,Object>> ok = new RespBean();
+                    ok.setData(respmap);
+                    ok.setMsg("查询成功");
+                    ok.setStatus(200);
                     String s = new ObjectMapper().writeValueAsString(ok);
                     out.write(s);
                     out.flush();
@@ -100,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
         );
         loginFilter.setAuthenticationManager(authenticationManagerBean());
-        loginFilter.setFilterProcessesUrl("/doLogin");
+        loginFilter.setFilterProcessesUrl("/doLogin"); // 登陆处理的url
         ConcurrentSessionControlAuthenticationStrategy sessionStrategy = new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
         sessionStrategy.setMaximumSessions(1);
         loginFilter.setSessionAuthenticationStrategy(sessionStrategy);

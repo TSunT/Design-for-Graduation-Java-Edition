@@ -23,6 +23,7 @@ public class DoctorService {
     @Autowired
     private RedisTemplate redisTemplate;
     public Long getRegisterSize(Integer depid){
+        System.out.println("registryLength:"+redisTemplate.opsForZSet().zCard("depRegistryQueue" + depid));
         return redisTemplate.opsForZSet().zCard("depRegistryQueue" + depid);
     }
     public Staff getStaffBySid(Integer sid){

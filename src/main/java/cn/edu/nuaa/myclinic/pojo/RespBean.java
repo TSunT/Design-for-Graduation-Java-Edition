@@ -6,10 +6,10 @@ import lombok.Data;
 import java.io.Serializable;
 @Data
 @ApiModel("返回给前端的响应信息")
-public class RespBean implements Serializable {
+public class RespBean<T> implements Serializable {
     private Integer status;
     private String msg;
-    private Object obj;
+    private T data;
 
     public static RespBean build() {
         return new RespBean();
@@ -19,8 +19,8 @@ public class RespBean implements Serializable {
         return new RespBean(200, msg, null);
     }
 
-    public static RespBean ok(String msg, Object obj) {
-        return new RespBean(200, msg, obj);
+    public RespBean ok(String msg, T data) {
+        return new RespBean(200, msg, data);
     }
 
     public static RespBean error(String msg) {
@@ -31,13 +31,13 @@ public class RespBean implements Serializable {
         return new RespBean(500, msg, obj);
     }
 
-    private RespBean() {
+    public RespBean() {
     }
 
-    private RespBean(Integer status, String msg, Object obj) {
+    public RespBean(Integer status, String msg, T obj) {
         this.status = status;
         this.msg = msg;
-        this.obj = obj;
+        this.data = obj;
     }
 
     public Integer getStatus() {
@@ -58,12 +58,11 @@ public class RespBean implements Serializable {
         return this;
     }
 
-    public Object getObj() {
-        return obj;
+    public T getData() {
+        return data;
     }
 
-    public RespBean setObj(Object obj) {
-        this.obj = obj;
-        return this;
+    public void setData(T data) {
+        this.data = data;
     }
 }

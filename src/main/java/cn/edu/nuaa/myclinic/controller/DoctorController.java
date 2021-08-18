@@ -135,7 +135,7 @@ public class DoctorController {
         PageInfo<Medicine> allMedicines = doctorService.getAllMedicine(page, size, condition);
         Map<String,Object> result = new HashMap();
         result.put("pageInfo",allMedicines);
-        return RespBean.ok("药品列表查询成功！", result);
+        return new RespBean<Map<String ,Object>>(200,"用户列表查询成功！",result);
     }
 
     @PostMapping("/postTreatmentHandler")

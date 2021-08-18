@@ -2,6 +2,7 @@ import axios from 'axios';
 import {Message} from 'element-ui';
 //import router from '../router'
 import {mymessage} from './myMessage';
+// import PubSub from 'pubsub-js';
 
 axios.interceptors.response.use(success => {
   if (success.status && success.status === 200 && success.data.status === 500) {
