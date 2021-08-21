@@ -27,7 +27,7 @@ const userApi = {
 export function login (parameter) {
   console.log({ parameter })
   return request({
-    url: '/doLogin',
+    url: userApi.Login,
     method: 'post',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
@@ -77,7 +77,7 @@ export function logout () {
  */
 export function get2step (parameter) {
   return request({
-    url: '/doLogin',
+    url: userApi.Login,
     method: 'post',
     data: parameter
   })

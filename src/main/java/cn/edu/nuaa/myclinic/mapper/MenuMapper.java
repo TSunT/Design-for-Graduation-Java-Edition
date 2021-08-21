@@ -13,9 +13,7 @@ import java.util.List;
 @Repository
 public interface MenuMapper {
     List<Menu> getAllMenuwithRoles();
-    List<Role> getAllRoleByMenuId(Integer menuid);
-    List<Menu> getMenusByRoleId(Integer[] rids);
-    List<Menu> getChildMenu(Integer id);
-    Integer[] getRoleIdByUserId(Integer uid);
-    UserNormal getUserByUserId(Integer uid);
+    List<Role> getAllRoleByMenuId(Integer menuId);
+    List<Integer> getRoleIdByUserId(Integer uid);
+    List<Menu> getMenusByRoleId(List<Integer> rids);
 }

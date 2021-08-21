@@ -27,4 +27,6 @@ import java.io.Serializable;
 public class Meta implements Serializable {
     private String title;
     private String icon;
+    private Boolean show;
+    private String target;
 }

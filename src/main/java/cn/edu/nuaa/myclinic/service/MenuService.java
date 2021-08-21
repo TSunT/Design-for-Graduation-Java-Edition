@@ -17,11 +17,9 @@ public class MenuService {
     }
 
     public List<Menu> getMenusByUserId(Integer uid){
-        Integer[] rids = menuMapper.getRoleIdByUserId(uid);
+        List<Integer> rids = menuMapper.getRoleIdByUserId(uid);
         return menuMapper.getMenusByRoleId(rids);
     }
 
-    public UserNormal getUserByUserId(Integer uid){
-        return menuMapper.getUserByUserId(uid);
-    }
+
 }

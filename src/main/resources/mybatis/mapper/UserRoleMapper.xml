@@ -4,12 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.UserRoleMapper">
 
+    <resultMap id="getUserInfoMap" type="cn.edu.nuaa.myclinic.pojo.UserNormal">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <collection property="roles" column="id" select="cn.edu.nuaa.myclinic.mapper.UserRoleMapper.getUserRolesByUserId" ofType="cn.edu.nuaa.myclinic.pojo.Role">
+            <id column="rid" property="rid" jdbcType="INTEGER"/>
+            <result column="rname" property="rname" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
     <select id="loadUserByUsername" resultType="User">
         select * from user where username=#{username}
     </select>
 
     <select id="getUserRolesByUserId" resultType="Role">
-        select * from role r,user_role ur where r.rid=ur.rid and ur.uid=#{userId}
+        select r.rid,r.rname
+        from user_role a left join role r on r.rid = a.rid
+        where a.uid=#{userId}
     </select>
     <select id="findPwdById" parameterType="int" resultType="String">
         select password from user where id = #{id};
@@ -17,4 +29,7 @@
     <update id="updatePwdById" >
         update user set password = #{pwd} where id = #{id};
     </update>
+    <select id="getUserByUserId" resultMap="getUserInfoMap">
+        select username, avatar, id from user where id = #{uid}
+    </select>
 </mapper>

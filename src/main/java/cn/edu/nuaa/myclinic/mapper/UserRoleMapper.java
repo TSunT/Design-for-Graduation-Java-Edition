@@ -2,6 +2,7 @@ package cn.edu.nuaa.myclinic.mapper;
 
 import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.User;
+import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -39,4 +40,11 @@ public interface UserRoleMapper {
      * @return
      */
     public int updatePwdById(int id , String pwd);
+
+    /**
+     * 获得用户信息
+     * @param uid
+     * @return
+     */
+    UserNormal getUserByUserId(Integer uid);
 }

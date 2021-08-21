@@ -86,7 +86,7 @@ export const generatorDynamicRouter = token => {
     loginService
       .getCurrentUserNav()
       .then(res => {
-        console.log('generatorDynamicRouter response:', res)
+        // console.log('generatorDynamicRouter response:', res)
         const { data } = res
         const menuNav = []
         const childrenNav = []

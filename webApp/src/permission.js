@@ -40,6 +40,11 @@ router.beforeEach((to, from, next) => {
               store.getters.addRouters.forEach(r => {
                 router.addRoute(r)
               })
+              // 默认地址
+              if (to.path === '/') {
+                next({ path: defaultRoutePath })
+                NProgress.done()
+              }
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
               if (to.path === redirect) {

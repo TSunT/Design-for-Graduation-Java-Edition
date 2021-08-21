@@ -41,32 +41,32 @@
             </a-input-password>
           </a-form-item>
         </a-tab-pane>
-        <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
-          <a-form-item>
-            <a-input size="large" type="text" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">
-              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
+        <!--        <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
+                  <a-form-item>
+                    <a-input size="large" type="text" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">
+                      <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                    </a-input>
+                  </a-form-item>
 
-          <a-row :gutter="16">
-            <a-col class="gutter-row" :span="16">
-              <a-form-item>
-                <a-input size="large" type="text" :placeholder="$t('user.login.mobile.verification-code.placeholder')" v-decorator="['captcha', {rules: [{ required: true, message: $t('user.verification-code.required') }], validateTrigger: 'blur'}]">
-                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-                </a-input>
-              </a-form-item>
-            </a-col>
-            <a-col class="gutter-row" :span="8">
-              <a-button
-                class="getCaptcha"
-                tabindex="-1"
-                :disabled="state.smsSendBtn"
-                @click.stop.prevent="getCaptcha"
-                v-text="!state.smsSendBtn && $t('user.register.get-verification-code') || (state.time+' s')"
-              ></a-button>
-            </a-col>
-          </a-row>
-        </a-tab-pane>
+                  <a-row :gutter="16">
+                    <a-col class="gutter-row" :span="16">
+                      <a-form-item>
+                        <a-input size="large" type="text" :placeholder="$t('user.login.mobile.verification-code.placeholder')" v-decorator="['captcha', {rules: [{ required: true, message: $t('user.verification-code.required') }], validateTrigger: 'blur'}]">
+                          <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                        </a-input>
+                      </a-form-item>
+                    </a-col>
+                    <a-col class="gutter-row" :span="8">
+                      <a-button
+                        class="getCaptcha"
+                        tabindex="-1"
+                        :disabled="state.smsSendBtn"
+                        @click.stop.prevent="getCaptcha"
+                        v-text="!state.smsSendBtn && $t('user.register.get-verification-code') || (state.time+' s')"
+                      ></a-button>
+                    </a-col>
+                  </a-row>
+                </a-tab-pane>-->
       </a-tabs>
 
       <a-form-item>
@@ -185,7 +185,6 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
           // loginParams[!state.loginType ? 'email' : 'username'] = values.username
@@ -193,7 +192,9 @@ export default {
           loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .catch(err => {
+              this.requestFailed(err)
+            })
             .finally(() => {
               state.loginBtn = false
             })
@@ -260,7 +261,7 @@ export default {
         })
       })
       */
-      this.$router.push({ path: '/dashboard/workplace' })
+      this.$router.push({ path: '/' })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
@@ -272,9 +273,10 @@ export default {
     },
     requestFailed (err) {
       this.isLoginError = true
+      console.log(err)
       this.$notification['error']({
         message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        description: ((err.response || {}).data || {}).msg || err.message || '请求出现错误，请稍后再试',
         duration: 4
       })
     }

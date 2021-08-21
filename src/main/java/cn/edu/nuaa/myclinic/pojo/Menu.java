@@ -12,16 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Menu implements Serializable {
     private Integer id;
-    private String url;
     private String path;
     private String name;
     private String component;
-    private Integer parentid;
-    private Boolean enabled;
-    private List<Menu> children;
+    private Integer parentId;
+    private String redirect;
     private List<Role> roles;
-    private String iconCls;
-    private Boolean keepAlive;
-    private Boolean requireAuth;
-
+    private Meta meta;
 }

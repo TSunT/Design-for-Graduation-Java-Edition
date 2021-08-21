@@ -29,9 +29,9 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
         List<Menu> menus = menuService.getAllMenuWithRole();
         for (Menu menu : menus) { //遍历所有menu并带有角色
             //System.out.println("Url:"+menu.getUrl());
-            String urlDatabase = menu.getUrl();
+            String urlDatabase = menu.getPath();
             if (urlDatabase != null) {
-                if (antPathMatcher.match(menu.getUrl(), requestUrl)) {//如果该请求url与之前遍历的menu中的url匹配
+                if (antPathMatcher.match(menu.getPath(), requestUrl)) {//如果该请求url与之前遍历的menu中的url匹配
                     List<Role> roles = menu.getRoles(); //获得该nemu的所有角色信息
                     String[] str = new String[roles.size()];
                     for (int i = 0; i < roles.size(); i++) { //将所有角色名变成字符数组

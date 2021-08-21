@@ -5,62 +5,45 @@
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.MenuMapper">
     <resultMap id="BaseResultMap" type="Menu" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="redirect" property="redirect" jdbcType="VARCHAR" />
         <result column="path" property="path" jdbcType="VARCHAR" />
         <result column="component" property="component" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="iconCls" property="iconCls" jdbcType="VARCHAR" />
+        <result column="parentId" property="parentId" jdbcType="INTEGER" />
 <!--        <result column="parentid" property="parentid" jdbcType="INTEGER" />-->
 <!--        <result column="enabled" property="enabled" jdbcType="BIT" />-->
-<!--        <association property="meta" javaType="org.javaboy.vhr.model.Meta">-->
-<!--            <result column="keepAlive" property="keepAlive" jdbcType="BIT" />-->
-<!--            <result column="requireAuth" property="requireAuth" jdbcType="BIT" />-->
-<!--        </association>-->
+        <association property="meta" javaType="cn.edu.nuaa.myclinic.pojo.Meta">
+            <result column="title" property="title" jdbcType="VARCHAR" />
+            <result column="target" property="target" jdbcType="VARCHAR" />
+            <result column="show" property="show" jdbcType="BOOLEAN"/>
+            <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        </association>
     </resultMap>
-    <resultMap id="menuwithrole" type="Menu" extends="BaseResultMap">
-        <collection property="roles" ofType="Role" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getAllRoleByMenuId"/>
-    </resultMap>
-    <resultMap id="menubyroleid" type="Menu" extends="BaseResultMap">
-        <collection property="children" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getChildMenu" ofType="Menu" >
-            <id column="id" property="id" jdbcType="INTEGER" />
-            <result column="path" property="path" jdbcType="VARCHAR" />
-            <result column="component" property="component" jdbcType="VARCHAR" />
-            <result column="name" property="name" jdbcType="VARCHAR" />
-<!--            <result column="enabled2" property="enabled" jdbcType="BIT" />-->
-            <collection property="children" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getChildMenu" ofType="Menu" >
-                <id column="id" property="id" jdbcType="INTEGER" />
-                <result column="path" property="path" jdbcType="VARCHAR" />
-                <result column="component" property="component" jdbcType="VARCHAR" />
-                <result column="name" property="name" jdbcType="VARCHAR" />
-                <!--            <result column="enabled2" property="enabled" jdbcType="BIT" />-->
-            </collection>
+
+    <resultMap id="menuWithRolesMap" extends="BaseResultMap" type="Menu">
+        <collection property="roles" column="id" select="cn.edu.nuaa.myclinic.mapper.MenuMapper.getAllRoleByMenuId" ofType="cn.edu.nuaa.myclinic.pojo.Role" >
+            <result column="rid" property="rid" jdbcType="INTEGER"/>
+            <result column="rname" property="rname" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
-    <select id="getAllMenuwithRoles" resultMap="menuwithrole">
-        select * from menu
-    </select>
+
     <select id="getAllRoleByMenuId" resultType="Role">
         select * from role r,menu_role mr where r.rid=mr.roleid and mr.menuid=#{menuid}
     </select>
+
     <select id="getRoleIdByUserId" resultType="int">
         select rid from user_role where uid = #{uid}
     </select>
-    <select id="getMenusByRoleId" resultMap="menubyroleid">
-        select m1.*
-        from menu m1
-        where m1.id in (
-            select menuid
-            from menu_role
-            where roleid in
-        <foreach item="item" index="index" collection="rids" open="(" separator="," close=")">
-            #{item}
+
+    <select id="getAllMenuwithRoles" resultMap="menuWithRolesMap">
+        select * from menu
+    </select>
+    <select id="getMenusByRoleId" resultMap="BaseResultMap">
+        select *
+        from menu m left join menu_role mr on m.id = mr.menuid
+        where mr.roleid in
+        <foreach collection="rids" item="rid" separator="," open="(" close=")" >
+            #{rid}
         </foreach>
-        )
-    </select>
-    <select id="getChildMenu" resultType="Menu" parameterType="int">
-        select * from menu where parentid = #{id}
-    </select>
-    <select id="getUserByUserId" resultType="UserNormal">
-        select username , avatar from user where id = #{uid}
     </select>
 </mapper>
