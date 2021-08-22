@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.AdminApiMapper">
+
+    <resultMap id="baseUserNormalMap" type="cn.edu.nuaa.myclinic.pojo.UserNormal">
+        <id column="id" property="id" javaType="Integer"/>
+        <result column="username" property="username" javaType="String"/>
+        <result column="logintimes" property="logintimes" javaType="Integer"/>
+        <result column="lastloginaddr" property="lastloginaddr" javaType="String"/>
+        <result column="locked" property="locked" javaType="Boolean"/>
+        <collection property="roles" column="id" select="cn.edu.nuaa.myclinic.mapper.UserRoleMapper.getUserRolesByUserId" ofType="cn.edu.nuaa.myclinic.pojo.Role">
+            <id column="rid" property="rid" jdbcType="INTEGER"/>
+            <result column="rname" property="rname" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserList" resultMap="baseUserNormalMap" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormalDTO">
+        select a.id, a.username, a.logintimes, a.lastloginaddr, a.locked
+        from user a
+        where 1=1
+        <if test="username != null and username != ''">
+            and a.username like '%'||#{username}||'%'
+        </if>
+    </select>
+</mapper>

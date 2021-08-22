@@ -50,9 +50,11 @@ const constantRouterComponents = {
   SecuritySettings: () => import('@/views/account/settings/Security'),
   CustomSettings: () => import('@/views/account/settings/Custom'),
   BindingSettings: () => import('@/views/account/settings/Binding'),
-  NotificationSettings: () => import('@/views/account/settings/Notification')
+  NotificationSettings: () => import('@/views/account/settings/Notification'),
 
   // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
+  // 用户汇总表
+  UserListSummary: () => import('@/views/admin/user/list/UserListSummary')
 }
 
 // 前端未找到页面路由（固定不用改）

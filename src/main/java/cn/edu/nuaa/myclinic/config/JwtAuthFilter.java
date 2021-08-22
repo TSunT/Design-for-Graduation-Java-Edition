@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -92,6 +93,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                 String userId = claims.getId();
                 log.info(username+" send a request!");
                 //log.info("security context: "+SecurityContextHolder.getContext().getAuthentication().toString());
+                Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userSecurityService.loadUserByUsername(username);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, userId, userDetails.getAuthorities());

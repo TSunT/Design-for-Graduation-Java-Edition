@@ -41,6 +41,7 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   configuration:
     cache-enabled: true
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #开启日志
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql
@@ -53,13 +54,17 @@ jwt:
   # 密匙KEY
   secret: JWTSecret
   # HeaderKEY
-  tokenHeader: Authorization
+  tokenHeader: Access-Token
   # Token前缀字符
   tokenPrefix: Security-c
   # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
   expiration: 86400
   # 配置不需要认证的接口
   antMatchers: /index/** , /doLogin
+# sql日志
+logging:
+  level:
+    cn.edu.nuaa.myclinic.mapper: DEBUG #包路径为mapper文件包路径
 
 server:
   port: 8086
