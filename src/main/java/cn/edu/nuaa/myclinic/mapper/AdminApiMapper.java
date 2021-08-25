@@ -17,4 +17,11 @@ public interface AdminApiMapper {
      * @return
      */
     public List<UserNormal> selectUserList(UserNormalDTO dto);
+
+    /**
+     * 查询一个用户及权限
+     * @param id
+     * @return
+     */
+    public UserNormal selectOneUserByID(Integer id);
 }

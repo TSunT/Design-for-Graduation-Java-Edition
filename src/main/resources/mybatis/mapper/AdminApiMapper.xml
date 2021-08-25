@@ -21,7 +21,12 @@
         from user a
         where 1=1
         <if test="username != null and username != ''">
-            and a.username like '%'||#{username}||'%'
+            and a.username like CONCAT(CONCAT('%',#{username}),'%')
         </if>
+    </select>
+    <select id="selectOneUserByID" parameterType="Integer" resultMap="baseUserNormalMap">
+        select a.username, a.enable, a.locked, a.avatar, a.id, a.logintimes, a.lastloginaddr
+        from user a
+        where a.id = #{id}
     </select>
 </mapper>

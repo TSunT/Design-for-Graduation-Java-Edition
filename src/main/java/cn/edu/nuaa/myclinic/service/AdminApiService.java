@@ -24,4 +24,12 @@ public class AdminApiService {
         return new PageInfo<>(adminApiMapper.selectUserList(dto));
     }
 
+    /**
+     * 根据ID查询用户
+     * @param dto
+     * @return
+     */
+    public UserNormal getOneUserById(UserNormalDTO dto){
+        return adminApiMapper.selectOneUserByID(dto.getId());
+    }
 }

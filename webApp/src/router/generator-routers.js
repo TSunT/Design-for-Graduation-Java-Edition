@@ -54,7 +54,8 @@ const constantRouterComponents = {
 
   // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
   // 用户汇总表
-  UserListSummary: () => import('@/views/admin/user/list/UserListSummary')
+  UserListSummary: () => import('@/views/admin/user/list/UserListSummary'),
+  UserProfile: () => import('@/views/admin/user/userProfile/UserProfile')
 }
 
 // 前端未找到页面路由（固定不用改）
