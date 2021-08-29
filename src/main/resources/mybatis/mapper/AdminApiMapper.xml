@@ -15,6 +15,12 @@
             <result column="rname" property="rname" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
+    <insert id="insertUserInfo">
+        insert into user(username,passowrd,enable,locked,avatar) values (#{username},#{password},#{enable},#{locked},#{avatar})
+    </insert>
+    <update id="updateUserInfoById">
+        update user a set a.username = #{username}, a.locked=#{locked}, a.enable=#{enable}, a.avatar=#{avatar} where a.id = #{id}
+    </update>
 
     <select id="selectUserList" resultMap="baseUserNormalMap" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormalDTO">
         select a.id, a.username, a.logintimes, a.lastloginaddr, a.locked

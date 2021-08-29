@@ -24,4 +24,18 @@ public interface AdminApiMapper {
      * @return
      */
     public UserNormal selectOneUserByID(Integer id);
+
+    /**
+     * 更新一条用户数据
+     * @param userNormal
+     * @return
+     */
+    public Integer updateUserInfoById(UserNormal userNormal);
+
+    /**
+     * 新增一个用户
+     * @param userNormal
+     * @return
+     */
+    public Integer insertUserInfo(UserNormal userNormal);
 }

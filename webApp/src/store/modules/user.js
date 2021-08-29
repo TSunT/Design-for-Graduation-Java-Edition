@@ -2,6 +2,7 @@ import storage from 'store'
 import { login, getInfo } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import { getUserAvatar } from '@/api/admin'
 
 const user = {
   state: {
@@ -73,8 +74,18 @@ const user = {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
           commit('SET_NAME', { name: result.username, welcome: welcome() })
-          commit('SET_AVATAR', result.avatar)
-
+          // 获取头像信息
+          getUserAvatar(result.avatar).then(res => {
+            // 这里就是将得到的图片流转换成blob类型
+            const blob = new Blob([res], {
+              type: 'image/jpeg'
+            })
+            const url = window.URL.createObjectURL(blob)
+            commit('SET_AVATAR', url)
+          }).catch(e => {
+            console.log(e)
+            this.$message.error('图像上传失败，Image upload failed!')
+          })
           resolve(response)
         }).catch(error => {
           reject(error)

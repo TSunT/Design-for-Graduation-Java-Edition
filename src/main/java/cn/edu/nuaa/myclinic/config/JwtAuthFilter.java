@@ -93,7 +93,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                 String userId = claims.getId();
                 log.info(username+" send a request!");
                 //log.info("security context: "+SecurityContextHolder.getContext().getAuthentication().toString());
-                Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
+                //Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = this.userSecurityService.loadUserByUsername(username);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, userId, userDetails.getAuthorities());
@@ -104,6 +104,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             }  catch (ExpiredJwtException e){
                 log.info("Token过期");
             } catch (Exception e) {
+                e.printStackTrace();
                 log.info("Token无效");
             }
         }

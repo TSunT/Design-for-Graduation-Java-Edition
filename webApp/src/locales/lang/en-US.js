@@ -11,6 +11,8 @@ import form from './en-US/form'
 import result from './en-US/result'
 import account from './en-US/account'
 
+import adminUser from '@/locales/lang/en-US/admin/adminUser'
+
 const components = {
   antLocale: antdEnUS,
   momentName: 'eu',
@@ -31,5 +33,6 @@ export default {
   ...dashboard,
   ...form,
   ...result,
-  ...account
+  ...account,
+  ...adminUser
 }

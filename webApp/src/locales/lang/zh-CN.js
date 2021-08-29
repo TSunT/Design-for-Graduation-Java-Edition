@@ -10,6 +10,8 @@ import form from './zh-CN/form'
 import result from './zh-CN/result'
 import account from './zh-CN/account'
 
+import adminUser from '@/locales/lang/zh-CN/admin/adminUser'
+
 const components = {
   antLocale: antd,
   momentName: 'zh-cn',
@@ -30,5 +32,6 @@ export default {
   ...dashboard,
   ...form,
   ...result,
-  ...account
+  ...account,
+  ...adminUser
 }

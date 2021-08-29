@@ -65,6 +65,11 @@ jwt:
 logging:
   level:
     cn.edu.nuaa.myclinic.mapper: DEBUG #包路径为mapper文件包路径
-
+# 上传文件配置
+file:
+  # 服务器上的地址
+  staticAccessPath: /myClinic/uploadFile/avatarImg/
+  # 本地路径
+  uploadFolder: /Volumes/Macintosh_HD/Code/java/Design-for-Graduation-Java-Edition/avatarImg/
 server:
   port: 8086

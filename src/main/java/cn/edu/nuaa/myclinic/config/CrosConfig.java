@@ -15,6 +15,8 @@ public class CrosConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.addAllowedOrigin("http://localhost:8000");
+        corsConfiguration.addAllowedOrigin("http://192.168.124.8:8000");
+        corsConfiguration.addAllowedOrigin("http://192.168.124.5:8000");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addExposedHeader(HttpHeaders.COOKIE);
@@ -27,6 +29,8 @@ public class CrosConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8000")
+                .allowedOrigins("http://192.168.124.8:8000")
+                .allowedOrigins("http://192.168.124.5:8000")
                 .allowedMethods("GET","HEAD","POST","PUT","DELETE","OPTION")
                 .allowCredentials(true)
                 .maxAge(3600)
