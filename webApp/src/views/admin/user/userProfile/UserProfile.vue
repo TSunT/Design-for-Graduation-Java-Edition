@@ -71,10 +71,15 @@
           </a-tab-pane>
           <a-tab-pane key="2" :tab="$t('admin.user.profile.tab2')">
             <a-transfer
-              :data-source="allRoles"
-              show-search
-              :target-keys="userRoles"
+              :dataSource="allRoles"
+              showSearch
+              :targetKeys="userRoles"
               :render="item => item.title"
+              @change="handleChange"
+              :list-style="{
+                width: '300px',
+                height: '600px',
+              }"
             />
           </a-tab-pane>
         </a-tabs>
@@ -91,7 +96,7 @@
 </template>
 
 <script>
-import { fetchOneUser, saveUserInfo, getUserAvatar } from '@/api/admin'
+import { fetchOneUser, saveUserInfo, getUserAvatar, getAllRoles } from '@/api/admin'
 
 export default {
   name: 'UserProfile',
@@ -104,7 +109,8 @@ export default {
         enable: true,
         avatar: '',
         lastloginaddr: '',
-        logintime: 0
+        logintime: 0,
+        roles: []
       },
       avatarUrl: '',
       allRoles: [],
@@ -117,6 +123,18 @@ export default {
     if (this.user.id) {
       this.fetchProfile(this.user.id)
     }
+    getAllRoles().then(res => {
+      this.allRoles = []
+      if (res.status === 200) {
+        let tempRoles = []
+        res.data.sort((a, b) => a.rid - b.rid).forEach(role => {
+          tempRoles = [...tempRoles, { key: role.rid.toString(), title: role.rname }]
+        })
+        if (this.allRoles) {
+          this.allRoles = tempRoles
+        }
+      }
+    })
   },
   methods: {
     // handler
@@ -146,6 +164,8 @@ export default {
           this.user.locked = res.data.locked
           this.user.lastloginaddr = res.data.lastloginaddr
           this.user.avatar = res.data.avatar
+          this.user.roles = res.data.roles
+          this.userRoles = res.data.roles.map(role => role.rid.toString())
           // 获取头像信息
           getUserAvatar(res.data.avatar).then(res => {
             // 这里就是将得到的图片流转换成blob类型
@@ -164,6 +184,7 @@ export default {
         this.$message.error('请求失败，Request failed!')
       })
     },
+    // 上传图片
     handleUploadAvatar (info) {
       console.log(info)
       if (info.file.status !== 'uploading') {
@@ -199,6 +220,14 @@ export default {
         this.$message.error('Image must smaller than 2MB!')
       }
       return isJpgOrPng && isLt2M
+    },
+    handleChange (targetKeys, direction, moveKeys) {
+      console.log(targetKeys, direction, moveKeys)
+      this.userRoles = targetKeys
+      this.user.roles = []
+      targetKeys.forEach(keys => {
+        this.user.roles = [...this.user.roles, { rid: Number(keys) }]
+      })
     }
   }
 }

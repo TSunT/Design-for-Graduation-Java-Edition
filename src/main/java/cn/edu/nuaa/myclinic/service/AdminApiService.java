@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.mapper.AdminApiMapper;
+import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import cn.edu.nuaa.myclinic.pojo.UserNormalDTO;
 import com.github.pagehelper.PageHelper;
@@ -9,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AdminApiService {
@@ -42,13 +45,31 @@ public class AdminApiService {
      */
     public Integer saveUserInfo(UserNormal dto){
 
-        if (dto.getId()>0) { // id小于0 表示需要新增用户
-            return adminApiMapper.updateUserInfoById(dto);
+        if (dto.getId()>0) { // id小于等于0 表示需要新增用户
+            adminApiMapper.deleteOneUserRoles(dto.getId());
+            adminApiMapper.updateUserInfoById(dto);
+            List<Role> roles = dto.getRoles();
+            for (Role role : roles) {
+                adminApiMapper.insertOneUserRoles(dto.getId(),role.getRid());
+            }
+            return 1;
         }else {
             dto.setPassword(new BCryptPasswordEncoder().encode("123"));// 默认密码123
             dto.setLogintimes(0);
-            return adminApiMapper.insertUserInfo(dto);
+            Integer uid = adminApiMapper.insertUserInfo(dto);
+            List<Role> roles = dto.getRoles();
+            for (Role role : roles) {
+                adminApiMapper.insertOneUserRoles(uid,role.getRid());
+            }
+            return 1;
         }
+    }
 
+    /**
+     * 查询所有角色
+     * @return
+     */
+    public List<Role> getAllRoles(){
+        return adminApiMapper.selectAllRoles();
     }
 }

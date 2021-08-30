@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.pojo.RespBean;
+import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import cn.edu.nuaa.myclinic.pojo.UserNormalDTO;
 import cn.edu.nuaa.myclinic.service.AdminApiService;
@@ -18,10 +19,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin/api")
@@ -132,6 +130,17 @@ public class AdminApiController {
         } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("save.failed!");
+        }
+    }
+
+    @PostMapping("/getAllRoles")
+    public RespBean<List<Role>> getAllRoles(){
+        try{
+            List<Role> allRoles = adminApiService.getAllRoles();
+            return new RespBean<>(200,"query.success",allRoles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed!");
         }
     }
 }

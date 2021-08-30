@@ -4,7 +4,8 @@ const adminApi = {
   userList: '/admin/api/getUserList',
   fetchOneUser: '/admin/api/getOneUserById',
   saveUserInfo: '/admin/api/saveUserInfo',
-  getUserAvatar: '/admin/api/getUserAvatar'
+  getUserAvatar: '/admin/api/getUserAvatar',
+  getAllRoles: '/admin/api/getAllRoles'
 }
 
 export function userList (parameter) {
@@ -36,5 +37,12 @@ export function getUserAvatar (param) {
     url: adminApi.getUserAvatar + '?avatarUrl=' + param,
     method: 'get',
     responseType: 'blob'
+  })
+}
+
+export function getAllRoles () {
+  return request({
+    url: adminApi.getAllRoles,
+    method: 'post'
   })
 }

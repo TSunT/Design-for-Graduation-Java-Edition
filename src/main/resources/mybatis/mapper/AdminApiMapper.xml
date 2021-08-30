@@ -15,12 +15,18 @@
             <result column="rname" property="rname" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
-    <insert id="insertUserInfo">
+    <insert id="insertUserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormal">
         insert into user(username,passowrd,enable,locked,avatar) values (#{username},#{password},#{enable},#{locked},#{avatar})
+    </insert>
+    <insert id="insertOneUserRoles" parameterType="Integer">
+        insert into user_role(uid,rid) values (#{uid},#{rid})
     </insert>
     <update id="updateUserInfoById">
         update user a set a.username = #{username}, a.locked=#{locked}, a.enable=#{enable}, a.avatar=#{avatar} where a.id = #{id}
     </update>
+    <delete id="deleteOneUserRoles">
+        delete from user_role where uid = #{uid}
+    </delete>
 
     <select id="selectUserList" resultMap="baseUserNormalMap" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormalDTO">
         select a.id, a.username, a.logintimes, a.lastloginaddr, a.locked
@@ -34,5 +40,9 @@
         select a.username, a.enable, a.locked, a.avatar, a.id, a.logintimes, a.lastloginaddr
         from user a
         where a.id = #{id}
+    </select>
+    <select id="selectAllRoles" resultType="cn.edu.nuaa.myclinic.pojo.Role">
+        select a.rid, a.rname
+        from role a
     </select>
 </mapper>
