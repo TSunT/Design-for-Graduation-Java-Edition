@@ -1,15 +1,12 @@
 package cn.edu.nuaa.myclinic.controller;
 
-import cn.edu.nuaa.myclinic.pojo.RespBean;
-import cn.edu.nuaa.myclinic.pojo.Role;
-import cn.edu.nuaa.myclinic.pojo.UserNormal;
-import cn.edu.nuaa.myclinic.pojo.UserNormalDTO;
+import cn.edu.nuaa.myclinic.pojo.*;
 import cn.edu.nuaa.myclinic.service.AdminApiService;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/admin/api")
@@ -138,6 +135,69 @@ public class AdminApiController {
         try{
             List<Role> allRoles = adminApiService.getAllRoles();
             return new RespBean<>(200,"query.success",allRoles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed!");
+        }
+    }
+
+    /**
+     * 获取所有权限
+     * @param dto
+     * @return
+     */
+    @PostMapping("/getRoleList")
+    public RespBean<PageInfo<Role>> getRoleList(@RequestBody RoleDTO dto){
+        try {
+            PageInfo<Role> roleList = adminApiService.getRoleList(dto);
+            return new RespBean<>(200,"query.success",roleList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed");
+        }
+    }
+
+    /**
+     * 获得所有菜单-权限资源设置
+     * @return
+     */
+    @PostMapping("/getAllMenus")
+    public RespBean<List<Menu>> getAllMenus(){
+        try{
+            List<Menu> allMenus = adminApiService.getAllMenus();
+            return new RespBean<>(200,"query.success",allMenus);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed!");
+        }
+    }
+
+    /**
+     * 获取一个角色的菜单资源
+     * @param dto
+     * @return
+     */
+    @PostMapping("/getOneRoleSelectedMenu")
+    public RespBean<List<Menu>> getOneRoleSelectedMenu(@RequestBody RoleDTO dto){
+        try{
+            List<Menu> allMenus = adminApiService.getOneRoleSelectedMenu(dto.getRid());
+            return new RespBean<>(200,"query.success",allMenus);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed!");
+        }
+    }
+
+    /**
+     * 保存角色资源
+     * @param object
+     * @return
+     */
+    @PostMapping("/saveRoleMenus")
+    public RespBean<Boolean> saveRoleMenus(@RequestBody JSONObject object){
+        try{
+            adminApiService.saveRoleMenus(object.getInteger("rid"), JSONObject.parseArray(object.getJSONArray("mids").toJSONString(),Integer.class));
+            return new RespBean<>(200,"query.success", true);
         } catch (Exception e) {
             e.printStackTrace();
             return RespBean.error("query.failed!");

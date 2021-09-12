@@ -21,8 +21,11 @@ import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less' // global style
 
+import { Tree } from 'ant-design-vue'
+
 Vue.config.productionTip = false
 
+Vue.use(Tree)
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)
 // use pro-layout components

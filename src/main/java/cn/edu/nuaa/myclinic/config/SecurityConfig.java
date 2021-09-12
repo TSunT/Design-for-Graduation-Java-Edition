@@ -113,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userSecurityService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userSecurityService).passwordEncoder(new BCryptPasswordEncoder()); //指定jdbc登陆service
     }
 
     @Override

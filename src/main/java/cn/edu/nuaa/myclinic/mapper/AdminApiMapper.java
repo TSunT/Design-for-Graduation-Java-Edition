@@ -1,8 +1,6 @@
 package cn.edu.nuaa.myclinic.mapper;
 
-import cn.edu.nuaa.myclinic.pojo.Role;
-import cn.edu.nuaa.myclinic.pojo.UserNormal;
-import cn.edu.nuaa.myclinic.pojo.UserNormalDTO;
+import cn.edu.nuaa.myclinic.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -46,6 +44,13 @@ public interface AdminApiMapper {
      * @return
      */
     public List<Role> selectAllRoles();
+
+    /**
+     * 查询权限列表
+     * @param dto
+     * @return
+     */
+    public List<Role> selectRoleList(RoleDTO dto);
 
     /**
      * 添加一个用户的权限

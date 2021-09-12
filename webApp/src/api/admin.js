@@ -5,7 +5,11 @@ const adminApi = {
   fetchOneUser: '/admin/api/getOneUserById',
   saveUserInfo: '/admin/api/saveUserInfo',
   getUserAvatar: '/admin/api/getUserAvatar',
-  getAllRoles: '/admin/api/getAllRoles'
+  getAllRoles: '/admin/api/getAllRoles',
+  getRolesList: '/admin/api/getRoleList',
+  getAllMenus: '/admin/api/getAllMenus',
+  getOneRoleSelectedMenu: '/admin/api/getOneRoleSelectedMenu',
+  saveRoleMenus: '/admin/api/saveRoleMenus'
 }
 
 export function userList (parameter) {
@@ -44,5 +48,36 @@ export function getAllRoles () {
   return request({
     url: adminApi.getAllRoles,
     method: 'post'
+  })
+}
+
+export function getRolesList (params) {
+  return request({
+    url: adminApi.getRolesList,
+    method: 'post',
+    data: params
+  })
+}
+
+export function getAllMenus () {
+  return request({
+    url: adminApi.getAllMenus,
+    method: 'post'
+  })
+}
+
+export function getOneRoleSelectedMenu (params) {
+  return request({
+    url: adminApi.getOneRoleSelectedMenu,
+    method: 'post',
+    data: params
+  })
+}
+
+export function saveRoleMenus (params) {
+  return request({
+    url: adminApi.saveRoleMenus,
+    method: 'post',
+    data: params
   })
 }

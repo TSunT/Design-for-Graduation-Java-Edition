@@ -10,6 +10,7 @@
         <result column="component" property="component" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="parentId" property="parentId" jdbcType="INTEGER" />
+        <result column="hideChildrenInMenu" property="hideChildrenInMenu" jdbcType="BOOLEAN"/>
 <!--        <result column="parentid" property="parentid" jdbcType="INTEGER" />-->
 <!--        <result column="enabled" property="enabled" jdbcType="BIT" />-->
         <association property="meta" javaType="cn.edu.nuaa.myclinic.pojo.Meta">
@@ -26,6 +27,12 @@
             <result column="rname" property="rname" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
+    <insert id="insertOneRoleMenu">
+        insert into menu_role(menuid, roleid) values (#{mid}, #{rid})
+    </insert>
+    <delete id="deleteAllRoleMenu">
+        delete from menu_role where roleid = #{rid}
+    </delete>
 
     <select id="getAllRoleByMenuId" resultType="Role">
         select * from role r,menu_role mr where r.rid=mr.roleid and mr.menuid=#{menuid}
@@ -39,11 +46,20 @@
         select * from menu
     </select>
     <select id="getMenusByRoleId" resultMap="BaseResultMap">
-        select *
+        select m.*
         from menu m left join menu_role mr on m.id = mr.menuid
         where mr.roleid in
         <foreach collection="rids" item="rid" separator="," open="(" close=")" >
             #{rid}
         </foreach>
+    </select>
+    <select id="getAllMenusForChoose" resultMap="BaseResultMap">
+        select a.id, a.name, a.parentId, a.show, a.title
+        from menu a
+    </select>
+    <select id="getMenusByOneRoleId" resultMap="BaseResultMap">
+        select m.*
+        from menu m left join menu_role mr on m.id = mr.menuid
+        where mr.roleid = #{rid}
     </select>
 </mapper>

@@ -41,38 +41,19 @@
     <div class="search-result-list">
       <a-table
         :columns="columns"
-        :row-key="record => record.id"
+        :row-key="record => record.rid"
         :data-source="data"
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
       >
-        <!--权限slot-->
-        <span slot="roles" slot-scope="roles">
-          <a-tag
-            v-for="role in roles"
-            :key="role.rid"
-            :color="role.rname === 'ADMIN' ? 'volcano' : role.rname.length > 5 ? 'geekblue' : 'green'"
-          >
-            {{ role.rname.toUpperCase() }}
-          </a-tag>
-        </span>
-        <!--有效性slot-->
-        <span slot="locked" slot-scope="locked">
-          <span v-if="!locked">
-            <a-badge status="success" /> 开启
-          </span>
-          <span v-if="locked">
-            <a-badge status="error" v-if="locked"/> 锁定
-          </span>
-        </span>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a @click="() => edit(record.id)">编辑</a>
+              <a @click="() => edit(record.rid)">编辑</a>
             </span>
             <span>
-              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
+              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.rid)">
                 <a>删除</a>
               </a-popconfirm>
             </span>
@@ -85,45 +66,31 @@
 </template>
 
 <script>
-import { userList } from '@/api/admin'
+import { getRolesList } from '@/api/admin'
 
 const queryParamArray = [
   {
-    filedName: `username`,
-    label: `用户名`,
+    filedName: `rname`,
+    label: `权限名`,
     value: ``
   },
   {
     filedName: `id`,
-    label: `用户id`,
+    label: `权限id`,
     value: ``
   }
 ]
 
 const columns = [
   {
-    title: '用户名',
-    dataIndex: 'username',
+    title: '权限id',
+    dataIndex: 'rid',
     width: '20%'
   },
   {
-    title: '登陆次数',
-    dataIndex: 'logintimes',
+    title: '权限名',
+    dataIndex: 'rname',
     width: '20%'
-  },
-  {
-    title: '最后登陆地址',
-    dataIndex: 'lastloginaddr'
-  },
-  {
-    title: '权限',
-    dataIndex: 'roles',
-    scopedSlots: { customRender: 'roles' }
-  },
-  {
-    title: '是否锁定',
-    dataIndex: 'locked',
-    scopedSlots: { customRender: 'locked' }
   },
   {
     title: '操作',
@@ -133,7 +100,7 @@ const columns = [
 ]
 
 export default {
-  name: `UserListSummary`,
+  name: `RoleListSummary`,
   data () {
     return {
       queryParamArray: [],
@@ -183,7 +150,7 @@ export default {
     },
     fetch (params = {}) {
       this.loading = true
-      userList({
+      getRolesList({
         size: this.pagination.pageSize, // 向后端请求的每页大小
         page: this.pagination.current, // 向后端请求的页码
         ...params,
@@ -222,7 +189,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/userlist/userprofile/${id}`)
+      this.$router.push(`/dashboard/rolelist/rolesource/${id}`)
     },
     cancel (id) {
       console.log(id)

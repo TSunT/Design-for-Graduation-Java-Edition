@@ -45,4 +45,13 @@
         select a.rid, a.rname
         from role a
     </select>
+    <select id="selectRoleList" resultType="cn.edu.nuaa.myclinic.pojo.Role">
+        select a.rid, a.rname
+        from role a
+        <where>
+            <if test="rname!=null">
+                a.rname like CONCAT(CONCAT('%',#{rname}),'%')
+            </if>
+        </where>
+    </select>
 </mapper>

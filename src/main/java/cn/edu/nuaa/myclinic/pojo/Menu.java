@@ -19,4 +19,5 @@ public class Menu implements Serializable {
     private String redirect;
     private List<Role> roles;
     private Meta meta;
+    private Boolean hideChildrenInMenu;
 }
