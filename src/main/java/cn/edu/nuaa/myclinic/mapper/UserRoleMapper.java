@@ -3,13 +3,14 @@ package cn.edu.nuaa.myclinic.mapper;
 import cn.edu.nuaa.myclinic.pojo.Role;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Mapper
 @Repository
-public interface UserRoleMapper {
+public interface UserRoleMapper extends BaseMapper<User> {
     /**
      * 通过用户名获取用户信息
      *

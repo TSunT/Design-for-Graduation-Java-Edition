@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetInfo')
           .then(res => {
-            console.log('getInfo...', res)
+            // console.log('getInfo...', res)
             const roles = res.data && res.data.roles
             // generate dynamic router
             store.dispatch('GenerateRoutes', { roles }).then(() => {

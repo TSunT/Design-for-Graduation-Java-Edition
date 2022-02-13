@@ -1,6 +1,7 @@
 package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.pojo.*;
+import cn.edu.nuaa.myclinic.pojo.baseLib.RespBean;
 import cn.edu.nuaa.myclinic.service.AdminApiService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;

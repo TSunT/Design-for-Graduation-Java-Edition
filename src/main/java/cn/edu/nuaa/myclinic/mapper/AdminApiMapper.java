@@ -18,6 +18,8 @@ public interface AdminApiMapper {
      */
     public List<UserNormal> selectUserList(UserNormalDTO dto);
 
+    //int insertList(Object obj);
+
     /**
      * 查询一个用户及权限
      * @param id
@@ -66,4 +68,52 @@ public interface AdminApiMapper {
      * @return
      */
     public Integer deleteOneUserRoles(Integer uid);
+
+    /**
+     * 获得所有部门的列表信息
+     * @param dto
+     * @return
+     */
+    public List<Dep> getDepPageList(DepDTO dto);
+
+    /**
+     * 获得一个部门信息（基础信息）
+     * @param dep
+     * @return
+     */
+    public Dep getOneDepById(Dep dep);
+
+    /**
+     * 获得一个部门信息（新闻信息）
+     * @param dep
+     * @return
+     */
+    public List<DepNewsMapper> getDepNewsByDepId(DepNewsMapper dep);
+
+    /**
+     * 保存一个部门信息
+     * @param dep
+     * @return
+     */
+    public Integer updateOneDep(Dep dep);
+
+    /**
+     * 新增一个部门信息
+     * @param dep
+     * @return
+     */
+    public Integer insertOneDep(Dep dep);
+
+    /**
+     * 删除部门新闻
+     * @param depNews
+     */
+    public void deleteDepNews(DepNewsMapper depNews);
+
+    /**
+     *
+     * @param depNews
+     * @return
+     */
+    public Integer insertDepNews(DepNewsMapper depNews);
 }

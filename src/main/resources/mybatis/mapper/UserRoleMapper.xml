@@ -8,6 +8,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="staffname" property="staffname" jdbcType="VARCHAR"/>
         <collection property="roles" column="id" select="cn.edu.nuaa.myclinic.mapper.UserRoleMapper.getUserRolesByUserId" ofType="cn.edu.nuaa.myclinic.pojo.Role">
             <id column="rid" property="rid" jdbcType="INTEGER"/>
             <result column="rname" property="rname" jdbcType="VARCHAR"/>
@@ -30,6 +31,6 @@
         update user set password = #{pwd} where id = #{id};
     </update>
     <select id="getUserByUserId" resultMap="getUserInfoMap">
-        select username, avatar, id from user where id = #{uid}
+        select username, avatar, id, staffname from user where id = #{uid}
     </select>
 </mapper>

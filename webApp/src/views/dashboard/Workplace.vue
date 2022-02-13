@@ -3,11 +3,11 @@
     <template v-slot:content>
       <div class="page-header-content">
         <div class="avatar">
-          <a-avatar size="large" :src="currentUser.avatar" />
+          <a-avatar size="large" :src="userAvatar" />
         </div>
         <div class="content">
           <div class="content-title">
-            {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
+            {{ timeFix }}，{{ nickname }}<span class="welcome-text">，{{ welcome }}</span>
           </div>
           <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
         </div>
@@ -202,8 +202,9 @@ export default {
   },
   computed: {
     ...mapState({
-      nickname: state => state.user.nickname,
-      welcome: state => state.user.welcome
+      nickname: state => state.user.name,
+      welcome: state => state.user.welcome,
+      userAvatar: state => state.user.avatar
     }),
     currentUser () {
       return {

@@ -1,5 +1,6 @@
 package cn.edu.nuaa.myclinic.pojo;
 
+import cn.edu.nuaa.myclinic.pojo.baseLib.Meta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -69,11 +69,13 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a @click="() => edit(record.id)">编辑</a>
+              <a-button type="primary" size="small" @click="() => edit(record.id)">
+                编辑
+              </a-button>
             </span>
-            <span>
+            <span style="margin-left: 6px">
               <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
-                <a>删除</a>
+                <a-button type="danger" size="small">删除</a-button>
               </a-popconfirm>
             </span>
           </div>
@@ -107,13 +109,14 @@ const columns = [
     width: '20%'
   },
   {
-    title: '登陆次数',
-    dataIndex: 'logintimes',
+    title: '用户称呼',
+    dataIndex: 'staffname',
     width: '20%'
   },
   {
-    title: '最后登陆地址',
-    dataIndex: 'lastloginaddr'
+    title: '登陆次数',
+    dataIndex: 'logintimes',
+    width: '20%'
   },
   {
     title: '权限',

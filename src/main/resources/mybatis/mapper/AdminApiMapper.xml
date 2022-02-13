@@ -16,20 +16,23 @@
         </collection>
     </resultMap>
     <insert id="insertUserInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormal">
-        insert into user(username,passowrd,enable,locked,avatar) values (#{username},#{password},#{enable},#{locked},#{avatar})
+        insert into user(username,passowrd,enable,locked,avatar,staffname) values (#{username},#{password},#{enable},#{locked},#{avatar},#{staffname})
     </insert>
     <insert id="insertOneUserRoles" parameterType="Integer">
         insert into user_role(uid,rid) values (#{uid},#{rid})
     </insert>
     <update id="updateUserInfoById">
-        update user a set a.username = #{username}, a.locked=#{locked}, a.enable=#{enable}, a.avatar=#{avatar} where a.id = #{id}
+        update user a set a.username = #{username}, a.locked=#{locked}, a.enable=#{enable}, a.avatar=#{avatar}, a.staffname=#{staffname} where a.id = #{id}
+    </update>
+    <update id="updateOneDep">
+        update dep set name = #{name}, a.parentid = #{parentid} where id = #{id}
     </update>
     <delete id="deleteOneUserRoles">
         delete from user_role where uid = #{uid}
     </delete>
 
     <select id="selectUserList" resultMap="baseUserNormalMap" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormalDTO">
-        select a.id, a.username, a.logintimes, a.lastloginaddr, a.locked
+        select a.id, a.username, a.logintimes, a.lastloginaddr, a.locked, a.staffname
         from user a
         where 1=1
         <if test="username != null and username != ''">
@@ -37,7 +40,7 @@
         </if>
     </select>
     <select id="selectOneUserByID" parameterType="Integer" resultMap="baseUserNormalMap">
-        select a.username, a.enable, a.locked, a.avatar, a.id, a.logintimes, a.lastloginaddr
+        select a.username, a.enable, a.locked, a.avatar, a.id, a.logintimes, a.lastloginaddr, a.staffname
         from user a
         where a.id = #{id}
     </select>
@@ -51,6 +54,33 @@
         <where>
             <if test="rname!=null">
                 a.rname like CONCAT(CONCAT('%',#{rname}),'%')
+            </if>
+        </where>
+    </select>
+    <select id="getDepNewsByDepId" resultType="cn.edu.nuaa.myclinic.pojo.DepNews">
+        select a.newstitle, a.id, a.depid, a.newsdate
+        from dep_news a
+        <where>
+            <if test="newstitle!=null">
+                a.newstitle like CONCAT(CONCAT('%',#{newstitle}),'%')
+            </if>
+        </where>
+    </select>
+    <select id="getDepPageList" resultType="cn.edu.nuaa.myclinic.pojo.Dep">
+        select id, name, parentid
+        from dep
+        <where>
+            <if test="name!=null">
+                a.name like CONCAT(CONCAT('%',#{name}),'%')
+            </if>
+        </where>
+    </select>
+    <select id="getOneDepById" resultType="cn.edu.nuaa.myclinic.pojo.Dep">
+        select id, name, parentid
+        from dep
+        <where>
+            <if test="id!=null">
+                a.id = #{id}
             </if>
         </where>
     </select>

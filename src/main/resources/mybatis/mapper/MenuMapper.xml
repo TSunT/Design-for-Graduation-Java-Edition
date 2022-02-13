@@ -13,7 +13,7 @@
         <result column="hideChildrenInMenu" property="hideChildrenInMenu" jdbcType="BOOLEAN"/>
 <!--        <result column="parentid" property="parentid" jdbcType="INTEGER" />-->
 <!--        <result column="enabled" property="enabled" jdbcType="BIT" />-->
-        <association property="meta" javaType="cn.edu.nuaa.myclinic.pojo.Meta">
+        <association property="meta" javaType="cn.edu.nuaa.myclinic.pojo.baseLib.Meta">
             <result column="title" property="title" jdbcType="VARCHAR" />
             <result column="target" property="target" jdbcType="VARCHAR" />
             <result column="show" property="show" jdbcType="BOOLEAN"/>

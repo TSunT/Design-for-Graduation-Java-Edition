@@ -21,4 +21,5 @@ public class UserNormal implements Serializable {
     private String lastloginaddr;
     private String avatar;
     private List<Role> roles;
+    private String staffname;
 }

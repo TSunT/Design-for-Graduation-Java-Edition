@@ -41,7 +41,7 @@
     <div class="search-result-list">
       <a-table
         :columns="columns"
-        :row-key="record => record.rid"
+        :row-key="record => record.id"
         :data-source="data"
         :pagination="pagination"
         :loading="loading"
@@ -50,10 +50,12 @@
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
             <span>
-              <a-button type="primary" size="small" @click="() => edit(record.rid)">编辑</a-button>
+              <a-button type="primary" size="small" @click="() => edit(record.id)">
+                编辑
+              </a-button>
             </span>
             <span style="margin-left: 6px">
-              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.rid)">
+              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
                 <a-button type="danger" size="small">删除</a-button>
               </a-popconfirm>
             </span>
@@ -66,30 +68,30 @@
 </template>
 
 <script>
-import { getRolesList } from '@/api/admin'
+import { getDepPage } from '@/api/dep'
 
 const queryParamArray = [
   {
-    filedName: `rname`,
-    label: `权限名`,
+    filedName: `name`,
+    label: `部门名`,
     value: ``
   },
   {
-    filedName: `rid`,
-    label: `权限id`,
+    filedName: `depcode`,
+    label: `部门编码`,
     value: ``
   }
 ]
 
 const columns = [
   {
-    title: '权限id',
-    dataIndex: 'rid',
+    title: '部门名',
+    dataIndex: 'name',
     width: '20%'
   },
   {
-    title: '权限名',
-    dataIndex: 'rname',
+    title: '部门编码',
+    dataIndex: 'depcode',
     width: '20%'
   },
   {
@@ -100,7 +102,7 @@ const columns = [
 ]
 
 export default {
-  name: `RoleListSummary`,
+  name: `DepListSummary`,
   data () {
     return {
       queryParamArray: [],
@@ -150,7 +152,7 @@ export default {
     },
     fetch (params = {}) {
       this.loading = true
-      getRolesList({
+      getDepPage({
         size: this.pagination.pageSize, // 向后端请求的每页大小
         page: this.pagination.current, // 向后端请求的页码
         ...params,
@@ -189,7 +191,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/rolelist/rolesource/${id}`)
+      this.$router.push(`/dashboard/userlist/userprofile/${id}`)
     },
     cancel (id) {
       console.log(id)

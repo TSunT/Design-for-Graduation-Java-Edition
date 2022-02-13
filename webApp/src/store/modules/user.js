@@ -73,7 +73,7 @@ const user = {
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
-          commit('SET_NAME', { name: result.username, welcome: welcome() })
+          commit('SET_NAME', { name: result.staffname, welcome: welcome() })
           // 获取头像信息
           getUserAvatar(result.avatar).then(res => {
             // 这里就是将得到的图片流转换成blob类型

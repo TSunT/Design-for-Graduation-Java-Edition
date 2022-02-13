@@ -1,4 +1,4 @@
-package cn.edu.nuaa.myclinic.pojo;
+package cn.edu.nuaa.myclinic.pojo.baseLib;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -38,6 +38,10 @@ public class RespBean<T> implements Serializable {
         this.status = status;
         this.msg = msg;
         this.data = obj;
+    }
+
+    public RespBean(Integer status) {
+        this.status = status;
     }
 
     public Integer getStatus() {

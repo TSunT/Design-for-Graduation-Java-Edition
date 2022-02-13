@@ -1,6 +1,6 @@
 package cn.edu.nuaa.myclinic.config;
 
-import cn.edu.nuaa.myclinic.pojo.RespBean;
+import cn.edu.nuaa.myclinic.pojo.baseLib.RespBean;
 import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;

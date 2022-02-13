@@ -1,8 +1,9 @@
-package cn.edu.nuaa.myclinic.service;
+package cn.edu.nuaa.myclinic.service.impl;
 
 import cn.edu.nuaa.myclinic.mapper.AdminApiMapper;
 import cn.edu.nuaa.myclinic.mapper.MenuMapper;
 import cn.edu.nuaa.myclinic.pojo.*;
+import cn.edu.nuaa.myclinic.service.AdminApiService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

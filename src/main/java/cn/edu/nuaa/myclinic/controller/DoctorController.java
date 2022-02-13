@@ -1,18 +1,16 @@
 package cn.edu.nuaa.myclinic.controller;
 
 import cn.edu.nuaa.myclinic.pojo.*;
+import cn.edu.nuaa.myclinic.pojo.baseLib.RespBean;
 import cn.edu.nuaa.myclinic.service.DoctorService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -130,8 +128,8 @@ public class DoctorController {
     @ResponseBody
     @GetMapping(value = "/showMedicineList",produces = { "application/json;charset=UTF-8"})
     public RespBean showMedicineList(@RequestParam(name="page" ,defaultValue = "1") int page,
-                                               @RequestParam(name = "size",defaultValue = "10") int size,
-                                               @RequestParam(name = "condition",required = false) String condition){
+                                     @RequestParam(name = "size",defaultValue = "10") int size,
+                                     @RequestParam(name = "condition",required = false) String condition){
         PageInfo<Medicine> allMedicines = doctorService.getAllMedicine(page, size, condition);
         Map<String,Object> result = new HashMap();
         result.put("pageInfo",allMedicines);

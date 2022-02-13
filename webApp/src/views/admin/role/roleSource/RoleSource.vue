@@ -18,7 +18,7 @@
           style="text-align: center"
         >
           <a-button @click="handleSubmit" type="primary">{{ $t('form.basic-form.form.submit') }}</a-button>
-          <a-button style="margin-left: 8px">{{ $t('form.basic-form.form.save') }}</a-button>
+          <a-button @click="backToRoleList" style="margin-left: 8px">{{ $t('form.basic-form.form.save') }}</a-button>
         </a-form-item>
       </a-form>
     </a-card>
@@ -120,6 +120,9 @@ export default {
           treeData.push(child)
         }
       })
+    },
+    backToRoleList () {
+      this.$router.push('/dashboard/rolelist')
     }
   }
 }

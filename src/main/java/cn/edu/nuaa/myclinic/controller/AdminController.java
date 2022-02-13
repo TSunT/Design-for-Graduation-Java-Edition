@@ -1,7 +1,7 @@
 package cn.edu.nuaa.myclinic.controller;
 
-import cn.edu.nuaa.myclinic.exception.SysException;
 import cn.edu.nuaa.myclinic.pojo.*;
+import cn.edu.nuaa.myclinic.pojo.baseLib.RespBean;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

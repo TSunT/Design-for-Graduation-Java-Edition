@@ -1,4 +1,4 @@
-package cn.edu.nuaa.myclinic.pojo;
+package cn.edu.nuaa.myclinic.pojo.baseLib;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

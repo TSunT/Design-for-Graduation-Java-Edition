@@ -42,6 +42,11 @@ mybatis:
   configuration:
     cache-enabled: true
     #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #开启日志
+mybatis-plus:
+  type-aliases-package: cn.edu.nuaa.myclinic.pojo
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # mybatisplus 开启日志
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RoleDTO extends BaseDTO {
-    private String rname;
-    private Integer rid;
+public class DepDTO extends BaseDTO {
+    private String name;
+    private int parentId;
 }

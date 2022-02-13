@@ -58,7 +58,10 @@ const constantRouterComponents = {
   UserProfile: () => import('@/views/admin/user/userProfile/UserProfile'),
   // 权限管理
   RoleListSummary: () => import('@/views/admin/role/list/RoleListSummary'),
-  RoleSource: () => import('@/views/admin/role/roleSource/RoleSource')
+  RoleSource: () => import('@/views/admin/role/roleSource/RoleSource'),
+
+  // 部门管理
+  DepListSummary: () => import('@/views/admin/dept/list/DeptListSummary')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -88,7 +91,7 @@ const rootRouter = {
  */
 export const generatorDynamicRouter = token => {
   return new Promise((resolve, reject) => {
-    console.log(token)
+    // console.log(token)
     loginService
       .getCurrentUserNav()
       .then(res => {
@@ -100,10 +103,10 @@ export const generatorDynamicRouter = token => {
         listToTree(data, childrenNav, 0)
         rootRouter.children = childrenNav
         menuNav.push(rootRouter)
-        console.log('menuNav', menuNav)
+        // console.log('menuNav', menuNav)
         const routers = generator(menuNav)
         routers.push(notFoundRouter)
-        console.log('routers', routers)
+        // console.log('routers', routers)
         resolve(routers)
       })
       .catch(err => {
