@@ -48,6 +48,10 @@ const vueConfig = {
         APP_VERSION: `"${require('./package.json').version}"`,
         GIT_HASH: JSON.stringify(getGitHash()),
         BUILD_DATE: buildDate
+      }),
+      new webpack.ProvidePlugin({
+        jQuery: "jquery",
+        $: "jquery"
       })
     ],
     // if prod, add externals

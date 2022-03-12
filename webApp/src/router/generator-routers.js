@@ -61,7 +61,9 @@ const constantRouterComponents = {
   RoleSource: () => import('@/views/admin/role/roleSource/RoleSource'),
 
   // 部门管理
-  DepListSummary: () => import('@/views/admin/dept/list/DeptListSummary')
+  DepListSummary: () => import('@/views/admin/dept/list/DeptListSummary'),
+  DeptProfile: () => import('@/views/admin/dept/deptProfile/DeptProfile'),
+  DeptNewsEdit: () => import('@/views/admin/dept/news/DeptNewsEdit')
 }
 
 // 前端未找到页面路由（固定不用改）

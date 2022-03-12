@@ -4,92 +4,77 @@
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
       <a-form>
         <a-tabs default-active-key="1" tab-position="left">
-          <a-tab-pane key="1" :tab="$t('admin.user.profile.tab1')">
+          <a-tab-pane key="1" :tab="$t('dep-profile-tab1.title')">
             <a-form-item
-              :label="$t('from.user-profile.title.avatar')"
+              :label="$t('dep-profile.depname')"
               :labelCol="{lg: {span: 7}, sm: {span: 7}}"
               :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-upload
-                name="avatar"
-                list-type="picture-card"
-                class="avatar-uploader"
-                :show-upload-list="false"
-                action="/api/admin/api/updateUserAvatar"
-                :before-upload="beforeUpload"
-                @change="handleUploadAvatar"
+              <a-input
+                name="depname"
+                v-model="dep.depname"
+                :placeholder="$t('form.basic-form.title.placeholder')" />
+            </a-form-item>
+            <a-form-item
+              :label="$t('dep-profile.depcode')"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-input
+                name="depcode"
+                v-model="dep.depcode"
+                :placeholder="$t('form.basic-form.title.placeholder')" />
+            </a-form-item>
+            <a-form-item
+              :label="$t('dep-profile.parentid')"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+              :required="false"
+            >
+              <a-select
+                show-search
+                :value="dep.parentid"
+                name="parentid"
+                placeholder="input search text"
+                style="width: 200px"
+                :default-active-first-option="false"
+                :show-arrow="false"
+                :filter-option="false"
+                :not-found-content="null"
+                @search="handleSearch"
+                @change="handleParentNodeChange"
               >
-                <img v-if="!!avatarUrl" :src="avatarUrl" alt="avatar" style="width:100%; height: 100%;" />
-                <div v-else>
-                  <a-icon :type="loading ? 'loading' : 'plus'" />
-                  <div class="ant-upload-text">
-                    Upload
-                  </div>
-                </div>
-              </a-upload>
-            </a-form-item>
-            <a-form-item
-              :label="$t('form.user-profile.title.username')"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                name="username"
-                v-model="user.username"
-                :placeholder="$t('form.basic-form.title.placeholder')" />
-            </a-form-item>
-            <a-form-item
-              :label="$t('form.user-profile.title.staffname')"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                name="staffname"
-                v-model="user.staffname"
-                :placeholder="$t('form.basic-form.title.placeholder')" />
-            </a-form-item>
-            <a-form-item
-              label="可用性"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
-              :required="false"
-            >
-              <a-switch v-model="user.enable" />
-            </a-form-item>
-            <a-form-item
-              label="锁定"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
-              :required="false"
-            >
-              <a-switch v-model="user.locked" />
-            </a-form-item>
-            <a-form-item
-              label="最后登陆IP"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
-              :required="false"
-            >
-              {{ user.lastloginaddr }}
-            </a-form-item>
-            <a-form-item
-              label="登陆次数 "
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
-              :required="false"
-            >
-              {{ user.logintime }}
+                <a-select-option v-for="d in parentNode" :key="d.value">
+                  {{ d.text }}
+                </a-select-option>
+              </a-select>
             </a-form-item>
           </a-tab-pane>
-          <a-tab-pane key="2" :tab="$t('admin.user.profile.tab2')">
-            <a-transfer
-              :dataSource="allRoles"
-              showSearch
-              :targetKeys="userRoles"
-              :render="item => item.title"
-              @change="handleChange"
-              :list-style="{
-                width: '300px',
-                height: '600px',
-              }"
-            />
+          <a-tab-pane key="2" :tab="$t('dep-profile-tab2.title')">
+            <a-button type="primary" icon="plus" style="margin: 5px" @click="addBulletin()">
+              {{ $t('dep-profile-news.add') }}
+            </a-button>
+            <a-table
+              :columns="depNewsColumns"
+              :row-key="record => record.id"
+              :data-source="newsDataList"
+              :pagination="pagination"
+              :loading="loading"
+              @change="handleTableChange"
+            >
+              <template slot="operation" slot-scope="text, record">
+                <div class="editable-row-operations">
+                  <span>
+                    <a-button type="primary" size="small" @click="() => edit(record.id)">
+                      编辑
+                    </a-button>
+                  </span>
+                  <span style="margin-left: 6px">
+                    <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
+                      <a-button type="danger" size="small">删除</a-button>
+                    </a-popconfirm>
+                  </span>
+                </div>
+              </template>
+            </a-table>
           </a-tab-pane>
         </a-tabs>
         <a-form-item
@@ -105,140 +90,157 @@
 </template>
 
 <script>
-import { fetchOneUser, saveUserInfo, getUserAvatar, getAllRoles } from '@/api/admin'
+import { getOneDepProfile, getDepForSearchParentNode, getDepNewsPage } from '@/api/dep'
+
+const depNewsColumns = [
+  {
+    title: '标题',
+    dataIndex: 'newstitle',
+    width: '20%'
+  },
+  {
+    title: '日期',
+    dataIndex: 'newsdate',
+    width: '20%'
+  },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    scopedSlots: { customRender: 'operation' }
+  }
+]
 
 export default {
-  name: 'UserProfile',
+  name: 'DepProfile',
   data () {
     return {
-      user: {
+      dep: {
         id: -1,
-        username: '',
-        staffname: '',
-        locked: false,
-        enable: true,
-        avatar: '',
-        lastloginaddr: '',
-        logintime: 0,
-        roles: []
+        depname: '',
+        depcode: '',
+        parentid: ''
       },
-      avatarUrl: '',
-      allRoles: [],
+      newsDataList: [],
       userRoles: [],
-      loading: false
+      parentNode: [],
+      loading: false,
+      pagination: {
+        size: 'small',
+        defaultCurrent: 1, // 默认当前页数
+        defaultPageSize: 10, // 默认当前页显示数据的大小
+        total: 0, // 总数，必须先有
+        showSizeChanger: true,
+        pageSizeOptions: ['5', '10', '15', '20'], // 指定每页可以显示多少条
+        // 显示条数改变后的处理
+        onShowSizeChange: (current, pageSize) => {
+          this.pagination.defaultCurrent = 1
+          this.pagination.defaultPageSize = pageSize
+          // this.handleTableChange(this.pagination); // 显示列表的接口名称
+        }
+      },
+      newsParams: {
+        name: ''
+      },
+      depNewsColumns
     }
   },
   mounted () {
-    this.user.id = this.$route.params.id
-    if (this.user.id) {
-      this.fetchProfile(this.user.id)
+    this.dep.id = this.$route.params.id
+    if (this.dep.id) {
+      this.fetchProfile(this.dep.id)
+      this.fetchNewsList()
     }
-    getAllRoles().then(res => {
-      this.allRoles = []
-      if (res.status === 200) {
-        let tempRoles = []
-        res.data.sort((a, b) => a.rid - b.rid).forEach(role => {
-          tempRoles = [...tempRoles, { key: role.rid.toString(), title: role.rname }]
-        })
-        if (this.allRoles) {
-          this.allRoles = tempRoles
-        }
-      }
-    })
   },
   methods: {
     // handler
     handleSubmit () {
-      saveUserInfo(this.user).then(res => {
-        // console.log(res)
-        if (res.status === 200) {
-          this.$message.success(`成功保存${res.data}条记录`)
-          this.$router.push('/dashboard/userlist')
-        } else {
+     /*
+        saveUserInfo(this.user).then(res => {
+          // console.log(res)
+          if (res.status === 200) {
+            this.$message.success(`成功保存${res.data}条记录`)
+            this.$router.push('/dashboard/userlist')
+          } else {
+            this.$message.error(`保存失败`)
+          }
+        }).catch(e => {
+          console.log(e)
           this.$message.error(`保存失败`)
-        }
-      }).catch(e => {
-        console.log(e)
-        this.$message.error(`保存失败`)
-      })
+        })
+      */
     },
     // fetchProfile
     fetchProfile () {
-      fetchOneUser({
-        id: parseInt(this.user.id)
+      getOneDepProfile({
+        id: parseInt(this.dep.id)
       }).then(res => {
         if (res.data) {
-          this.user.username = res.data.username
-          this.user.enable = res.data.enable
-          this.user.logintime = res.data.logintimes
-          this.user.locked = res.data.locked
-          this.user.lastloginaddr = res.data.lastloginaddr
-          this.user.avatar = res.data.avatar
-          this.user.roles = res.data.roles
-          this.user.staffname = res.data.staffname
-          this.userRoles = res.data.roles.map(role => role.rid.toString())
-          // 获取头像信息
-          getUserAvatar(res.data.avatar).then(res => {
-            // 这里就是将得到的图片流转换成blob类型
-            const blob = new Blob([res], {
-              type: 'image/jpeg'
-            })
-            const url = window.URL.createObjectURL(blob)
-            this.avatarUrl = url
-          }).catch(e => {
-            console.log(e)
-            this.$message.error('图像上传失败，Image upload failed!')
-          })
+          this.dep.depname = res.data.name
+          this.dep.depcode = res.data.depcode
+          this.dep.parentid = res.data.parentid
         }
       }).catch(e => {
-        console.log(e)
         this.$message.error('请求失败，Request failed!')
       })
     },
-    // 上传图片
-    handleUploadAvatar (info) {
-      console.log(info)
-      if (info.file.status !== 'uploading') {
-        const resp = info.file.response
-        if (resp.status !== 200) {
-          this.loading = true
-          this.$message.error('图像上传失败，Image upload failed!')
-        } else {
-          this.user.avatar = resp.data
-          getUserAvatar(resp.data).then(res => {
-            // 这里就是将得到的图片流转换成blob类型
-            const blob = new Blob([res], {
-              type: 'image/jpeg'
+    handleSearch (value) {
+      // console.log(value)
+      if (value === '') return
+      getDepForSearchParentNode(value).then(res => {
+        this.parentNode = []
+        if (res.data) {
+          res.data.forEach(opt => {
+            this.parentNode.push({
+              value: opt.id,
+              text: opt.name
             })
-            const url = window.URL.createObjectURL(blob)
-            this.avatarUrl = url
-          }).catch(e => {
-            console.log(e)
-            this.$message.error('图像上传失败，Image upload failed!')
           })
         }
-      } else {
-        this.loading = true
-      }
-    },
-    beforeUpload (file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG file!')
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('Image must smaller than 2MB!')
-      }
-      return isJpgOrPng && isLt2M
-    },
-    handleChange (targetKeys, direction, moveKeys) {
-      console.log(targetKeys, direction, moveKeys)
-      this.userRoles = targetKeys
-      this.user.roles = []
-      targetKeys.forEach(keys => {
-        this.user.roles = [...this.user.roles, { rid: Number(keys) }]
       })
+    },
+    handleParentNodeChange (value) {
+      console.log(value)
+      this.dep.parentid = value
+    },
+    handleTableChange (pagination, filters, sorter) {
+      // console.log(pagination)
+      const pager = { ...this.pagination }
+      pager.current = pagination.current
+      this.pagination = pager
+      this.fetchNewsList({
+        size: pagination.pageSize,
+        page: pagination.current,
+        ...filters
+      })
+    },
+    fetchNewsList () {
+      this.loading = true
+      getDepNewsPage({
+        size: this.pagination.pageSize, // 向后端请求的每页大小
+        page: this.pagination.current, // 向后端请求的页码
+        depid: this.dep.id,
+        ...this.newsParams,
+        ...this.queryParams
+      }).then(res => {
+        const pagination = { ...this.pagination }
+        // console.log(res)
+        this.newsDataList = res.data.list
+        pagination.total = res.data.total
+        pagination.current = res.data.pageNum // 当前页数
+        pagination.pageSize = res.data.pageSize
+        // Read total count from server
+        // pagination.total = data.totalCount;
+        this.loading = false
+        this.pagination = pagination
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    toEditPage (depid, newsid) {
+      this.$router.push(`/dashboard/deplist/depnewsedit/${depid}/${newsid}`)
+    },
+    addBulletin () {
+      this.toEditPage(this.dep.id, 'null')
     }
   }
 }

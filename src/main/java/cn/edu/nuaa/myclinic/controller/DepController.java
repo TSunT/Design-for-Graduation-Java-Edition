@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/dep")
 public class DepController {
@@ -56,6 +58,19 @@ public class DepController {
             depResp.setMsg(e.getMessage());
         }
         return depResp;
+    }
+
+    @PostMapping("/getDepForSearchParentNode")
+    public RespBean<List<Dep>> getDepForSearchParentNode(@RequestBody Dep dep){
+        RespBean<List<Dep>> listRespBean = new RespBean<>(HttpStatus.STATUS_200);
+        try {
+            listRespBean.setData(depService.getDepForSearchParentNode(dep));
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            listRespBean.setStatus(HttpStatus.STATUS_500);
+            listRespBean.setMsg(e.getMessage());
+        }
+        return listRespBean;
     }
 
     /**

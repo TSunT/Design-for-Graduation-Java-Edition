@@ -5,6 +5,8 @@ import cn.edu.nuaa.myclinic.pojo.DepDTO;
 import cn.edu.nuaa.myclinic.pojo.DepNews;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface DepService {
     /**
      * 获得所有部门的列表信息
@@ -19,6 +21,13 @@ public interface DepService {
      * @return
      */
     public Dep getOneDepById(Dep dep);
+
+    /**
+     * 查询父节点信息
+     * @param dep
+     * @return
+     */
+    public List<Dep> getDepForSearchParentNode(Dep dep);
 
     /**
      * 保存一个部门信息

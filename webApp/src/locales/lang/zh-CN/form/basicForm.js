@@ -57,5 +57,12 @@ export default {
   'form.basic-form.password.placeholder': '至少6位密码，区分大小写',
   'form.basic-form.confirm-password.placeholder': '确认密码',
   'form.basic-form.phone-number.placeholder': '手机号',
-  'form.basic-form.verification-code.placeholder': '验证码'
+  'form.basic-form.verification-code.placeholder': '验证码',
+  // dep
+  'dep-profile.depname': '部门名',
+  'dep-profile.depcode': '部门编码',
+  'dep-profile.parentid': '父节点',
+  'dep-profile-tab1.title': '基本信息',
+  'dep-profile-tab2.title': '公告信息',
+  'dep-profile-news.add': '添加新闻'
 }

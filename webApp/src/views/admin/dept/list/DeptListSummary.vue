@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
-      console.log(pagination)
+      // console.log(pagination)
       const pager = { ...this.pagination }
       pager.current = pagination.current
       this.pagination = pager
@@ -191,7 +191,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/userlist/userprofile/${id}`)
+      this.$router.push(`/dashboard/deplist/depprofile/${id}`)
     },
     cancel (id) {
       console.log(id)

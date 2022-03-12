@@ -12,6 +12,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import java.util.List;
 
 @Service
 public class DepServiceImpl implements DepService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DepServiceImpl.class);
 
     @Autowired
     private DepMapper depMapper;
@@ -46,6 +50,14 @@ public class DepServiceImpl implements DepService {
     }
 
     @Override
+    public List<Dep> getDepForSearchParentNode(Dep dep) {
+        QueryWrapper<Dep> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id","name")
+                .like("name",dep.getName());
+        return depMapper.selectList(queryWrapper);
+    }
+
+    @Override
     public Boolean saveOneDep(Dep dep) {
         int insert;
         if (ObjectUtils.isNotEmpty(dep.getId())){
@@ -62,7 +74,8 @@ public class DepServiceImpl implements DepService {
     public PageInfo<DepNews> getDepNewsPage(DepDTO dto) {
         PageHelper.startPage(dto.getPage(),dto.getSize());
         QueryWrapper<DepNews> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("id","newstitle","depid");
+        queryWrapper.select("id","newstitle","depid","newsdate");
+        queryWrapper.like("newstitle",dto.getName());
         return new PageInfo<>(depNewsMapper.selectList(queryWrapper));
     }
 

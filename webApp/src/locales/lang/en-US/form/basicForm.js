@@ -60,5 +60,12 @@ export default {
   'form.basic-form.password.placeholder': 'Password',
   'form.basic-form.confirm-password.placeholder': 'Confirm password',
   'form.basic-form.phone-number.placeholder': 'Phone number',
-  'form.basic-form.verification-code.placeholder': 'Verification code'
+  'form.basic-form.verification-code.placeholder': 'Verification code',
+  // dep
+  'dep-profile.depname': 'Department Name',
+  'dep-profile.depcode': 'Department Code',
+  'dep-profile.parentid': 'Parent Node',
+  'dep-profile-tab1.title': 'Basic Info',
+  'dep-profile-tab2.title': 'Bulletin Node',
+  'dep-profile-news.add': 'Add News'
 }

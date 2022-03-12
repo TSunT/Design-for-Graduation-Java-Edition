@@ -46,7 +46,7 @@ mybatis-plus:
   type-aliases-package: cn.edu.nuaa.myclinic.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # mybatisplus 开启日志
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl # mybatisplus 开启日志
 #pagehelper分页插件
 pagehelper:
   helperDialect: mysql
@@ -75,6 +75,6 @@ file:
   # 服务器上的地址
   staticAccessPath: /myClinic/uploadFile/avatarImg/
   # 本地路径
-  uploadFolder: /Volumes/Macintosh_HD/Code/java/Design-for-Graduation-Java-Edition/avatarImg/
+  uploadFolder: D:\Code\Java\Design-for-Graduation-Java-Edition\avatarImg\
 server:
   port: 8086
