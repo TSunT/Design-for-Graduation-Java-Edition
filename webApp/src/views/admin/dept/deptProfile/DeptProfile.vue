@@ -63,12 +63,12 @@
               <template slot="operation" slot-scope="text, record">
                 <div class="editable-row-operations">
                   <span>
-                    <a-button type="primary" size="small" @click="() => edit(record.id)">
+                    <a-button type="primary" size="small" @click="() => editnews(record.id)">
                       编辑
                     </a-button>
                   </span>
                   <span style="margin-left: 6px">
-                    <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.id)">
+                    <a-popconfirm title="Sure to cancel?" @confirm="() => cancelnews(record.id)">
                       <a-button type="danger" size="small">删除</a-button>
                     </a-popconfirm>
                   </span>
@@ -241,6 +241,12 @@ export default {
     },
     addBulletin () {
       this.toEditPage(this.dep.id, 'null')
+    },
+    editnews (id) {
+      this.toEditPage(this.dep.id, id)
+    },
+    cancelnews (id) {
+      console.log(id)
     }
   }
 }

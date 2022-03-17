@@ -127,6 +127,25 @@ public class DepController {
         return depResp;
     }
 
+
+    /**
+     * 获得一个公告
+     * @param depNews
+     * @return
+     */
+    @PostMapping("/getOneNewsById")
+    public RespBean<DepNews> getOneNewsById(@RequestBody DepNews depNews){
+        RespBean<DepNews> respBean = new RespBean<>(HttpStatus.STATUS_200);
+        try{
+            respBean.setData(depService.getOneNewsById(depNews));
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            respBean.setStatus(HttpStatus.STATUS_500);
+            respBean.setMsg(e.getMessage());
+        }
+        return respBean;
+    }
+
     /**
      * 删除一条部门公告
      * @param depNews

@@ -67,5 +67,7 @@ export default {
   'dep-profile.parentid': 'Parent Node',
   'dep-profile-tab1.title': 'Basic Info',
   'dep-profile-tab2.title': 'Bulletin Node',
-  'dep-profile-news.add': 'Add News'
+  'dep-profile-news.add': 'Add News',
+  'dep-profile-news.edit.title': 'Title',
+  'dep-profile-news.edit.newsDate': 'Bulletin Date'
 }

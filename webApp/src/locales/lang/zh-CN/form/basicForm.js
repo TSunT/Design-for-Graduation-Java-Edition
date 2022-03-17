@@ -64,5 +64,7 @@ export default {
   'dep-profile.parentid': '父节点',
   'dep-profile-tab1.title': '基本信息',
   'dep-profile-tab2.title': '公告信息',
-  'dep-profile-news.add': '添加新闻'
+  'dep-profile-news.add': '添加新闻',
+  'dep-profile-news.edit.title': '标题',
+  'dep-profile-news.edit.newsDate': '日期'
 }

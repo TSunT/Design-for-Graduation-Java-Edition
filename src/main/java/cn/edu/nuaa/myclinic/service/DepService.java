@@ -51,6 +51,13 @@ public interface DepService {
     public Boolean saveOneDepNews(DepNews depNews);
 
     /**
+     * 获得一个公告
+     * @param depNews
+     * @return
+     */
+    public DepNews getOneNewsById(DepNews depNews);
+
+    /**
      * 删除一条部门公告
      * @param depNews
      * @return

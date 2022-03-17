@@ -4,7 +4,9 @@ const depApi = {
   getDepPage: '/dep/getDepPageList',
   getONeDepProfile: '/dep/getOneDepById',
   getDepForSearchParentNode: '/dep/getDepForSearchParentNode',
-  getDepNewsPage: '/dep/getDepNewsPage'
+  getDepNewsPage: '/dep/getDepNewsPage',
+  getOneNewsById: '/dep/getOneNewsById',
+  saveOneDepNews: '/dep/saveOneDepNews'
 }
 
 export function getDepPage (parameter) {
@@ -36,5 +38,21 @@ export function getDepNewsPage (parameter) {
     url: depApi.getDepNewsPage,
     method: 'post',
     data: parameter
+  })
+}
+
+export function saveOneDepNews (paramter) {
+  return request({
+    url: depApi.saveOneDepNews,
+    method: 'post',
+    data: paramter
+  })
+}
+
+export function getOneNewsById (param) {
+  return request({
+    url: depApi.getOneNewsById,
+    method: 'post',
+    data: param
   })
 }

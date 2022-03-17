@@ -81,8 +81,20 @@ public class DepServiceImpl implements DepService {
 
     @Override
     public Boolean saveOneDepNews(DepNews depNews) {
-        depNews.setNewsdate(new Date());
-        return depNewsMapper.insert(depNews) == 1;
+        if (ObjectUtils.isNotEmpty(depNews.getId())){
+            UpdateWrapper<DepNews> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id",depNews.getId());
+            return depNewsMapper.update(depNews,updateWrapper) == 1;
+        }else {
+            return depNewsMapper.insert(depNews) == 1;
+        }
+    }
+
+    @Override
+    public DepNews getOneNewsById(DepNews depNews){
+        QueryWrapper<DepNews> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",depNews.getId());
+        return depNewsMapper.selectOne(queryWrapper);
     }
 
     @Override
