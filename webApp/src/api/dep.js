@@ -6,7 +6,8 @@ const depApi = {
   getDepForSearchParentNode: '/dep/getDepForSearchParentNode',
   getDepNewsPage: '/dep/getDepNewsPage',
   getOneNewsById: '/dep/getOneNewsById',
-  saveOneDepNews: '/dep/saveOneDepNews'
+  saveOneDepNews: '/dep/saveOneDepNews',
+  getListByParentId: '/dep/getListByParentId'
 }
 
 export function getDepPage (parameter) {
@@ -52,6 +53,14 @@ export function saveOneDepNews (paramter) {
 export function getOneNewsById (param) {
   return request({
     url: depApi.getOneNewsById,
+    method: 'post',
+    data: param
+  })
+}
+
+export function getListByParentId (param) {
+  return request({
+    url: depApi.getListByParentId,
     method: 'post',
     data: param
   })

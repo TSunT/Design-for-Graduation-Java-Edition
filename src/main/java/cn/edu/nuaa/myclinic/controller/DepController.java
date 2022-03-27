@@ -181,4 +181,17 @@ public class DepController {
         }
         return depResp;
     }
+
+    @PostMapping("/getListByParentId")
+    public RespBean<List<Dep>> getListByParentId(@RequestBody Dep dep) {
+        RespBean<List<Dep>> respBean = new RespBean<>(HttpStatus.STATUS_200);
+        try{
+            respBean.setData(depService.getListByParentId(dep));
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            respBean.setStatus(HttpStatus.STATUS_500);
+            respBean.setMsg(e.getMessage());
+        }
+        return respBean;
+    }
 }

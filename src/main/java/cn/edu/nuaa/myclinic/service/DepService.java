@@ -70,4 +70,11 @@ public interface DepService {
      * @return
      */
     public Boolean deleteDepNewsByDepid(DepNews depNews);
+
+    /**
+     * 根据父节点查询子节点
+     * @param dep
+     * @return
+     */
+    public List<Dep> getListByParentId(Dep dep);
 }

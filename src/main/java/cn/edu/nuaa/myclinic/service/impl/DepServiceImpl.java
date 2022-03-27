@@ -110,4 +110,12 @@ public class DepServiceImpl implements DepService {
         int delete = depNewsMapper.delete(queryWrapper);
         return delete == 1;
     }
+
+    @Override
+    public List<Dep> getListByParentId(Dep dep) {
+        QueryWrapper<Dep> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id","name","depcode","parentid");
+        //queryWrapper.eq("parentid",dep.getParentid());
+        return depMapper.selectList(queryWrapper);
+    }
 }

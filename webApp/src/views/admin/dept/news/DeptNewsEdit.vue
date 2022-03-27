@@ -2,7 +2,7 @@
   <div>
     <a-form :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmitNews">
       <a-row :gutter="24">
-        <a-col :span="8">
+        <a-col :span="14">
           <a-form-item
             :label="$t('dep-profile-news.edit.title')"
             :labelCol="{lg: {span: 7}, sm: {span: 7}}"
@@ -13,7 +13,7 @@
               :placeholder="$t('form.basic-form.title.placeholder')" />
           </a-form-item>
         </a-col>
-        <a-col :span="8">
+        <a-col :span="6">
           <a-form-item
             :label="$t('dep-profile-news.edit.newsDate')"
             :labelCol="{lg: {span: 7}, sm: {span: 7}}"
@@ -21,7 +21,7 @@
             <a-date-picker @change="onChangeDate" :value="depnews.newsdate"/>
           </a-form-item>
         </a-col>
-        <a-col :span="8">
+        <a-col :span="4">
           <a-form-item>
             <a-button type="primary" :style="{ marginLeft: '8px' }" @click="handleSubmitNews">
               {{ $t('form.basic-form.form.submit') }}
@@ -79,7 +79,14 @@ export default {
   },
   methods: {
     handleSubmitNews () {
-      saveOneDepNews(this.depnews)
+      saveOneDepNews(this.depnews).then(res => {
+        if (res.status === 200) {
+          this.$message.success(`提交成功`)
+          this.$router.push(`/dashboard/deplist/depprofile/${this.depnews.depid}`)
+        } else {
+          this.$message.error(`提交失败`)
+        }
+      })
     },
     onChangeDate (date, dateString) {
       console.log(date, dateString)

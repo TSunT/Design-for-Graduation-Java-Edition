@@ -29,23 +29,30 @@
               :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
               :required="false"
             >
-              <a-select
-                show-search
-                :value="dep.parentid"
+              <!-- <a-select
+                  show-search
+                  :value="dep.parentid"
+                  name="parentid"
+                  placeholder="input search text"
+                  style="width: 200px"
+                  :default-active-first-option="false"
+                  :show-arrow="false"
+                  :filter-option="false"
+                  :not-found-content="null"
+                  @search="handleSearch"
+                  @change="handleParentNodeChange"
+                >
+                  <a-select-option v-for="d in parentNode" :key="d.value">
+                    {{ d.text }}
+                  </a-select-option>
+                </a-select>-->
+              <a-tree-select
+                v-model="dep.parentid"
                 name="parentid"
-                placeholder="input search text"
-                style="width: 200px"
-                :default-active-first-option="false"
-                :show-arrow="false"
-                :filter-option="false"
-                :not-found-content="null"
-                @search="handleSearch"
-                @change="handleParentNodeChange"
-              >
-                <a-select-option v-for="d in parentNode" :key="d.value">
-                  {{ d.text }}
-                </a-select-option>
-              </a-select>
+                style="width: 100%"
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto'}"
+                :tree-data="parentDepTreeData"
+                tree-default-expand-all/>
             </a-form-item>
           </a-tab-pane>
           <a-tab-pane key="2" :tab="$t('dep-profile-tab2.title')">
@@ -90,7 +97,7 @@
 </template>
 
 <script>
-import { getOneDepProfile, getDepForSearchParentNode, getDepNewsPage } from '@/api/dep'
+import { getOneDepProfile, getDepForSearchParentNode, getDepNewsPage, getListByParentId } from '@/api/dep'
 
 const depNewsColumns = [
   {
@@ -124,6 +131,7 @@ export default {
       userRoles: [],
       parentNode: [],
       loading: false,
+      parentDepTreeData: [{ id: 0, pId: 0, value: '0', title: 'Expand to load' }],
       pagination: {
         size: 'small',
         defaultCurrent: 1, // 默认当前页数
@@ -149,6 +157,7 @@ export default {
     if (this.dep.id) {
       this.fetchProfile(this.dep.id)
       this.fetchNewsList()
+      this.fetchDepList(null)
     }
   },
   methods: {
@@ -235,6 +244,35 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    fetchDepListByParentHandler (treeNode) {
+      this.fetchDepList(treeNode.dataRef.id)
+    },
+    fetchDepList (parentId) {
+      getListByParentId({
+        parentid: parentId
+      }).then(res => {
+        if (res.status === 200) {
+          debugger
+         this.parentDepTreeData = this.genTreeNode(res.data, parentId)
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    genTreeNode (oriList, parentId) {
+      const filterList = oriList.filter(dep => dep.parentid === parentId)
+      var resList = []
+      filterList.forEach(dep => {
+        const treeNode = {
+          title: dep.name,
+          value: dep.id,
+          key: dep.id,
+          children: this.genTreeNode(oriList, dep.id)
+        }
+        resList.push(treeNode)
+      })
+      return resList
     },
     toEditPage (depid, newsid) {
       this.$router.push(`/dashboard/deplist/depnewsedit/${depid}/${newsid}`)
