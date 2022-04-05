@@ -77,6 +77,20 @@
             >
               {{ user.logintime }}
             </a-form-item>
+            <a-form-item
+              :label="$t('user-profile-dep.title')"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+              :required="false"
+            >
+              <a-tree-select
+                v-model="user.depid"
+                name="parentid"
+                style="width: 100%"
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto'}"
+                :tree-data="selectDepTreeData"
+                tree-default-expand-all/>
+            </a-form-item>
           </a-tab-pane>
           <a-tab-pane key="2" :tab="$t('admin.user.profile.tab2')">
             <a-transfer
@@ -97,7 +111,7 @@
           style="text-align: center"
         >
           <a-button @click="handleSubmit" type="primary">{{ $t('form.basic-form.form.submit') }}</a-button>
-          <a-button style="margin-left: 8px">{{ $t('form.basic-form.form.save') }}</a-button>
+          <a-button @click="toBackDepList" style="margin-left: 8px">{{ $t('form.basic-form.form.back') }}</a-button>
         </a-form-item>
       </a-form>
     </a-card>
@@ -106,6 +120,7 @@
 
 <script>
 import { fetchOneUser, saveUserInfo, getUserAvatar, getAllRoles } from '@/api/admin'
+import { getListByParentId } from '@/api/dep'
 
 export default {
   name: 'UserProfile',
@@ -120,8 +135,10 @@ export default {
         avatar: '',
         lastloginaddr: '',
         logintime: 0,
-        roles: []
+        roles: [],
+        depid: 0
       },
+      selectDepTreeData: [],
       avatarUrl: '',
       allRoles: [],
       userRoles: [],
@@ -145,6 +162,7 @@ export default {
         }
       }
     })
+    this.fetchDepList(null) // 部门树
   },
   methods: {
     // handler
@@ -177,6 +195,7 @@ export default {
           this.user.roles = res.data.roles
           this.user.staffname = res.data.staffname
           this.userRoles = res.data.roles.map(role => role.rid.toString())
+          this.user.depid = res.data.depid
           // 获取头像信息
           getUserAvatar(res.data.avatar).then(res => {
             // 这里就是将得到的图片流转换成blob类型
@@ -239,6 +258,34 @@ export default {
       targetKeys.forEach(keys => {
         this.user.roles = [...this.user.roles, { rid: Number(keys) }]
       })
+    },
+    fetchDepList (parentId) {
+      getListByParentId({
+        parentid: parentId
+      }).then(res => {
+        if (res.status === 200) {
+          this.selectDepTreeData = this.genDepTreeNode(res.data, parentId)
+        }
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+    genDepTreeNode (oriList, parentId) {
+      var resList = []
+      const filterList = oriList.filter(dep => dep.parentid === parentId)
+      filterList.forEach(dep => {
+        const treeNode = {
+          title: dep.name,
+          value: dep.id,
+          key: dep.id,
+          children: this.genDepTreeNode(oriList, dep.id)
+        }
+        resList.push(treeNode)
+      })
+      return resList
+    },
+    toBackDepList () {
+      this.$router.push('/dashboard/userlist')
     }
   }
 }

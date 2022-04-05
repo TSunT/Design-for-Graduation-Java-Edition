@@ -22,4 +22,5 @@ public class UserNormal implements Serializable {
     private String avatar;
     private List<Role> roles;
     private String staffname;
+    private int depid;
 }

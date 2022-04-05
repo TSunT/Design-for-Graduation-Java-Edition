@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class DepDTO extends BaseDTO {
     private String name;
     private int parentId;
+    private int depid;
 }

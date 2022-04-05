@@ -10,6 +10,7 @@
         <result column="logintimes" property="logintimes" javaType="Integer"/>
         <result column="lastloginaddr" property="lastloginaddr" javaType="String"/>
         <result column="locked" property="locked" javaType="Boolean"/>
+        <association property="depid" column="id" select="selectOneDeptByUserRelation"/>
         <collection property="roles" column="id" select="cn.edu.nuaa.myclinic.mapper.UserRoleMapper.getUserRolesByUserId" ofType="cn.edu.nuaa.myclinic.pojo.Role">
             <id column="rid" property="rid" jdbcType="INTEGER"/>
             <result column="rname" property="rname" jdbcType="VARCHAR"/>
@@ -21,6 +22,9 @@
     <insert id="insertOneUserRoles" parameterType="Integer">
         insert into user_role(uid,rid) values (#{uid},#{rid})
     </insert>
+    <insert id="insertUserDepRelation">
+        insert into user_dep_relation(userid,depid) values (#{userid},#{depid})
+    </insert>
     <update id="updateUserInfoById">
         update user a set a.username = #{username}, a.locked=#{locked}, a.enable=#{enable}, a.avatar=#{avatar}, a.staffname=#{staffname} where a.id = #{id}
     </update>
@@ -29,6 +33,9 @@
     </update>
     <delete id="deleteOneUserRoles">
         delete from user_role where uid = #{uid}
+    </delete>
+    <delete id="deleteUserDepRelationByUserId">
+        delete from user_dep_relation where userid = #{userid}
     </delete>
 
     <select id="selectUserList" resultMap="baseUserNormalMap" parameterType="cn.edu.nuaa.myclinic.pojo.UserNormalDTO">
@@ -83,5 +90,10 @@
                 a.id = #{id}
             </if>
         </where>
+    </select>
+    <select id="selectOneDeptByUserRelation" resultType="java.lang.Integer">
+        select t.depid
+        from user_dep_relation t
+        where t.userid = #{userid}
     </select>
 </mapper>

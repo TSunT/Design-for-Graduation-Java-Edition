@@ -89,7 +89,7 @@
           style="text-align: center"
         >
           <a-button @click="handleSubmit" type="primary">{{ $t('form.basic-form.form.submit') }}</a-button>
-          <a-button style="margin-left: 8px">{{ $t('form.basic-form.form.save') }}</a-button>
+          <a-button @click="backToDepList" style="margin-left: 8px">{{ $t('form.basic-form.form.back') }}</a-button>
         </a-form-item>
       </a-form>
     </a-card>
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { getOneDepProfile, getDepForSearchParentNode, getDepNewsPage, getListByParentId } from '@/api/dep'
+import { getOneDepProfile, getDepForSearchParentNode, getDepNewsPage, getListByParentId, saveOneDep } from '@/api/dep'
 
 const depNewsColumns = [
   {
@@ -131,7 +131,7 @@ export default {
       userRoles: [],
       parentNode: [],
       loading: false,
-      parentDepTreeData: [{ id: 0, pId: 0, value: '0', title: 'Expand to load' }],
+      parentDepTreeData: [],
       pagination: {
         size: 'small',
         defaultCurrent: 1, // 默认当前页数
@@ -163,20 +163,19 @@ export default {
   methods: {
     // handler
     handleSubmit () {
-     /*
-        saveUserInfo(this.user).then(res => {
-          // console.log(res)
-          if (res.status === 200) {
-            this.$message.success(`成功保存${res.data}条记录`)
-            this.$router.push('/dashboard/userlist')
-          } else {
-            this.$message.error(`保存失败`)
-          }
-        }).catch(e => {
-          console.log(e)
-          this.$message.error(`保存失败`)
-        })
-      */
+      saveOneDep(this.dep).then(res => {
+        if (res.data) {
+          this.$message.success(this.$t('dep-profile-save.success'))
+          this.$router.push('/dashboard/deplist')
+        } else {
+          this.$message.error(this.$t('dep-profile-save.fail'))
+        }
+      }).catch(e => {
+        this.$message.error(this.$t('dep-profile-save.fail'))
+      })
+    },
+    backToDepList () {
+      this.$router.push('/dashboard/deplist')
     },
     // fetchProfile
     fetchProfile () {
@@ -253,14 +252,13 @@ export default {
         parentid: parentId
       }).then(res => {
         if (res.status === 200) {
-          debugger
-         this.parentDepTreeData = this.genTreeNode(res.data, parentId)
+         this.parentDepTreeData = this.genDepTreeNode(res.data, parentId)
         }
       }).catch(e => {
         console.log(e)
       })
     },
-    genTreeNode (oriList, parentId) {
+    genDepTreeNode (oriList, parentId) {
       const filterList = oriList.filter(dep => dep.parentid === parentId)
       var resList = []
       filterList.forEach(dep => {
@@ -268,7 +266,7 @@ export default {
           title: dep.name,
           value: dep.id,
           key: dep.id,
-          children: this.genTreeNode(oriList, dep.id)
+          children: this.genDepTreeNode(oriList, dep.id)
         }
         resList.push(treeNode)
       })

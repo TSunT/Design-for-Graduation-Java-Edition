@@ -34,7 +34,7 @@ public class DepServiceImpl implements DepService {
         PageHelper.startPage(dto.getPage(),dto.getSize());
         Dep dep = new Dep(); dep.setName(dto.getName()); dep.setParentid(dto.getParentId());
         QueryWrapper<Dep> depQueryWrapper = new QueryWrapper<>();
-        depQueryWrapper.select("id","name");
+        depQueryWrapper.select("id","name","depcode");
         if (StringUtils.isNotBlank(dto.getName())) depQueryWrapper.like("name",dto.getName());
         if (dto.getName() != null) depQueryWrapper.eq("parentid",dto.getParentId());
         List<Dep> depList = depMapper.selectList(depQueryWrapper);
@@ -76,6 +76,7 @@ public class DepServiceImpl implements DepService {
         QueryWrapper<DepNews> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id","newstitle","depid","newsdate");
         queryWrapper.like("newstitle",dto.getName());
+        queryWrapper.eq("depid",dto.getDepid());
         return new PageInfo<>(depNewsMapper.selectList(queryWrapper));
     }
 

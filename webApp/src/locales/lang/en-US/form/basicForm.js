@@ -56,6 +56,7 @@ export default {
   'form.basic-form.form.optional': ' (optional) ',
   'form.basic-form.form.submit': 'Submit',
   'form.basic-form.form.save': 'Save',
+  'form.basic-form.form.back': 'Back',
   'form.basic-form.email.placeholder': 'Email',
   'form.basic-form.password.placeholder': 'Password',
   'form.basic-form.confirm-password.placeholder': 'Confirm password',
@@ -69,5 +70,9 @@ export default {
   'dep-profile-tab2.title': 'Bulletin Node',
   'dep-profile-news.add': 'Add News',
   'dep-profile-news.edit.title': 'Title',
-  'dep-profile-news.edit.newsDate': 'Bulletin Date'
+  'dep-profile-news.edit.newsDate': 'Bulletin Date',
+  'dep-profile-save.success': 'Save Success',
+  'dep-profile-save.fail': 'Save fail',
+  // user
+  'user-profile-dep.title': 'Department'
 }

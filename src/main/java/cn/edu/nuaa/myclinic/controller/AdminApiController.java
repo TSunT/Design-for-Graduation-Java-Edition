@@ -110,10 +110,12 @@ public class AdminApiController {
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

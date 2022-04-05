@@ -53,6 +53,7 @@ export default {
   'form.basic-form.form.optional': '（选填）',
   'form.basic-form.form.submit': '提交',
   'form.basic-form.form.save': '保存',
+  'form.basic-form.form.back': '返回',
   'form.basic-form.email.placeholder': '邮箱',
   'form.basic-form.password.placeholder': '至少6位密码，区分大小写',
   'form.basic-form.confirm-password.placeholder': '确认密码',
@@ -66,5 +67,9 @@ export default {
   'dep-profile-tab2.title': '公告信息',
   'dep-profile-news.add': '添加新闻',
   'dep-profile-news.edit.title': '标题',
-  'dep-profile-news.edit.newsDate': '日期'
+  'dep-profile-news.edit.newsDate': '日期',
+  'dep-profile-save.success': '保存成功',
+  'dep-profile-save.fail': '保存失败',
+  // user
+  'user-profile-dep.title': '所属部门'
 }

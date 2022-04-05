@@ -98,22 +98,22 @@ public interface AdminApiMapper {
     public Integer updateOneDep(Dep dep);
 
     /**
-     * 新增一个部门信息
-     * @param dep
-     * @return
+     * 删除用户部门关系
+     * @param userid
      */
-    public Integer insertOneDep(Dep dep);
+    public void deleteUserDepRelationByUserId(@Param("userid") int userid);
 
     /**
-     * 删除部门新闻
-     * @param depNews
+     * 添加用户部门关系
+     * @param userid
+     * @param depid
      */
-    public void deleteDepNews(DepNewsMapper depNews);
+    public void insertUserDepRelation(@Param("userid") int userid, @Param("depid") int depid);
 
     /**
-     *
-     * @param depNews
+     * 根据用户查找所属部门
+     * @param userid
      * @return
      */
-    public Integer insertDepNews(DepNewsMapper depNews);
+    public int selectOneDeptByUserRelation(@Param("userid") int userid);
 }

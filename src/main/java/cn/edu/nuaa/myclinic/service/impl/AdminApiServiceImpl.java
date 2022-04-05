@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
 import java.util.List;
@@ -45,24 +46,28 @@ public class AdminApiServiceImpl implements AdminApiService {
      * @param dto
      * @return
      */
+    @Transactional
     public Integer saveUserInfo(UserNormal dto){
 
         if (dto.getId()>0) { // id小于等于0 表示需要新增用户
             adminApiMapper.deleteOneUserRoles(dto.getId());
             adminApiMapper.updateUserInfoById(dto);
+            adminApiMapper.deleteUserDepRelationByUserId(dto.getId());
             List<Role> roles = dto.getRoles();
             for (Role role : roles) {
                 adminApiMapper.insertOneUserRoles(dto.getId(),role.getRid());
             }
+            adminApiMapper.insertUserDepRelation(dto.getId(),dto.getDepid());
             return 1;
         }else {
             dto.setPassword(new BCryptPasswordEncoder().encode("123"));// 默认密码123
             dto.setLogintimes(0);
-            Integer uid = adminApiMapper.insertUserInfo(dto);
+            adminApiMapper.insertUserInfo(dto);
             List<Role> roles = dto.getRoles();
             for (Role role : roles) {
-                adminApiMapper.insertOneUserRoles(uid,role.getRid());
+                adminApiMapper.insertOneUserRoles(dto.getId(),role.getRid());
             }
+            adminApiMapper.insertUserDepRelation(dto.getId(),dto.getDepid());
             return 1;
         }
     }
