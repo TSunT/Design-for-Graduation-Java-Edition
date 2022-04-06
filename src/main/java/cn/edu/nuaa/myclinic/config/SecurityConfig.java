@@ -5,9 +5,12 @@ import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.service.AdminService;
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -35,6 +38,7 @@ import java.util.Map;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
     @Autowired
     CustomUrlDecisionManager customUrlDecisionManager;
     @Autowired
@@ -184,7 +188,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      **/
     public static String createAccessToken(User userEntity){
         // 登陆成功生成JWT
-        String token = Jwts.builder()
+        /*String token = Jwts.builder()
                 // 放入用户名和用户ID
                 .setId(userEntity.getId()+"")
                 // 主题
@@ -199,7 +203,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .setExpiration(new Date(System.currentTimeMillis() + JwtConfig.expiration))
                 // 签名算法和密钥
                 .signWith(SignatureAlgorithm.HS512,JwtConfig.secret)
-                .compact();
+                .compact();*/
+        String token = null;
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(JwtConfig.secret);
+            token = JWT.create()
+                    .withJWTId(userEntity.getId()+"")
+                    .withSubject(userEntity.getUsername())
+                    .withIssuedAt(new Date())
+                    .withExpiresAt(new Date(System.currentTimeMillis()+JwtConfig.expiration))
+                    .withClaim("authorities", JSON.toJSONString(userEntity.getAuthorities()))
+                    .withAudience(userEntity.getUsername())
+                    .withIssuer("Myclinic")
+                    .sign(algorithm);
+        } catch (JWTCreationException e) {
+            logger.error(e.getMessage(),e);
+        }
         return token;
     }
 }

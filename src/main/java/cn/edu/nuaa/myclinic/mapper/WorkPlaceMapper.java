@@ -1,8 +1,7 @@
 package cn.edu.nuaa.myclinic.mapper;
 
 import cn.edu.nuaa.myclinic.pojo.DepNews;
-import cn.edu.nuaa.myclinic.pojo.User;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +14,5 @@ public interface WorkPlaceMapper {
      * @param user
      * @return
      */
-    public List<DepNews> selectDepNewsByUser(User user);
+    public List<DepNews> selectDepNewsByUser(UserNormal user);
 }

@@ -8,7 +8,11 @@ import java.util.List;
 public interface AdminApiService {
 
     public PageInfo<UserNormal> getUserList(UserNormalDTO dto);
-
+    /**
+     * 根据id查询用户
+     * @param dto
+     * @return
+     */
     public UserNormal getOneUserById(UserNormalDTO dto);
 
     public Integer saveUserInfo(UserNormal dto);
@@ -27,4 +31,6 @@ public interface AdminApiService {
      * @param menus
      */
     public void saveRoleMenus(Integer rid, List<Integer> menus);
+
+    public UserNormal selectOneUserBasicInfoById(UserNormalDTO dto);
 }

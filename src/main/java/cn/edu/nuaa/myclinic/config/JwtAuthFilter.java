@@ -2,9 +2,10 @@ package cn.edu.nuaa.myclinic.config;
 
 import cn.edu.nuaa.myclinic.service.UserSecurityService;
 import cn.edu.nuaa.myclinic.util.AppUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 @Slf4j
 public class JwtAuthFilter extends BasicAuthenticationFilter {
 
@@ -77,13 +79,14 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                 // 截取JWT前缀
                 String token = authHeader.replace(JwtConfig.tokenPrefix, "");
                 // 解析JWT
-                Claims claims = Jwts.parser()
-                            .setSigningKey(JwtConfig.secret)
-                            .parseClaimsJws(token)
-                            .getBody();
+                // 认证token
+                Algorithm algorithm = Algorithm.HMAC256(JwtConfig.secret);
+                JWTVerifier jwtVerifier = JWT.require(algorithm).withIssuer("Myclinic").build();
+                DecodedJWT verify = jwtVerifier.verify(token);
                 // 获取用户名
-                String username = claims.getSubject();
-                String userId = claims.getId();
+                String username = verify.getSubject();
+                String userId = verify.getId();
+                AppUtil.getAppUtil().setCurrentUserId(userId);
                 log.info(username+" send a request!");
                 //log.info("security context: "+SecurityContextHolder.getContext().getAuthentication().toString());
                 //Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
@@ -94,8 +97,6 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info(username+" grant a authentication: "+authentication);
                 }
-            }  catch (ExpiredJwtException e){
-                log.info("Token过期");
             } catch (Exception e) {
                 e.printStackTrace();
                 log.info("Token无效");

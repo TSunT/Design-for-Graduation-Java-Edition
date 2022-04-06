@@ -5,8 +5,8 @@
 <mapper namespace="cn.edu.nuaa.myclinic.mapper.WorkPlaceMapper">
 
     <select id="selectDepNewsByUser" resultType="cn.edu.nuaa.myclinic.pojo.DepNews">
-        select
-        from dep
-        where
+        SELECT a.id, a.newstitle, a.newsdate
+        FROM dep_news a LEFT JOIN user_dep_relation b ON a.depid = b.depid
+        WHERE b.userid = #{id}
     </select>
 </mapper>

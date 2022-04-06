@@ -8,13 +8,16 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -48,10 +51,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
                     username, password);
             setDetails(request, authRequest);
+
+            Authentication authenticate = this.getAuthenticationManager().authenticate(authRequest);
+            Collection<? extends GrantedAuthority> authorities = authenticate.getAuthorities();
             User principal = new User();
             principal.setUsername(username);
-            // sessionRegistry.registerNewSession(request.getSession(true).getId(), principal);
-            return this.getAuthenticationManager().authenticate(authRequest);
+            principal.setAuthorities((List<GrantedAuthority>) authorities);
+            sessionRegistry.registerNewSession(request.getSession(true).getId(), principal);
+            return authenticate;
         } else {
             //checkCode(response, request.getParameter("code"), verify_code);
             return super.attemptAuthentication(request, response);

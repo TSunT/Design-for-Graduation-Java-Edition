@@ -10,6 +10,8 @@ public class AppUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
+    private ThreadLocal<String> currentUserId = new ThreadLocal<>();
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (AppUtil.applicationContext == null) {
@@ -34,5 +36,17 @@ public class AppUtil implements ApplicationContextAware {
     // 通过name,以及Clazz返回指定的Bean
     public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
+    }
+
+    public void setCurrentUserId(String userId){
+        currentUserId.set(userId);
+    }
+
+    public String getCurrentUserId(){
+       return currentUserId.get();
+    }
+
+    public static AppUtil getAppUtil(){
+        return getBean(AppUtil.class);
     }
 }

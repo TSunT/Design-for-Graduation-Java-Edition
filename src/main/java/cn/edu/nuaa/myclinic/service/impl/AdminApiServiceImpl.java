@@ -4,6 +4,7 @@ import cn.edu.nuaa.myclinic.mapper.AdminApiMapper;
 import cn.edu.nuaa.myclinic.mapper.MenuMapper;
 import cn.edu.nuaa.myclinic.pojo.*;
 import cn.edu.nuaa.myclinic.service.AdminApiService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,14 @@ public class AdminApiServiceImpl implements AdminApiService {
      */
     public UserNormal getOneUserById(UserNormalDTO dto){
         return adminApiMapper.selectOneUserByID(dto.getId());
+    }
+
+    @Override
+    public UserNormal selectOneUserBasicInfoById(UserNormalDTO dto){
+        QueryWrapper<UserNormal> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id","username","staffname");
+        queryWrapper.eq("id",dto.getId());
+        return adminApiMapper.selectOne(queryWrapper);
     }
 
     /**
