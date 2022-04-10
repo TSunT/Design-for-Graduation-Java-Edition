@@ -171,7 +171,7 @@ export default {
         // console.log(res)
         if (res.status === 200) {
           this.$message.success(`成功保存${res.data}条记录`)
-          this.$router.push('/dashboard/userlist')
+          this.$router.push('/systemConfiguration/userlist')
         } else {
           this.$message.error(`保存失败`)
         }
