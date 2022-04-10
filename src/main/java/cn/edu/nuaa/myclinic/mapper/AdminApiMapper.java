@@ -117,4 +117,11 @@ public interface AdminApiMapper extends BaseMapper<UserNormal> {
      * @return
      */
     public int selectOneDeptByUserRelation(@Param("userid") int userid);
+
+    /**
+     * 查询用户信息
+     * @param id
+     * @return
+     */
+    public UserNormal selectOneById(@Param("userid") int id);
 }

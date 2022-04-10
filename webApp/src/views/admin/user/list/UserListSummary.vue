@@ -225,7 +225,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/userlist/userprofile/${id}`)
+      this.$router.push(`/systemConfiguration/userlist/userprofile/${id}`)
     },
     cancel (id) {
       console.log(id)

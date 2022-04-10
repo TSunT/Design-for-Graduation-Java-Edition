@@ -1,7 +1,6 @@
 package cn.edu.nuaa.myclinic.service;
 
 import cn.edu.nuaa.myclinic.pojo.DepNews;
-import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 
 import java.util.List;
@@ -13,5 +12,5 @@ public interface IWorkPlaceService {
      * @param user
      * @return
      */
-    public List<DepNews> getDepNewsListByUser(UserNormal user);
+    public List<DepNews> getDepNewsPageListByUser(UserNormal user);
 }

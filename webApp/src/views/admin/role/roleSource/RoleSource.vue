@@ -71,7 +71,7 @@ export default {
       saveRoleMenus({ rid: this.rid, mids: submitData }).then(res => {
         if (res.status === 200) {
           this.$message.success(`角色资源成功`)
-          this.$router.push('/dashboard/rolelist')
+          this.$router.push('/systemConfiguration/rolelist')
         } else {
           this.$message.error(`保存失败`)
         }
@@ -122,7 +122,7 @@ export default {
       })
     },
     backToRoleList () {
-      this.$router.push('/dashboard/rolelist')
+      this.$router.push('/systemConfiguration/rolelist')
     }
   }
 }

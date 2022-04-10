@@ -82,7 +82,7 @@ export default {
       saveOneDepNews(this.depnews).then(res => {
         if (res.status === 200) {
           this.$message.success(`提交成功`)
-          this.$router.push(`/dashboard/deplist/depprofile/${this.depnews.depid}`)
+          this.$router.push(`/systemConfiguration/deplist/depprofile/${this.depnews.depid}`)
         } else {
           this.$message.error(`提交失败`)
         }

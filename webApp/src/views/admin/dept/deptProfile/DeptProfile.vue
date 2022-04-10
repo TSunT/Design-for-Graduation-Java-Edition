@@ -175,7 +175,7 @@ export default {
       })
     },
     backToDepList () {
-      this.$router.push('/dashboard/deplist')
+      this.$router.push('/systemConfiguration/deplist')
     },
     // fetchProfile
     fetchProfile () {
@@ -273,7 +273,7 @@ export default {
       return resList
     },
     toEditPage (depid, newsid) {
-      this.$router.push(`/dashboard/deplist/depnewsedit/${depid}/${newsid}`)
+      this.$router.push(`/systemConfiguration/deplist/depnewsedit/${depid}/${newsid}`)
     },
     addBulletin () {
       this.toEditPage(this.dep.id, 'null')

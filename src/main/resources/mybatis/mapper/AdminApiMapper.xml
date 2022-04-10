@@ -96,4 +96,9 @@
         from user_dep_relation t
         where t.userid = #{userid}
     </select>
+    <select id="selectOneById" resultType="cn.edu.nuaa.myclinic.pojo.UserNormal">
+        select t.id,t.username,t.staffname
+        from user t
+        where t.id = #{userid}
+    </select>
 </mapper>

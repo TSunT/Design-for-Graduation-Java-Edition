@@ -30,22 +30,31 @@
     <div>
       <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card :loading="loading" title="部门动态" :bordered="false">
+          <a-card :loading="loading" title="部门动态" :bordered="false" style="margin-bottom: 24px">
             <a-list>
               <a-list-item :key="index" v-for="(item, index) in activities">
                 <a-list-item-meta>
-                  <a-avatar slot="avatar" size="small" :src="item.user.avatar" />
                   <div slot="title">
-                    <span>{{ item.user.nickname }}</span
-                    >&nbsp; 在&nbsp;<a href="#">{{ item.project.name }}</a
-                    >&nbsp; <span>{{ item.project.action }}</span
-                    >&nbsp;
-                    <a href="#">{{ item.project.event }}</a>
+                    <!--<span>{{ item.newstitle }}</span>&nbsp;-->
+                    <a href="#" @click="toDepNewsDetail(`${item.id}`)" >{{ item.newstitle }}</a>
                   </div>
-                  <div slot="description">{{ item.time }}</div>
+                  <div slot="description">{{ item.newsdate }}</div>
                 </a-list-item-meta>
               </a-list-item>
             </a-list>
+            <a-pagination simple :default-current="activitiesPagination.currentPage" :total="activitiesPagination.total" :pageSize="activitiesPagination.pageSize" style="float: right"/>
+          </a-card>
+          <a-card :loading="loading" title="我的代办" :bordered="false">
+            <div class="members">
+              <a-row>
+                <a-col :span="12" v-for="(item, index) in teams" :key="index">
+                  <a>
+                    <!--<a-avatar size="small" :src="item.avatar" />-->
+                    <span class="member">{{ item.name }}</span>
+                  </a>
+                </a-col>
+              </a-row>
+            </div>
           </a-card>
         </a-col>
         <a-col
@@ -71,18 +80,6 @@
               <a-button size="small" type="primary" ghost icon="plus">添加</a-button>
             </div>
           </a-card>
-          <a-card :loading="loading" title="团队" :bordered="false">
-            <div class="members">
-              <a-row>
-                <a-col :span="12" v-for="(item, index) in teams" :key="index">
-                  <a>
-                    <a-avatar size="small" :src="item.avatar" />
-                    <span class="member">{{ item.name }}</span>
-                  </a>
-                </a-col>
-              </a-row>
-            </div>
-          </a-card>
         </a-col>
       </a-row>
     </div>
@@ -95,9 +92,7 @@ import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
 
-import { getRoleList, getServiceList } from '@/api/manage'
-
-const DataSet = require('@antv/data-set')
+import { getDepNewsByUser } from '@/api/workplace'
 
 export default {
   name: 'Workplace',
@@ -113,49 +108,55 @@ export default {
 
       projects: [],
       loading: true,
-      radarLoading: true,
+      radarLoading: false,
       activities: [],
       teams: [],
 
+      pageSize: 10,
+      activitiesPagination: {
+        pageSize: 10,
+        total: 0,
+        currentPage: 1
+      }
       // data
-      axis1Opts: {
-        dataKey: 'item',
-        line: null,
-        tickLine: null,
-        grid: {
-          lineStyle: {
-            lineDash: null
-          },
-          hideFirstLine: false
-        }
-      },
-      axis2Opts: {
-        dataKey: 'score',
-        line: null,
-        tickLine: null,
-        grid: {
-          type: 'polygon',
-          lineStyle: {
-            lineDash: null
-          }
-        }
-      },
-      scale: [
-        {
-          dataKey: 'score',
-          min: 0,
-          max: 80
-        }
-      ],
-      axisData: [
-        { item: '引用', a: 70, b: 30, c: 40 },
-        { item: '口碑', a: 60, b: 70, c: 40 },
-        { item: '产量', a: 50, b: 60, c: 40 },
-        { item: '贡献', a: 40, b: 50, c: 40 },
-        { item: '热度', a: 60, b: 70, c: 40 },
-        { item: '引用', a: 70, b: 50, c: 40 }
-      ],
-      radarData: []
+      // axis1Opts: {
+      //   dataKey: 'item',
+      //   line: null,
+      //   tickLine: null,
+      //   grid: {
+      //     lineStyle: {
+      //       lineDash: null
+      //     },
+      //     hideFirstLine: false
+      //   }
+      // },
+      // axis2Opts: {
+      //   dataKey: 'score',
+      //   line: null,
+      //   tickLine: null,
+      //   grid: {
+      //     type: 'polygon',
+      //     lineStyle: {
+      //       lineDash: null
+      //     }
+      //   }
+      // },
+      // scale: [
+      //   {
+      //     dataKey: 'score',
+      //     min: 0,
+      //     max: 80
+      //   }
+      // ],
+      // axisData: [
+      //   { item: '引用', a: 70, b: 30, c: 40 },
+      //   { item: '口碑', a: 60, b: 70, c: 40 },
+      //   { item: '产量', a: 50, b: 60, c: 40 },
+      //   { item: '贡献', a: 40, b: 50, c: 40 },
+      //   { item: '热度', a: 60, b: 70, c: 40 },
+      //   { item: '引用', a: 70, b: 50, c: 40 }
+      // ],
+      // radarData: []
     }
   },
   computed: {
@@ -164,12 +165,12 @@ export default {
       welcome: state => state.user.welcome,
       userAvatar: state => state.user.avatar
     }),
-    currentUser () {
-      return {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
-      }
-    },
+    // currentUser () {
+    //   return {
+    //     name: 'Serati Ma',
+    //     avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+    //   }
+    // },
     userInfo () {
       return this.$store.getters.userInfo
     }
@@ -178,49 +179,37 @@ export default {
     this.user = this.userInfo
     this.avatar = this.userInfo.avatar
 
-    getRoleList().then(res => {
-      // console.log('workplace -> call getRoleList()', res)
-    })
-
-    getServiceList().then(res => {
-      // console.log('workplace -> call getServiceList()', res)
-    })
+    // getRoleList().then(res => {
+    //   // console.log('workplace -> call getRoleList()', res)
+    // })
+    //
+    // getServiceList().then(res => {
+    //   // console.log('workplace -> call getServiceList()', res)
+    // })
   },
   mounted () {
-    this.getProjects()
     this.getActivity()
-    this.getTeams()
-    this.initRadar()
   },
   methods: {
     getProjects () {
 
     },
     getActivity () {
-      this.$http.get('/workplace/activity').then(res => {
-        this.activities = res.result
+      getDepNewsByUser({
+        page: this.activitiesPagination.currentPage,
+        size: this.activitiesPagination.pageSize
+      }).then(res => {
+        if (res.data) {
+          this.activities = res.data.list
+          this.activitiesPagination.total = res.data.total
+          this.activitiesPagination.currentPage = res.data.pageNum
+          this.activitiesPagination.pageSize = res.data.pageSize
+          this.loading = false
+        }
       })
     },
-    getTeams () {
-      this.$http.get('/workplace/teams').then(res => {
-        this.teams = res.result
-      })
-    },
-    initRadar () {
-      this.radarLoading = true
-
-      this.$http.get('/workplace/radar').then(res => {
-        const dv = new DataSet.View().source(res.result)
-        dv.transform({
-          type: 'fold',
-          fields: ['个人', '团队', '部门'],
-          key: 'user',
-          value: 'score'
-        })
-
-        this.radarData = dv.rows
-        this.radarLoading = false
-      })
+    toDepNewsDetail (id) {
+      this.$router.push(`/dashboard/depNewsView/${id}`)
     }
   }
 }

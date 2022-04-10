@@ -189,7 +189,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/rolelist/rolesource/${id}`)
+      this.$router.push(`/systemConfiguration/rolelist/rolesource/${id}`)
     },
     cancel (id) {
       console.log(id)

@@ -32,5 +32,5 @@ public interface AdminApiService {
      */
     public void saveRoleMenus(Integer rid, List<Integer> menus);
 
-    public UserNormal selectOneUserBasicInfoById(UserNormalDTO dto);
+    public UserNormal selectOneUserBasicInfoByCurrentUser(UserNormalDTO dto);
 }

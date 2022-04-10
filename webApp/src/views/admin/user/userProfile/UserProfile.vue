@@ -285,7 +285,7 @@ export default {
       return resList
     },
     toBackDepList () {
-      this.$router.push('/dashboard/userlist')
+      this.$router.push('/systemConfiguration/userlist')
     }
   }
 }

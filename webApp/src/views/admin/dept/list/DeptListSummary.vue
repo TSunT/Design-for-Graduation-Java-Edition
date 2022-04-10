@@ -191,7 +191,7 @@ export default {
     },
     edit (id) {
       // console.log(id)
-      this.$router.push(`/dashboard/deplist/depprofile/${id}`)
+      this.$router.push(`/systemConfiguration/deplist/depprofile/${id}`)
     },
     cancel (id) {
       console.log(id)

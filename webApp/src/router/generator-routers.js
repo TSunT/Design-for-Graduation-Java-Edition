@@ -63,7 +63,10 @@ const constantRouterComponents = {
   // 部门管理
   DepListSummary: () => import('@/views/admin/dept/list/DeptListSummary'),
   DeptProfile: () => import('@/views/admin/dept/deptProfile/DeptProfile'),
-  DeptNewsEdit: () => import('@/views/admin/dept/news/DeptNewsEdit')
+  DeptNewsEdit: () => import('@/views/admin/dept/news/DeptNewsEdit'),
+
+  // 公告查看
+  WorkPlaceDeptNewsDetail: () => import('@/views/dashboard/workplaceView/WorkPlaceDeptNewsDetail')
 }
 
 // 前端未找到页面路由（固定不用改）

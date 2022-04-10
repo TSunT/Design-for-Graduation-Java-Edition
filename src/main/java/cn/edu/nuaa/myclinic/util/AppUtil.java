@@ -12,6 +12,8 @@ public class AppUtil implements ApplicationContextAware {
 
     private ThreadLocal<String> currentUserId = new ThreadLocal<>();
 
+    private ThreadLocal<String> currentUserName = new ThreadLocal<>();
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (AppUtil.applicationContext == null) {
@@ -44,6 +46,14 @@ public class AppUtil implements ApplicationContextAware {
 
     public String getCurrentUserId(){
        return currentUserId.get();
+    }
+
+    public void setCurrentUserName(String userName){
+        currentUserName.set(userName);
+    }
+
+    public String getCurrentUserName(){
+        return currentUserName.get();
     }
 
     public static AppUtil getAppUtil(){

@@ -188,22 +188,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      **/
     public static String createAccessToken(User userEntity){
         // 登陆成功生成JWT
-        /*String token = Jwts.builder()
-                // 放入用户名和用户ID
-                .setId(userEntity.getId()+"")
-                // 主题
-                .setSubject(userEntity.getUsername())
-                // 签发时间
-                .setIssuedAt(new Date())
-                // 签发者
-                .setIssuer("Myclinic")
-                // 自定义属性 放入用户拥有权限
-                .claim("authorities", JSON.toJSONString(userEntity.getAuthorities()))
-                // 失效时间
-                .setExpiration(new Date(System.currentTimeMillis() + JwtConfig.expiration))
-                // 签名算法和密钥
-                .signWith(SignatureAlgorithm.HS512,JwtConfig.secret)
-                .compact();*/
         String token = null;
         try {
             Algorithm algorithm = Algorithm.HMAC256(JwtConfig.secret);
