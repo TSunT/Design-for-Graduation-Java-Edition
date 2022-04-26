@@ -29,6 +29,8 @@ public class DepServiceImpl implements DepService {
     private DepMapper depMapper;
     @Autowired
     private DepNewsMapper depNewsMapper;
+    @Autowired
+    private WorkFlowConfigService workFlowConfigService;
     @Override
     public PageInfo<Dep> getDepPageList(DepDTO dto) {
         PageHelper.startPage(dto.getPage(),dto.getSize());

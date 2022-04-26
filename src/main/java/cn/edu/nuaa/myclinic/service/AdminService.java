@@ -6,6 +6,7 @@ import cn.edu.nuaa.myclinic.pojo.User;
 import cn.edu.nuaa.myclinic.pojo.UserNormal;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.camunda.bpm.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ import java.util.List;
 
 @Service
 public class AdminService {
+
+    @Autowired
+    private RuntimeService runtimeService;
+
     @Autowired
     AdminMapper adminMapper;
     public List<User> findAllUser(int currentpage , int size,String condition){

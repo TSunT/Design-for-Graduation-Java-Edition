@@ -45,6 +45,22 @@ public class AdminApiController {
     }
 
     /**
+     * 查询用户数据
+     * @param dto
+     * @return
+     */
+    @PostMapping("/getUserAllList")
+    public RespBean<List<UserNormal>> getUserAllList(@RequestBody UserNormalDTO dto){
+        try {
+            List<UserNormal> result = adminApiService.getUserAllList(dto);
+            return new RespBean<>(200,"query.Success",result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespBean.error("query.failed");
+        }
+    }
+
+    /**
      * 查询一个用户
      * @param dto
      * @return

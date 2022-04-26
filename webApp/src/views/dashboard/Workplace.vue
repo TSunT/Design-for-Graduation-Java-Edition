@@ -36,7 +36,7 @@
                 <a-list-item-meta>
                   <div slot="title">
                     <!--<span>{{ item.newstitle }}</span>&nbsp;-->
-                    <a href="#" @click="toDepNewsDetail(`${item.id}`)" >{{ item.newstitle }}</a>
+                    <span style="cursor:pointer;" @click="toDepNewsDetail(`${item.id}`)" >{{ item.newstitle }}</span>
                   </div>
                   <div slot="description">{{ item.newsdate }}</div>
                 </a-list-item-meta>

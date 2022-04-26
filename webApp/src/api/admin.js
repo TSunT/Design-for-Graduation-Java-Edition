@@ -9,7 +9,8 @@ const adminApi = {
   getRolesList: '/admin/api/getRoleList',
   getAllMenus: '/admin/api/getAllMenus',
   getOneRoleSelectedMenu: '/admin/api/getOneRoleSelectedMenu',
-  saveRoleMenus: '/admin/api/saveRoleMenus'
+  saveRoleMenus: '/admin/api/saveRoleMenus',
+  getUserAllList: '/admin/api/getUserAllList'
 }
 
 export function userList (parameter) {
@@ -79,5 +80,13 @@ export function saveRoleMenus (params) {
     url: adminApi.saveRoleMenus,
     method: 'post',
     data: params
+  })
+}
+
+export function getUserAllList (param) {
+  return request({
+    url: adminApi.getUserAllList,
+    method: 'post',
+    data: param
   })
 }

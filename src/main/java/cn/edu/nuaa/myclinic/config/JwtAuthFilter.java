@@ -88,7 +88,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
                 String userId = verify.getId();
                 AppUtil.getAppUtil().setCurrentUserId(userId);
                 AppUtil.getAppUtil().setCurrentUserName(username);
-                log.info(username+" send a request!");
+                log.info(username+" send a request! => "+request.getRequestURI());
                 //log.info("security context: "+SecurityContextHolder.getContext().getAuthentication().toString());
                 //Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

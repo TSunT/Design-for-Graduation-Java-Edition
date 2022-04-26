@@ -8,6 +8,8 @@ import java.util.List;
 public interface AdminApiService {
 
     public PageInfo<UserNormal> getUserList(UserNormalDTO dto);
+
+    public List<UserNormal> getUserAllList(UserNormalDTO dto);
     /**
      * 根据id查询用户
      * @param dto

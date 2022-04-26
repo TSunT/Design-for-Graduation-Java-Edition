@@ -12,6 +12,7 @@ import result from './en-US/result'
 import account from './en-US/account'
 
 import adminUser from '@/locales/lang/en-US/admin/adminUser'
+import workflowConfig from '@/locales/lang/en-US/admin/workflowConfig'
 
 const components = {
   antLocale: antdEnUS,
@@ -34,5 +35,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...adminUser
+  ...adminUser,
+  ...workflowConfig
 }

@@ -36,5 +36,7 @@ export default {
     'menu.account.settings': 'Account Settings',
     'menu.account.trigger': 'Trigger Error',
     'menu.account.logout': 'Logout',
-    'menu.system.config': 'System Configuration'
+    'menu.system.config': 'System Configuration',
+    'menu.system.workflowConfig.user': 'Workflow User Configuration',
+    'menu.system.workflowConfig.group': 'Workflow Group Configuration'
 }

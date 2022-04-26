@@ -65,6 +65,9 @@ const constantRouterComponents = {
   DeptProfile: () => import('@/views/admin/dept/deptProfile/DeptProfile'),
   DeptNewsEdit: () => import('@/views/admin/dept/news/DeptNewsEdit'),
 
+  // 工作流配置
+  WorkflowConfigUserIndex: () => import('@/views/admin/workflowConfig/user/list/WorkflowConfigUserIndex'),
+  WorkflowConfigGroupIndex: () => import('@/views/admin/workflowConfig/group/WorkflowConfigGroupIndex'),
   // 公告查看
   WorkPlaceDeptNewsDetail: () => import('@/views/dashboard/workplaceView/WorkPlaceDeptNewsDetail')
 }

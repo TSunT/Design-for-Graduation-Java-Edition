@@ -36,5 +36,7 @@ export default {
     'menu.account.settings': '个人设置',
     'menu.account.trigger': '触发报错',
     'menu.account.logout': '退出登录',
-  'menu.system.config': '系统管理'
+    'menu.system.config': '系统管理',
+    'menu.system.workflowConfig.user': '工作流人员配置',
+    'menu.system.workflowConfig.group': '工作流组配置'
 }

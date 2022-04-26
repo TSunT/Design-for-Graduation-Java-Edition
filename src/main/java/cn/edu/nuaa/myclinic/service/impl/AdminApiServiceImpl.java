@@ -34,6 +34,10 @@ public class AdminApiServiceImpl implements AdminApiService {
         return new PageInfo<>(adminApiMapper.selectUserList(dto));
     }
 
+    public List<UserNormal> getUserAllList(UserNormalDTO dto){
+        return adminApiMapper.selectUserList(dto);
+    }
+
     /**
      * 根据ID查询用户
      * @param dto

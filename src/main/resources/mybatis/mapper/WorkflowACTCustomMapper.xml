@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nuaa.myclinic.mapper.WorkflowACTCustomMapper">
+
+    <select id="getMemberShipUserIdByGroupId" resultType="java.lang.String">
+        select t.USER_ID_ from ACT_ID_MEMBERSHIP t where t.GROUP_ID_ = #{groupId}
+    </select>
+</mapper>

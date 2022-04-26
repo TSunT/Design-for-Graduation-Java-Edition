@@ -166,7 +166,7 @@ export default {
       saveOneDep(this.dep).then(res => {
         if (res.data) {
           this.$message.success(this.$t('dep-profile-save.success'))
-          this.$router.push('/dashboard/deplist')
+          this.$router.push('/systemConfiguration/deplist')
         } else {
           this.$message.error(this.$t('dep-profile-save.fail'))
         }

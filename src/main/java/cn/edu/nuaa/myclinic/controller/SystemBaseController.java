@@ -41,7 +41,7 @@ public class SystemBaseController {
     @GetMapping("/userinfo")
     public RespBean<UserNormal> getUserInfo(){
         Integer userid = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        System.out.println(userid+"号用户查询信息..");
+        // System.out.println(userid+"号用户查询信息..");
         UserNormal user = userRoleMapper.getUserByUserId(userid);
         if (user != null){
             return new RespBean<UserNormal>(200,"用户信息查询成功！",user);

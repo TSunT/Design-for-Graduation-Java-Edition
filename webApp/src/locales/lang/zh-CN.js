@@ -11,6 +11,7 @@ import result from './zh-CN/result'
 import account from './zh-CN/account'
 
 import adminUser from '@/locales/lang/zh-CN/admin/adminUser'
+import workflowConfig from '@/locales/lang/zh-CN/admin/workflowConfig'
 
 const components = {
   antLocale: antd,
@@ -33,5 +34,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...adminUser
+  ...adminUser,
+  ...workflowConfig
 }
