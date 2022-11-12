@@ -47,13 +47,17 @@
           <a-card :loading="loading" title="我的代办" :bordered="false">
             <div class="members">
               <a-row>
-                <a-col :span="12" v-for="(item, index) in teams" :key="index">
+                <a-col :span="12" v-for="(item, index) in waitApproveList" :key="index">
                   <a>
                     <!--<a-avatar size="small" :src="item.avatar" />-->
-                    <span class="member">{{ item.name }}</span>
+                    <div slot="title">
+                      <span class="member">{{ item.name }}</span>
+                    </div>
+                    <div slot="description">{{ item.createTime }}</div>
                   </a>
                 </a-col>
               </a-row>
+              <a-pagination simple :default-current="waitApproveListPagination.currentPage" :total="waitApproveListPagination.total" :pageSize="waitApproveListPagination.pageSize" style="float: right"/>
             </div>
           </a-card>
         </a-col>
@@ -80,6 +84,22 @@
               <a-button size="small" type="primary" ghost icon="plus">添加</a-button>
             </div>
           </a-card>
+          <a-card :loading="loading" title="工作组未审批" :bordered="false">
+            <div class="members">
+              <a-row>
+                <a-col :span="12" v-for="(item, index) in candidateApproveList" :key="index">
+                  <a>
+                    <!--<a-avatar size="small" :src="item.avatar" />-->
+                    <div slot="title">
+                      <span class="member">{{ item.name }}</span>
+                    </div>
+                    <div slot="description">{{ item.createTime }}</div>
+                  </a>
+                </a-col>
+              </a-row>
+              <a-pagination simple :default-current="candidateApproveListPagination.currentPage" :total="candidateApproveListPagination.total" :pageSize="candidateApproveListPagination.pageSize" style="float: right"/>
+            </div>
+          </a-card>
         </a-col>
       </a-row>
     </div>
@@ -91,6 +111,7 @@ import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
+import { myWaitApproveTasks, myCandidateApproveTasks } from '@/api/workflowTask'
 
 import { getDepNewsByUser } from '@/api/workplace'
 
@@ -111,6 +132,20 @@ export default {
       radarLoading: false,
       activities: [],
       teams: [],
+
+      waitApproveList: [],
+      waitApproveListPagination: {
+        pageSize: 10,
+        total: 0,
+        currentPage: 1
+      },
+
+      candidateApproveList: [],
+      candidateApproveListPagination: {
+        pageSize: 10,
+        total: 0,
+        currentPage: 1
+      },
 
       pageSize: 10,
       activitiesPagination: {
@@ -189,6 +224,8 @@ export default {
   },
   mounted () {
     this.getActivity()
+    this.getMyWaitApprovePage()
+    this.getMyGroupCandidateApprovePage()
   },
   methods: {
     getProjects () {
@@ -205,6 +242,32 @@ export default {
           this.activitiesPagination.currentPage = res.data.pageNum
           this.activitiesPagination.pageSize = res.data.pageSize
           this.loading = false
+        }
+      })
+    },
+    getMyWaitApprovePage () {
+      myWaitApproveTasks({
+        page: this.waitApproveListPagination.currentPage,
+        size: this.waitApproveListPagination.pageSize
+      }).then(res => {
+        if (res.data) {
+          this.waitApproveList = res.data.list
+          this.waitApproveListPagination.total = res.data.total
+          this.waitApproveListPagination.currentPage = res.data.pageNum
+          this.waitApproveListPagination.pageSize = res.data.pageSize
+        }
+      })
+    },
+     getMyGroupCandidateApprovePage () {
+      myCandidateApproveTasks({
+        page: this.candidateApproveListPagination.currentPage,
+        size: this.candidateApproveListPagination.pageSize
+      }).then(res => {
+        if (res.data) {
+          this.candidateApproveList = res.data.list
+          this.candidateApproveListPagination.total = res.data.total
+          this.candidateApproveListPagination.currentPage = res.data.pageNum
+          this.candidateApproveListPagination.pageSize = res.data.pageSize
         }
       })
     },

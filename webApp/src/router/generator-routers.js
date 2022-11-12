@@ -69,7 +69,10 @@ const constantRouterComponents = {
   WorkflowConfigUserIndex: () => import('@/views/admin/workflowConfig/user/list/WorkflowConfigUserIndex'),
   WorkflowConfigGroupIndex: () => import('@/views/admin/workflowConfig/group/WorkflowConfigGroupIndex'),
   // 公告查看
-  WorkPlaceDeptNewsDetail: () => import('@/views/dashboard/workplaceView/WorkPlaceDeptNewsDetail')
+  WorkPlaceDeptNewsDetail: () => import('@/views/dashboard/workplaceView/WorkPlaceDeptNewsDetail'),
+
+  // 工作流页面
+  WorkflowApproveView: () => import('@/views/workflowView/WorkflowApproveView')
 }
 
 // 前端未找到页面路由（固定不用改）

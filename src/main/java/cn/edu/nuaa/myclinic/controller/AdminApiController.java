@@ -112,9 +112,9 @@ public class AdminApiController {
     }
 
     @GetMapping("/getUserAvatar")
-    public byte[] getUserAvatar(String avatarUrl)
+    public byte[] getUserAvatar(String avatarUrl) // avatarUrl = b201ca6e21b34160ab23176b4e442742.jpg
     {
-        String file = uploadFolder+avatarUrl;
+        String file = uploadFolder+avatarUrl;  //D:\Code\Java\Design-for-Graduation-Java-Edition\avatarImg\b201ca6e21b34160ab23176b4e442742.jpg
         System.out.println(file);
         FileInputStream inputStream = null;
         byte[] bytes = null;

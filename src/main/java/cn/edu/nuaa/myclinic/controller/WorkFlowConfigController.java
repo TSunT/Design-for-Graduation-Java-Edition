@@ -5,7 +5,7 @@ import cn.edu.nuaa.myclinic.pojo.baseLib.RespBean;
 import cn.edu.nuaa.myclinic.pojo.workflow.EditGroupPO;
 import cn.edu.nuaa.myclinic.pojo.workflow.GroupDTO;
 import cn.edu.nuaa.myclinic.pojo.workflow.UserEntityDTO;
-import cn.edu.nuaa.myclinic.service.impl.WorkFlowConfigService;
+import cn.edu.nuaa.myclinic.service.workflow.WorkFlowConfigService;
 import com.github.pagehelper.PageInfo;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;

@@ -1,4 +1,4 @@
-package cn.edu.nuaa.myclinic.service.impl;
+package cn.edu.nuaa.myclinic.service.workflow;
 
 import cn.edu.nuaa.myclinic.mapper.WorkflowACTCustomMapper;
 import cn.edu.nuaa.myclinic.pojo.workflow.EditGroupPO;
@@ -30,9 +30,15 @@ public class WorkFlowConfigService {
 
     public PageInfo<User> selectWfUser(UserEntityDTO dto){
         // List<User> list = identityService.createUserQuery().list();
-        PageHelper.startPage(dto.getPage(),dto.getSize());
-        return new PageInfo<>(identityService.createUserQuery().userFirstName(dto.getFirstName()).userLastName(dto.getLastName()).list());
-
+        // PageHelper.startPage(dto.getPage(),dto.getSize());
+        int fistResult= dto.getSize()*(dto.getPage()-1);
+        int count = (int) identityService.createUserQuery().userFirstName(dto.getFirstName()).userLastName(dto.getLastName()).count();
+        PageInfo<User> pageInfo = new PageInfo<>(identityService.createUserQuery().userFirstName(dto.getFirstName()).userLastName(dto.getLastName()).listPage(fistResult,dto.getSize())); // listPage(开始行，大小)
+        // pageInfo.setPages(count);
+        pageInfo.setTotal(count);
+        pageInfo.setPageSize(dto.getSize());
+        pageInfo.setPageNum(dto.getPage());
+        return pageInfo;
     }
 
     /**
@@ -71,7 +77,13 @@ public class WorkFlowConfigService {
      */
     public PageInfo<Group> getWfGroupPage(GroupDTO dto){
         PageHelper.startPage(dto.getPage(),dto.getSize());
-        return new PageInfo<>(identityService.createGroupQuery()/*.groupNameLike(dto.getGroupName()!=null?dto.getGroupName():"")*/.list());
+        int fistResult = dto.getSize()*(dto.getPage()-1);
+        int count = (int) identityService.createGroupQuery().count();
+        PageInfo<Group> pageInfo = new PageInfo<>(identityService.createGroupQuery().listPage(fistResult,dto.getSize()));
+        pageInfo.setTotal(count);
+        pageInfo.setPageSize(dto.getSize());
+        pageInfo.setPageNum(dto.getPage());
+        return pageInfo;
     }
 
     /**
